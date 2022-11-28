@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 const LoginScreen = () => {
     return(
         <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-            <Text style={{color:'red'}}>login screen</Text>
+            <Text style={{color:'red' }}>login screen</Text>
         </View>
     )
 }
