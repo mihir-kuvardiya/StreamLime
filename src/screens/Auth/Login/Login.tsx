@@ -1,11 +1,58 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TextInput, View, TouchableOpacity } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ms } from "react-native-size-matters";
+import ThemeButton from "../../../components/themeButton";
+import colors from "../../../theme/colors";
+import LoginScreenStyle from "./LoginScreenStyle";
 
 const LoginScreen = () => {
+
+    const onPressLogin = () => {
+        console.log('login button clicked');
+    }
+
+    const onPressForgotPassword = () => {
+        console.log('forgot password clicked')
+    }
+
+    const onPressSignUp = () => {
+        console.log('sign up clicked')
+    }
+
     return(
-        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-            <Text style={{color:'red' }}>login screen</Text>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="always" style={{marginBottom: ms(16)}}>
+        <View style={LoginScreenStyle.container}>
+            <Text style={LoginScreenStyle.loginText}>Login</Text>
+            <View style={{marginVertical:ms(25)}}>
+            <TextInput 
+                placeholder="Enter email"
+                placeholderTextColor={colors.grayShade8F}
+                style={LoginScreenStyle.textInput}
+            />
+            <TextInput 
+                placeholder="Enter password"
+                placeholderTextColor={colors.grayShade8F}
+                style={LoginScreenStyle.textInput}
+            />
+            <TouchableOpacity
+                hitSlop={{left:10,right:10,top:10,bottom:10}}
+                onPress={onPressForgotPassword}
+            >
+                <Text style={LoginScreenStyle.forgotPasswordText}>Forgot Password ?</Text>
+            </TouchableOpacity>
+            </View>
+            <ThemeButton title="Log in" onPress={onPressLogin}/>
+            <View style={{alignItems:'center',marginTop:ms(50)}}>
+            <Text style={LoginScreenStyle.signupText}>I Don't have an acoount 
+                    <Text 
+                        style={LoginScreenStyle.signUpBlackButtonText} 
+                        onPress={onPressSignUp}
+                    > SignUp</Text>
+            </Text>
+            </View>
         </View>
+        </KeyboardAwareScrollView>
     )
 }
 
