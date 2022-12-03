@@ -8,7 +8,7 @@ export default ScaledSheet.create({
         marginHorizontal:ms(16),
         marginTop:ms(180)
     },
-    loginText:{
+    SignUpText:{
         color:colorPalates.AppTheme.text,
         fontSize:ms(25),
         fontWeight:'600',
@@ -27,21 +27,14 @@ export default ScaledSheet.create({
         fontSize: ms(13),
         color: colorPalates.AppTheme.text
     },
-    forgotPasswordText:{
-        color:colors.grayShadeAB,
-        textAlign:'right',
-        marginVertical:ms(15),
-        marginRight:ms(10),
-        fontSize:ms(14)
-    },
-    signupText:{
+    loginText:{
         textAlign:'center',
         color:colors.grayShadeAB,
         marginVertical:ms(15),
         marginRight:ms(10),
         fontSize:ms(14)
     },
-    signUpBlackButtonText:{
+    LoginTextBlackButton:{
         color:colorPalates.AppTheme.text
     }
 })
