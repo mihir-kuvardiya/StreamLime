@@ -3,6 +3,8 @@ enum screenNameEnum {
 
     LoginScreen = 'LoginScreen',
     SignUpScreen = 'SignUpScreen',
+
+    FeedList = 'FeedList'
 }
 
 export default screenNameEnum;
