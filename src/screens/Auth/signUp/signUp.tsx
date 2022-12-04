@@ -17,7 +17,7 @@ const SignUpScreen = () => {
     }
 
     const onPressSignUp = () => {
-        console.log('sign  up clicked');
+        navigation.navigate(screenNameEnum.VerifyEmailScreen)
     }
 
     return(

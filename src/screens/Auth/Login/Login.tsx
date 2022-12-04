@@ -17,7 +17,7 @@ const LoginScreen = () => {
     }
 
     const onPressForgotPassword = () => {
-        console.log('forgot password clicked')
+        navigation.navigate(screenNameEnum.ForgotPasswordScreen)
     }
 
     const onPressSignUp = () => {
@@ -39,12 +39,7 @@ const LoginScreen = () => {
                 placeholderTextColor={colors.grayShade8F}
                 style={LoginScreenStyle.textInput}
             />
-            <TouchableOpacity
-                hitSlop={{left:10,right:10,top:10,bottom:10}}
-                onPress={onPressForgotPassword}
-            >
-                <Text style={LoginScreenStyle.forgotPasswordText}>Forgot Password ?</Text>
-            </TouchableOpacity>
+                <Text onPress={onPressForgotPassword} style={LoginScreenStyle.forgotPasswordText}>Forgot Password ?</Text>
             </View>
             <ThemeButton title="Log in" onPress={onPressLogin}/>
             <View style={{alignItems:'center',marginTop:ms(50)}}>
