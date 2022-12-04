@@ -4,11 +4,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthNavigation from "./authNaviagtion";
 import screenNameEnum from "../helper/screenNameEnum";
 import FeedList from "../screens/Feed/feedList/feedList";
+import BottomTabNavigation from "./bottomTabNavigation";
+import FeedNavigation from "./feedNavigation";
 
 const AppNavigation = () => {
 
     const RootStack = createNativeStackNavigator();
-    const user = false;
+    const user = true;
 
     return(
         <NavigationContainer>
@@ -20,10 +22,16 @@ const AppNavigation = () => {
                     component={AuthNavigation}
                 />
                 :
-                <RootStack.Screen
-                    name={screenNameEnum.FeedList}
-                    component={FeedList}
-                />
+                <>
+                    <RootStack.Screen
+                        name={screenNameEnum.BottomTabNavigation}
+                        component={BottomTabNavigation} 
+                    />
+                    <RootStack.Screen
+                        name={screenNameEnum.FeedStack}
+                        component={FeedNavigation} 
+                    />
+                </>
                 }
             </RootStack.Navigator>
         </NavigationContainer>
