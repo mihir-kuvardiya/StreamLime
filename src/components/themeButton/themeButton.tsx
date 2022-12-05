@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import colors from '../theme/colors';
+import colors from '../../theme/colors';
 import themeButtonStyle from './themeButtonStyle';
 
 export interface themeButtonProps{

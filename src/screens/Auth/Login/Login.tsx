@@ -3,7 +3,7 @@ import React from "react";
 import { Text, TextInput, View, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ms } from "react-native-size-matters";
-import ThemeButton from "../../../components/themeButton";
+import ThemeButton from "../../../components/themeButton/themeButton";
 import screenNameEnum from "../../../helper/screenNameEnum";
 import colors from "../../../theme/colors";
 import LoginScreenStyle from "./LoginScreenStyle";
