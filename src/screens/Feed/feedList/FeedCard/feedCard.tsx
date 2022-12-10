@@ -1,13 +1,16 @@
-import React from "react";
-import { Image, Text, View } from "react-native";
-import IconEntypo from "react-native-vector-icons/Entypo";
+import React, { useState } from "react";
+import { Image, Text, View, Pressable } from "react-native";
+import IconAntDesign from "react-native-vector-icons/AntDesign";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
+import IconEntypo from "react-native-vector-icons/Entypo";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import colorPalates from "../../../../theme/colorPalates";
 import colors from "../../../../theme/colors";
 import feedCardStyle from "./feedCardStyle";
 
 const FeedCard = () => {
+
+    const [liked, setLiked] = useState(false);
     return(
         <View style={feedCardStyle.feedContainer}>
             <View style={feedCardStyle.feedHeaderContainer}>
@@ -39,8 +42,18 @@ const FeedCard = () => {
                 </Text>
             </View>
             <View style={feedCardStyle.FeedBottomContainer}>
-            <IconEntypo name="flash" size={25} color={colorPalates.AppTheme.secondary}/>
-            <IconMaterialIcons name="comment" size={25} color={colors.blueShade00}/>
+                <Pressable style={feedCardStyle.likeContainer} onPress={()=>setLiked(!liked)}>
+                        <IconAntDesign 
+                            name={liked ? "heart" : "hearto"}  
+                            size={25} 
+                            color={liked ? colorPalates.AppTheme.secondary : colorPalates.AppTheme.text}
+                        />
+                    <Text style={feedCardStyle.likeCount}>1.1k</Text>
+                </Pressable>
+                <Pressable style={feedCardStyle.likeContainer}>
+            		<IconMaterialIcons name="comment" size={25} color={colors.blueShade00}/>
+         			<Text style={feedCardStyle.likeCount}>1.1k</Text>
+                </Pressable>
             <IconFontAwesome5 name="share" size={25} color={colorPalates.AppTheme.primary}/>
             </View>
         </View>
