@@ -20,6 +20,7 @@ enum screenNameEnum {
     //FeedStack
     
     EditProfileScreen = 'EditProfileScreen',
+    CommentScreen = 'CommentScreen',
 }
 
 export default screenNameEnum;

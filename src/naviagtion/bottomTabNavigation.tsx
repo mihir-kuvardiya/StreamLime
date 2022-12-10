@@ -49,11 +49,6 @@ const BottomTabNavigation = () => {
                   focused ? {borderWidth: ms(0)} : {borderWidth: 0},
                   styles.button,
                 ]}>
-                {/* <SvgXml
-                  xml={!focused ? item?.name : item?.name2}
-                  height={focused ? ms(30) : ms(53)}
-                  width={focused ? ms(30) : ms(53)}
-                /> */}
                 <IconFeather
                     name={item?.icon}
                     size={30}

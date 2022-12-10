@@ -7,10 +7,17 @@ import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import colorPalates from "../../../../theme/colorPalates";
 import colors from "../../../../theme/colors";
 import feedCardStyle from "./feedCardStyle";
+import { useNavigation } from "@react-navigation/native";
+import screenNameEnum from "../../../../helper/screenNameEnum";
 
 const FeedCard = () => {
 
+    const naviagtion = useNavigation();
     const [liked, setLiked] = useState(false);
+
+    const onPressComment = () => {
+        naviagtion.navigate(screenNameEnum.CommentScreen);
+    }
     return(
         <View style={feedCardStyle.feedContainer}>
             <View style={feedCardStyle.feedHeaderContainer}>
@@ -50,7 +57,7 @@ const FeedCard = () => {
                         />
                     <Text style={feedCardStyle.likeCount}>1.1k</Text>
                 </Pressable>
-                <Pressable style={feedCardStyle.likeContainer}>
+                <Pressable style={feedCardStyle.likeContainer} onPress={onPressComment}>
             		<IconMaterialIcons name="comment" size={25} color={colors.blueShade00}/>
          			<Text style={feedCardStyle.likeCount}>1.1k</Text>
                 </Pressable>

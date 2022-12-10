@@ -6,6 +6,7 @@ import screenNameEnum from "../helper/screenNameEnum";
 import FeedList from "../screens/Feed/feedList/feedList";
 import BottomTabNavigation from "./bottomTabNavigation";
 import FeedNavigation from "./feedNavigation";
+import CommentScreen from "../screens/Feed/commentScreen/commentScreen";
 
 const AppNavigation = () => {
 
@@ -15,8 +16,7 @@ const AppNavigation = () => {
     return(
         <NavigationContainer>
             <RootStack.Navigator screenOptions={{headerShown: false}}>
-                {!user 
-                ?
+                {!user ?
                 <RootStack.Screen
                     name={screenNameEnum.AuthStack}
                     component={AuthNavigation}
@@ -25,11 +25,15 @@ const AppNavigation = () => {
                 <>
                     <RootStack.Screen
                         name={screenNameEnum.BottomTabNavigation}
-                        component={BottomTabNavigation} 
+                        component={BottomTabNavigation}
                     />
                     <RootStack.Screen
                         name={screenNameEnum.FeedStack}
                         component={FeedNavigation} 
+                    />
+                    <RootStack.Screen
+                        name={screenNameEnum.CommentScreen}
+                        component={CommentScreen}
                     />
                 </>
                 }

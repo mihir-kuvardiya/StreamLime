@@ -2,17 +2,23 @@ import React from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import screenNameEnum from '../helper/screenNameEnum';
 import EditProfileScreen from '../screens/Feed/editProfile/editProfile';
+import CommentScreen from '../screens/Feed/commentScreen/commentScreen';
+import BottomTabNavigation from './bottomTabNavigation';
 
-const RootStack = createNativeStackNavigator();
+const FeedStack = createNativeStackNavigator();
 
 const FeedNavigation = () => {
     return (
-        <RootStack.Navigator screenOptions={{headerShown: false}}>
-              <RootStack.Screen
+        <FeedStack.Navigator screenOptions={{headerShown: false}}>
+              <FeedStack.Screen
                 name={screenNameEnum.EditProfileScreen}
                 component={EditProfileScreen}
               />
-        </RootStack.Navigator>
+              <FeedStack.Screen
+                name={screenNameEnum.CommentScreen}
+                component={CommentScreen}
+              />
+        </FeedStack.Navigator>
       );
 }
 export default FeedNavigation;
