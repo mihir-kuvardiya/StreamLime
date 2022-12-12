@@ -6,7 +6,8 @@ export default ScaledSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         alignItems:'center',
-        padding:ms(15),
+        paddingHorizontal:ms(15),
+        paddingVertical: ms(3),
         backgroundColor: colorPalates.white,
         shadowColor: colorPalates.grayShade8F,
         shadowOffset: {
@@ -27,5 +28,16 @@ export default ScaledSheet.create({
         color:colorPalates.AppTheme.primary,
         fontSize:ms(18),
         fontWeight:'600',
+    },
+    profileImage:{
+        height: ms(40),
+        width: ms(40),
+        borderRadius: ms(20)
+    },
+    iconContainer:{
+        height: ms(40),
+        width: ms(40),
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
