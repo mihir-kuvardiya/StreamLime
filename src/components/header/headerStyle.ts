@@ -7,7 +7,7 @@ export default ScaledSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         paddingHorizontal:ms(15),
-        paddingVertical: ms(3),
+        paddingVertical: ms(5),
         backgroundColor: colorPalates.white,
         shadowColor: colorPalates.grayShade8F,
         shadowOffset: {
