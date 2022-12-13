@@ -1,11 +1,48 @@
 import React from "react"
-import { Text, View } from "react-native"
+import { Image, ScrollView, Text, TextInput, View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ms } from "react-native-size-matters";
+import Header from "../../../components/header/header";
+import colors from "../../../theme/colors";
+import editProfileScreenStyle from "./editProfileScreenStyle";
 
 const EditProfileScreen = () => {
     return(
-        <View>
-            <Text style={{color:'red'}}>edit Profile screen</Text>
-        </View>
+        <SafeAreaView style={editProfileScreenStyle.container}>
+            <Header title="Edit Profile" isBack={true} />
+            <ScrollView>
+                <Image
+                    style={editProfileScreenStyle.Image}
+                    source={{
+                        uri:'https://images.pexels.com/photos/1031081/pexels-photo-1031081.jpeg?auto=compress&cs=tinysrgb&w=600',
+                    }}
+                    resizeMode={"cover"} 
+                />
+                <View style={editProfileScreenStyle.secondContainer}>
+                    <Text style={editProfileScreenStyle.text}>Username</Text>
+                    <TextInput 
+                        placeholder="Username"
+                        placeholderTextColor={colors.grayShade8F}
+                        style={editProfileScreenStyle.textInput}
+                    />
+                    <View style={{marginTop: ms(10)}}/>
+                    <Text style={editProfileScreenStyle.text}>Disaplay name</Text>
+                    <TextInput 
+                        placeholder="Disaplay name"
+                        placeholderTextColor={colors.grayShade8F}
+                        style={editProfileScreenStyle.textInput}
+                    />
+                    <View style={{marginTop: ms(10)}}/>
+                    <Text style={editProfileScreenStyle.text}>Bio</Text>
+                    <TextInput 
+                        placeholder="Bio"
+                        placeholderTextColor={colors.grayShade8F}
+                        style={editProfileScreenStyle.bio}
+                        multiline={true}
+                    />
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
