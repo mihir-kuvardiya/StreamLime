@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Image, Text, View, Pressable } from "react-native";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -16,7 +16,7 @@ export interface FeedCardProps{
 }
 
 const FeedCard = ({item}:FeedCardProps) => {
-
+    console.log(item,'iiiii')
     const naviagtion = useNavigation();
     const [liked, setLiked] = useState(false);
 
@@ -72,4 +72,4 @@ const FeedCard = ({item}:FeedCardProps) => {
     )
 }
 
-export default FeedCard
+export default memo(FeedCard);
