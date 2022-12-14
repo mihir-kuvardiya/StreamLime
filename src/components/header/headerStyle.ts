@@ -2,6 +2,9 @@ import { ms, ScaledSheet } from "react-native-size-matters";
 import colorPalates from "../../theme/colorPalates";
 
 export default ScaledSheet.create({
+    mainContainer: {
+        padding:ms(8)
+    },
     container:{
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -43,5 +46,8 @@ export default ScaledSheet.create({
         width: ms(40),
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    emptyView:{
+        width: ms(30)
     }
 })

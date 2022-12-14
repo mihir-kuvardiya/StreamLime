@@ -54,5 +54,8 @@ export default ScaledSheet.create({
         shadowRadius: 3.65,
         elevation: 5,
         textAlignVertical: 'top'
+    },
+    emptyView:{
+        marginTop: ms(10)
     }
 })

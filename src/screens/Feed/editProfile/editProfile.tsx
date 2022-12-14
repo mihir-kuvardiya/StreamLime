@@ -1,7 +1,6 @@
 import React from "react"
 import { Image, ScrollView, Text, TextInput, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ms } from "react-native-size-matters";
 import Header from "../../../components/header/header";
 import colors from "../../../theme/colors";
 import editProfileScreenStyle from "./editProfileScreenStyle";
@@ -25,14 +24,14 @@ const EditProfileScreen = () => {
                         placeholderTextColor={colors.grayShade8F}
                         style={editProfileScreenStyle.textInput}
                     />
-                    <View style={{marginTop: ms(10)}}/>
+                    <View style={editProfileScreenStyle.emptyView}/>
                     <Text style={editProfileScreenStyle.text}>Disaplay name</Text>
                     <TextInput 
                         placeholder="Disaplay name"
                         placeholderTextColor={colors.grayShade8F}
                         style={editProfileScreenStyle.textInput}
                     />
-                    <View style={{marginTop: ms(10)}}/>
+                    <View style={editProfileScreenStyle.emptyView}/>
                     <Text style={editProfileScreenStyle.text}>Bio</Text>
                     <TextInput 
                         placeholder="Bio"
