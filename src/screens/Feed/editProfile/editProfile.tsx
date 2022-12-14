@@ -8,7 +8,7 @@ import editProfileScreenStyle from "./editProfileScreenStyle";
 const EditProfileScreen = () => {
     return(
         <SafeAreaView style={editProfileScreenStyle.container}>
-            <Header title="Edit Profile" isBack={true} isProfileSave={true}/>
+            <Header title="mihir_2811" isBack={true} isProfileSave={true}/>
             <ScrollView>
                 <Image
                     style={editProfileScreenStyle.Image}
