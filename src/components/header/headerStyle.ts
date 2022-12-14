@@ -7,7 +7,10 @@ export default ScaledSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         paddingHorizontal:ms(15),
-        paddingVertical: ms(5),
+        paddingVertical: ms(10),
+        // borderBottomLeftRadius: ms(20),
+        // borderBottomRightRadius: ms(20),
+        borderRadius:ms(20),
         backgroundColor: colorPalates.white,
         shadowColor: colorPalates.grayShade8F,
         shadowOffset: {
@@ -25,9 +28,10 @@ export default ScaledSheet.create({
         margin: ms(15)
     },
     headerTitle:{
+        fontFamily: 'Niconne-Regular',
         color:colorPalates.AppTheme.primary,
-        fontSize:ms(18),
-        fontWeight:'600',
+        fontSize:ms(28),
+        // fontWeight:'900',
     },
     profileImage:{
         height: ms(40),

@@ -7,7 +7,8 @@ import colors from "../../../../theme/colors";
 export default ScaledSheet.create({
     feedContainer:{
         backgroundColor:"white",
-        margin: ms(8),
+        marginVertical: ms(4),
+        marginHorizontal:ms(8),
         borderRadius:ms(20),
         shadowColor: colorPalates.AppTheme.text,
         shadowOffset: {

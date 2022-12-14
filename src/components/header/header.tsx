@@ -4,15 +4,17 @@ import { ms } from "react-native-size-matters";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import colorPalates from "../../theme/colorPalates";
 import headerStyle from "./headerStyle";
+import IconFeather from 'react-native-vector-icons/Feather';
 
 export interface HeaderProps {
     title?: string,
-    isBack?: boolean
+    isBack?: boolean,
+    isProfileSave?: boolean,
 }
 
-const Header = ({title='Header', isBack=false}:HeaderProps) => {
+const Header = ({title='Header', isBack=false, isProfileSave=false}:HeaderProps) => {
     return(
-        <SafeAreaView>
+        <SafeAreaView style={{padding:ms(8)}}>
             <View style={headerStyle.container}>
                 {
                     isBack ?
@@ -23,13 +25,16 @@ const Header = ({title='Header', isBack=false}:HeaderProps) => {
                     <Image
                         style={headerStyle.profileImage}
                         source={{
-                            uri: 'https://unsplash.it/400/400?image=1',
+                            uri: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600',
                         }}
                         resizeMode={"cover"} 
                     />
                 }
                 <Text style={headerStyle.headerTitle}>{title}</Text>
-                <View style={{width: ms(30)}}/>
+                {!isProfileSave ? <View style={{width: ms(30)}}/> :
+                <View style={headerStyle.iconContainer}>
+                    <IconFeather name="user-check" size={25} color={colorPalates.AppTheme.text}/>
+                </View>}
             </View>
         </SafeAreaView>
     )

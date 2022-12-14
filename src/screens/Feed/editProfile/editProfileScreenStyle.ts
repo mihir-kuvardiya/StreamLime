@@ -11,7 +11,8 @@ export default ScaledSheet.create({
         width: ms(80),
         borderRadius: ms(40),
         alignSelf: 'center',
-        marginVertical: ms(10)
+        marginVertical: ms(10),
+        marginTop:ms(20)
     },
     secondContainer:{
         marginTop: ms(20),
