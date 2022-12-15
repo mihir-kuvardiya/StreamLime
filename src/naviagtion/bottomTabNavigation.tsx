@@ -28,9 +28,9 @@ const BottomTabNavigation = () => {
             icon: 'plus-square'
         },
         {
-            route: screenNameEnum.EditProfileScreen,
-            label: 'EditProfileScreen',
-            component: EditProfileScreen,
+            route: screenNameEnum.UserProfileScreen,
+            label: 'UserProfileScreen',
+            component: UserProfileScreen,
             icon: 'user'
         }
     ]
@@ -72,8 +72,8 @@ const BottomTabNavigation = () => {
                             tabBarShowLabel: false,
                             tabBarStyle:{
                                 position:"absolute",
-                                margin:ms(20),
-                                borderRadius:ms(20),
+                                marginHorizontal:ms(8),
+                                borderRadius:ms(10),
                                 height:ms(50)
                             },
                             tabBarButton: props => <TabButton {...props} item={item} />,

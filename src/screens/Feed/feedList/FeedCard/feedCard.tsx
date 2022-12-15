@@ -16,7 +16,7 @@ export interface FeedCardProps{
 }
 
 const FeedCard = ({item}:FeedCardProps) => {
-    console.log(item,'iiiii')
+    
     const naviagtion = useNavigation();
     const [liked, setLiked] = useState(false);
 

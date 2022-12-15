@@ -9,7 +9,7 @@ export default ScaledSheet.create({
         backgroundColor:"white",
         marginVertical: ms(4),
         marginHorizontal:ms(8),
-        borderRadius:ms(20),
+        borderRadius:ms(10),
         shadowColor: colorPalates.AppTheme.text,
         shadowOffset: {
             width: 0,
@@ -41,7 +41,7 @@ export default ScaledSheet.create({
     feedHeaderUserName:{
         color: colorPalates.AppTheme.text, 
         fontSize: 16, 
-        fontWeight: '500'
+        fontWeight: '500',
     },
     feedHeaderTime:{
         color: colors.grayShade8F, 
@@ -56,7 +56,7 @@ export default ScaledSheet.create({
         width:'100%',
         minHeight:ms(250),
         maxHeight:ms(500),
-        borderRadius:ms(20)
+        borderRadius:ms(10)
         // borderRadius:ms(20)
     },
     feedDescription:{

@@ -7,6 +7,7 @@ import FeedList from "../screens/Feed/feedList/feedList";
 import BottomTabNavigation from "./bottomTabNavigation";
 import FeedNavigation from "./feedNavigation";
 import CommentScreen from "../screens/Feed/commentScreen/commentScreen";
+import FeedDetailScreen from "../screens/Feed/feedDetail/feedDetail";
 
 const AppNavigation = () => {
 
@@ -34,6 +35,10 @@ const AppNavigation = () => {
                     <RootStack.Screen
                         name={screenNameEnum.CommentScreen}
                         component={CommentScreen}
+                    />
+                    <RootStack.Screen
+                        name={screenNameEnum.FeedDetailScreen}
+                        component={FeedDetailScreen}
                     />
                 </>
                 }

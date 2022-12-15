@@ -1,6 +1,5 @@
 import React from "react";
 import { Image, SafeAreaView, Text, View } from "react-native";
-import IconAntDesign from "react-native-vector-icons/AntDesign";
 import colorPalates from "../../theme/colorPalates";
 import headerStyle from "./headerStyle";
 import IconFeather from 'react-native-vector-icons/Feather';
@@ -18,7 +17,7 @@ const Header = ({title='Header', isBack=false, isProfileSave=false}:HeaderProps)
                 {
                     isBack ?
                     <View style={headerStyle.iconContainer}>
-                        <IconAntDesign name='arrowleft' color={colorPalates.AppTheme.text} size={25}/>
+                        <IconFeather name='chevron-left' color={colorPalates.AppTheme.text} size={25}/>
                     </View>
                     :
                     <Image

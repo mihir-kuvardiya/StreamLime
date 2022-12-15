@@ -10,10 +10,10 @@ export default ScaledSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         paddingHorizontal:ms(15),
-        paddingVertical: ms(10),
+        paddingVertical: ms(6),
         // borderBottomLeftRadius: ms(20),
         // borderBottomRightRadius: ms(20),
-        borderRadius:ms(20),
+        borderRadius:ms(10),
         backgroundColor: colorPalates.white,
         shadowColor: colorPalates.grayShade8F,
         shadowOffset: {

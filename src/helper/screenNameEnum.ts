@@ -21,6 +21,7 @@ enum screenNameEnum {
     
     EditProfileScreen = 'EditProfileScreen',
     CommentScreen = 'CommentScreen',
+    FeedDetailScreen= 'FeedDetailScreen',
 }
 
 export default screenNameEnum;
