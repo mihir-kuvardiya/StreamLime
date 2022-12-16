@@ -79,11 +79,12 @@ const UserProfileScreen = () => {
                     <Text style={userProfileScreenStyle.editProfileText}>Unfollow</Text>
                 </TouchableOpacity>
             }
+            <View style={userProfileScreenStyle.emptyView}/>
                 <FlatList
                     data={imageData}
                     renderItem={({item,index})=>(<ImageLoader imageUrl={item} key={index}/>)}
                     keyExtractor={item =>item}
-                    numColumns={2}
+                    numColumns={3}
                     horizontal={false}
                     showsVerticalScrollIndicator={false}
                     disableVirtualization={true}

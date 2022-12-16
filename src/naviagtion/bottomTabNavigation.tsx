@@ -68,14 +68,10 @@ const BottomTabNavigation = () => {
                             tabBarShowLabel: false,
                             tabBarStyle:{
                                 position:"absolute",
-                                marginHorizontal:ms(10),
+                                marginHorizontal:ms(12),
                                 marginBottom:ms(12),
-                                borderRadius:ms(10),
-                                borderColor:colorPalates.AppTheme.border,
-                                borderWidth:1,
-                                elevation: 0,
-                                shadowOpacity: 0,
-                                height:ms(45)
+                                borderRadius:ms(15),
+                                height:ms(50)
                             },
                             tabBarButton: props => <TabButton {...props} item={item} />,
                         }}

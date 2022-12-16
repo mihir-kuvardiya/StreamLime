@@ -15,16 +15,16 @@ const ImageLoader = ({imageUrl}:imageLoaderProps) => {
         <TouchableOpacity onPress={()=>{
             naviagtion.navigate(screenNameEnum.FeedDetailScreen)
         }}
-        style={{width:'49%',
-        margin:ms(2)}}>
+        style={{width:'32.5%',
+        margin:ms(1)}}>
         <Image
             source={{uri: imageUrl}}
             resizeMode={'cover'}
             style={{
                 width:'100%',
                 // height:500,
-                minHeight:ms(150),
-                maxHeight:ms(300),
+                minHeight:ms(120),
+                maxHeight:ms(200),
                 borderRadius:ms(5)
             }}
         />

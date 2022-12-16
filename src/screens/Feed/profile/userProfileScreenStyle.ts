@@ -58,7 +58,10 @@ export default ScaledSheet.create({
         fontWeight:'600'
     },
     flatListContainer:{
-        marginHorizontal:ms(16),
+        marginHorizontal:ms(2),
         paddingBottom:ms(80)
+    },
+    emptyView:{
+        marginTop:ms(10)
     }
 })
