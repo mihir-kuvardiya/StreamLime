@@ -9,7 +9,7 @@ export default ScaledSheet.create({
         marginTop:ms(180)
     },
     verifyEmail:{
-        color:colorPalates.AppTheme.text,
+        color:colorPalates.AppTheme.primary,
         fontSize:ms(25),
         fontWeight:'600',
         textAlign:'center',
@@ -25,14 +25,14 @@ export default ScaledSheet.create({
         marginTop:ms(30),
     },
     textInput:{
-        height: ms(50),
+        height: ms(45),
         padding: ms(14),
         marginTop: ms(16),
         paddingHorizontal:ms(20),
         paddingVertical: ms(12),
         borderColor: '#CCCED2',
         borderWidth: ms(1),
-        borderRadius: ms(50),
+        borderRadius: ms(10),
         fontSize: ms(13),
         color: colorPalates.AppTheme.text
     },

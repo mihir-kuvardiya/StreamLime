@@ -11,7 +11,7 @@ import forgotPasswordScreenStyle from "./forgotPasswordScreenStyle";
 const ForgotPasswordScreen = () => {
 
     const naviagtion = useNavigation();
-    const [confirmation, setConfirmation] = useState(true)
+    const [confirmation, setConfirmation] = useState(false)
 
     const onPressGetOtp = () => {
         console.log('get otp clicked')

@@ -12,7 +12,7 @@ import FeedDetailScreen from "../screens/Feed/feedDetail/feedDetail";
 const AppNavigation = () => {
 
     const RootStack = createNativeStackNavigator();
-    const user = true;
+    const user = false;
 
     return(
         <NavigationContainer>

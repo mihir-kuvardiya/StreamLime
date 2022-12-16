@@ -3,12 +3,12 @@ import colors from '../../theme/colors';
 
 export default ScaledSheet.create({
   container: {
-    height: ms(48),
+    height: ms(45),
     minWidth: ms(48),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.blackShade20,
-    borderRadius: ms(25),
+    borderRadius: ms(10),
     overflow: 'hidden',
   },
   linearGradientContainer: {
