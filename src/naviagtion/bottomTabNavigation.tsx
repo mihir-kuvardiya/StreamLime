@@ -1,14 +1,13 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import UserProfileScreen from "../screens/Feed/profile/userProfile";
 import FeedList from "../screens/Feed/feedList/feedList";
 import CreateFeedScreen from "../screens/Feed/createFeed/createFeed";
 import screenNameEnum from "../helper/screenNameEnum";
 import { ms, ScaledSheet } from "react-native-size-matters";
 import colorPalates from "../theme/colorPalates";
 import IconFeather from 'react-native-vector-icons/Feather';
-import EditProfileScreen from "../screens/Feed/editProfile/editProfile";
+import SearchUser from "../screens/Feed/searchUser/searchUser";
 
 const BottomTabNavigation = () => {
 
@@ -28,9 +27,9 @@ const BottomTabNavigation = () => {
             icon: 'plus-square'
         },
         {
-            route: screenNameEnum.UserProfileScreen,
-            label: 'UserProfileScreen',
-            component: UserProfileScreen,
+            route: screenNameEnum.SearchUser,
+            label: 'SearchUser',
+            component: SearchUser,
             icon: 'user'
         }
     ]

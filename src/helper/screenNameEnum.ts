@@ -15,13 +15,14 @@ enum screenNameEnum {
 
     FeedList = 'FeedList',
     CreateFeedScreen = 'CreateFeedScreen',
-    UserProfileScreen = 'UserProfileScreen',
+    SearchUser = 'SearchUser',
     
     //FeedStack
     
     EditProfileScreen = 'EditProfileScreen',
     CommentScreen = 'CommentScreen',
     FeedDetailScreen= 'FeedDetailScreen',
+    UserProfileScreen = 'UserProfileScreen',
 }
 
 export default screenNameEnum;

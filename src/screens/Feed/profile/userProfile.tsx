@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Image, SafeAreaView, Text, TouchableOpacity, View ,FlatList} from "react-native";
 import { ms } from "react-native-size-matters";
 import Header from "../../../components/header/header";
+import screenNameEnum from "../../../helper/screenNameEnum";
+import EditProfileScreen from "../editProfile/editProfile";
 import ImageLoader from "./component/imageLoader";
 import userProfileScreenStyle from "./userProfileScreenStyle";
 
@@ -30,7 +33,13 @@ const imageData = [
 ]
 
 const UserProfileScreen = () => {
+
+    const navigation = useNavigation();
     const [isYou, setYou] = useState(true)
+
+    const onPressEditProfile = () => {
+        navigation.navigate(screenNameEnum.EditProfileScreen)
+    }
     return(
         <>
         <SafeAreaView>
@@ -62,7 +71,7 @@ const UserProfileScreen = () => {
                 <Text style={userProfileScreenStyle.bio}>hello hiii i am mihir kuvardiya{'\n'}welcome to my profile{'\n'}how are you guys</Text>
             </View>
             {isYou ?
-                <TouchableOpacity style={userProfileScreenStyle.editButton}>
+                <TouchableOpacity style={userProfileScreenStyle.editButton} onPress={onPressEditProfile}>
                     <Text style={userProfileScreenStyle.editProfileText}>Edit Profile</Text>
                 </TouchableOpacity>
             :

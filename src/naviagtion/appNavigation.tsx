@@ -8,6 +8,8 @@ import BottomTabNavigation from "./bottomTabNavigation";
 import FeedNavigation from "./feedNavigation";
 import CommentScreen from "../screens/Feed/commentScreen/commentScreen";
 import FeedDetailScreen from "../screens/Feed/feedDetail/feedDetail";
+import EditProfileScreen from "../screens/Feed/editProfile/editProfile";
+import UserProfileScreen from "../screens/Feed/profile/userProfile";
 
 const AppNavigation = () => {
 
@@ -29,16 +31,20 @@ const AppNavigation = () => {
                         component={BottomTabNavigation}
                     />
                     <RootStack.Screen
-                        name={screenNameEnum.FeedStack}
-                        component={FeedNavigation} 
-                    />
-                    <RootStack.Screen
                         name={screenNameEnum.CommentScreen}
                         component={CommentScreen}
                     />
                     <RootStack.Screen
                         name={screenNameEnum.FeedDetailScreen}
                         component={FeedDetailScreen}
+                    />
+                    <RootStack.Screen
+                        name={screenNameEnum.EditProfileScreen}
+                        component={EditProfileScreen}
+                    />
+                    <RootStack.Screen
+                        name={screenNameEnum.UserProfileScreen}
+                        component={UserProfileScreen}
                     />
                 </>
                 }
