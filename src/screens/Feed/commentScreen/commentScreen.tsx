@@ -1,11 +1,20 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
+import Header from "../../../components/header/header";
+import commentScreenStyle from "./commentScreenStyle";
 
 const CommentScreen = () => {
     return(
-        <View>
-            <Text style={{color:'red'}}>comment Screen</Text>
-        </View>
+        <>
+            <SafeAreaView>
+                <Header isBack={true} title={'comments'}/>
+            </SafeAreaView>
+            <View style={commentScreenStyle.mainContainer}>
+                <Text style={commentScreenStyle.totalComments}>
+                    25.k Comments
+                </Text>
+            </View>
+        </>
     )
 }
 
