@@ -8,16 +8,16 @@ export default ScaledSheet.create({
     feedContainer:{
         backgroundColor:"white",
         marginVertical: ms(4),
-        marginHorizontal:ms(8),
+        marginHorizontal:ms(10),
         borderRadius:ms(10),
         shadowColor: colorPalates.AppTheme.text,
         shadowOffset: {
             width: 0,
-            height: 4,
+            height: 2,
         },
         shadowOpacity: 0.30,
-        shadowRadius: 4.65,
-        elevation: 8,
+        shadowRadius: 2.65,
+        elevation: 3,
     },
     feedHeaderContainer:{
         flexDirection: 'row', 

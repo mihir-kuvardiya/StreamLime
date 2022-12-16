@@ -46,10 +46,7 @@ const BottomTabNavigation = () => {
             activeOpacity={1}
             style={styles.container}>
               <View
-                style={[
-                  focused ? {borderWidth: ms(0)} : {borderWidth: 0},
-                  styles.button,
-                ]}>
+                style={styles.button}>
                 <IconFeather
                     name={item?.icon}
                     size={30}
@@ -72,9 +69,14 @@ const BottomTabNavigation = () => {
                             tabBarShowLabel: false,
                             tabBarStyle:{
                                 position:"absolute",
-                                marginHorizontal:ms(8),
+                                marginHorizontal:ms(10),
+                                marginBottom:ms(12),
                                 borderRadius:ms(10),
-                                height:ms(50)
+                                borderColor:colorPalates.AppTheme.border,
+                                borderWidth:1,
+                                elevation: 0,
+                                shadowOpacity: 0,
+                                height:ms(45)
                             },
                             tabBarButton: props => <TabButton {...props} item={item} />,
                         }}
