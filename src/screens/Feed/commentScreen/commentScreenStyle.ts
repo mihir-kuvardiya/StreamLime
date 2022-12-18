@@ -3,7 +3,8 @@ import colorPalates from "../../../theme/colorPalates";
 
 export default ScaledSheet.create({
     mainContainer:{
-        marginHorizontal:ms(16)
+        marginHorizontal:ms(16),
+        marginBottom:ms(8)
     },
     totalComments:{
         color:colorPalates.AppTheme.text,
