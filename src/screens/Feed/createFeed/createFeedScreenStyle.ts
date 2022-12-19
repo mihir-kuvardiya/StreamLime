@@ -48,10 +48,26 @@ export default ScaledSheet.create({
     },
     deleteIcon:{
         position: 'absolute',
-        right: 5,
-        top: 5,
+        right: 10,
+        top: 10,
         backgroundColor: 'white',
         opacity: 0.8,
         borderRadius: 20
+    },
+    createView:{
+        height:ms(200),
+        marginHorizontal:ms(16),
+        borderColor:colorPalates.AppTheme.border,
+        backgroundColor:colorPalates.white,
+        borderWidth:1,
+        borderRadius:ms(10),
+        alignItems:'center',
+        justifyContent:"center"
+    },
+    addPhotoText:{
+        fontFamily:'Ubuntu-Regular',
+        fontSize:ms(16),
+        color:colorPalates.AppTheme.text,
+        marginTop:ms(10)
     }
 })

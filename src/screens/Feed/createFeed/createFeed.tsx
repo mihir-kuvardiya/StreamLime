@@ -7,6 +7,7 @@ import Header from "../../../components/header/header";
 import colors from "../../../theme/colors";
 import createFeedScreenStyle from "./createFeedScreenStyle";
 import IconIonicons from 'react-native-vector-icons/Ionicons';
+import IconEvilIcons from "react-native-vector-icons/EvilIcons"
 import colorPalates from "../../../theme/colorPalates";
 
 const CreateFeedScreen = () => {
@@ -32,7 +33,7 @@ const CreateFeedScreen = () => {
                     source={{
                         uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
                     }}
-                    resizeMode={"cover"}
+                    resizeMode={"contain"}
                 >
                     <TouchableOpacity 
                         hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
@@ -47,8 +48,13 @@ const CreateFeedScreen = () => {
                     </TouchableOpacity>
                 </FastImage>
             </View> :
-            <View>
-                <Text style={{color:'red'}}>Hello world</Text>
+            <View style={createFeedScreenStyle.createView}>
+                <IconEvilIcons 
+                    name="camera" 
+                    size={70} 
+                    color={colorPalates.AppTheme.text}
+                />
+                <Text style={createFeedScreenStyle.addPhotoText}>Add Photo</Text>
             </View>
             }
             <TextInput 
