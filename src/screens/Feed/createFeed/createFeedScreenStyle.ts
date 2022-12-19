@@ -56,7 +56,7 @@ export default ScaledSheet.create({
     },
     createView:{
         height:ms(200),
-        marginHorizontal:ms(16),
+        margin:ms(16),
         borderColor:colorPalates.AppTheme.border,
         backgroundColor:colorPalates.white,
         borderWidth:1,

@@ -9,9 +9,11 @@ import createFeedScreenStyle from "./createFeedScreenStyle";
 import IconIonicons from 'react-native-vector-icons/Ionicons';
 import IconEvilIcons from "react-native-vector-icons/EvilIcons"
 import colorPalates from "../../../theme/colorPalates";
+import CameraModel from "../../../components/cameraModal/cameramodal";
 
 const CreateFeedScreen = () => {
 
+    const [iSModalVisible, setIsModalVisible] = useState(false);
     const [image, setImage] = useState('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600');
 
     const createPost = () => {
@@ -48,14 +50,14 @@ const CreateFeedScreen = () => {
                     </TouchableOpacity>
                 </FastImage>
             </View> :
-            <View style={createFeedScreenStyle.createView}>
+            <TouchableOpacity onPress={()=>setIsModalVisible(true)} style={createFeedScreenStyle.createView}>
                 <IconEvilIcons 
                     name="camera" 
                     size={70} 
                     color={colorPalates.AppTheme.text}
                 />
                 <Text style={createFeedScreenStyle.addPhotoText}>Add Photo</Text>
-            </View>
+            </TouchableOpacity>
             }
             <TextInput 
                 placeholder="Description"
@@ -65,6 +67,7 @@ const CreateFeedScreen = () => {
             <TouchableOpacity style={createFeedScreenStyle.createPostButton} onPress={createPost}>
                     <Text style={createFeedScreenStyle.createPostText}>Create post</Text>
             </TouchableOpacity>
+            <CameraModel isVisible={iSModalVisible} onClose={()=>setIsModalVisible(false)}/>
             </KeyboardAwareScrollView>
         </SafeAreaView>
     )
