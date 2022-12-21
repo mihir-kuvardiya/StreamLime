@@ -81,34 +81,37 @@ const data = [
 
 const FollowersScreen = () => {
 
-    // const FollowerRow = ({item}) => {
-    //     return(
-    //     <View style={{flexDirection: 'row',
-    //     marginHorizontal: ms(16),
-    //     paddingVertical: ms(5),
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center',}}>
-    //         <View style={{flexDirection:'row',alignItems:'center',}}>
-    //         <Image
-    //              style={{height: ms(40),
-    //                 width: ms(40),
-    //                 borderRadius: ms(20),}}
-    //              source={item?.imageUrl ? {
-    //                  uri: item?.imageUrl,
-    //              } : images.dp}
-    //              resizeMode={"cover"} 
-    //         />
-    //         <Text style={{color: colorPalates.AppTheme.text,
-    //     fontSize: ms(16),
-    //     marginLeft:ms(5),
-    //     fontWeight: '400'}}>{item?.userName}</Text>
-    //         </View>
-    //     </View>
-    //     )
-    // }
+    const FollowerRow = ({item}) => {
+        return(
+        <View style={{flexDirection: 'row',
+        marginHorizontal: ms(16),
+        marginVertical: ms(3),
+        padding:ms(5),
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderColor:colorPalates.AppTheme.border,
+        borderWidth:1,backgroundColor:colorPalates.white,borderRadius:ms(10)}}>
+            <View style={{flexDirection:'row',alignItems:'center',}}>
+            <Image
+                 style={{height: ms(40),
+                    width: ms(40),
+                    borderRadius: ms(20),margin:ms(2)}}
+                 source={item?.imageUrl ? {
+                     uri: item?.imageUrl,
+                 } : images.dp}
+                 resizeMode={"cover"} 
+            />
+            <Text style={{color: colorPalates.AppTheme.text,
+        fontSize: ms(15),
+        marginLeft:ms(10),
+        fontFamily:'Ubuntu-Regular'}}>{item?.userName}</Text>
+            </View>
+        </View>
+        )
+    }
     return(
         <View style={{flex:1}}>
-        {/* <FlatList 
+        <FlatList 
             data={data}
             renderItem={({item,index})=>(<FollowerRow item={item} key={index}/>)}
             showsVerticalScrollIndicator={false}
@@ -117,8 +120,8 @@ const FollowersScreen = () => {
             scrollEventThrottle={16}
             maxToRenderPerBatch={5}
             windowSize={50}
-            contentContainerStyle={{flex:1,paddingBottom: 40,backgroundColor:'white',height:'100%',paddingTop:ms(10)}}
-        /> */}
+            contentContainerStyle={{paddingBottom: 40,paddingTop:ms(3)}}
+        />
         </View>
     )
 }

@@ -68,13 +68,10 @@ const style = ScaledSheet.create({
   renderTabBar:{
     backgroundColor: 'white',
     elevation: 0,
-    borderTopWidth:1,
-    borderLeftWidth:1,
-    borderRightWidth:1,
+    borderWidth:1,
     borderColor:colorPalates.AppTheme.border,
-    borderTopLeftRadius:ms(10),
-    borderTopRightRadius:ms(10),
-    marginTop:ms(10),
+    borderRadius:ms(10),
+    margin:ms(10),
     height: ms(45),
     justifyContent:'center'
   },
