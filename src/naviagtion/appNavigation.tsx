@@ -7,6 +7,7 @@ import BottomTabNavigation from "./bottomTabNavigation";
 import CommentScreen from "../screens/Feed/commentScreen/commentScreen";
 import FeedDetailScreen from "../screens/Feed/feedDetail/feedDetail";
 import UserProfileScreen from "../screens/Feed/profile/userProfile";
+import TopTabBar from "../screens/Feed/profile/component/followFollowingTopTabNavigation";
 
 const AppNavigation = () => {
 
@@ -38,6 +39,10 @@ const AppNavigation = () => {
                     <RootStack.Screen
                         name={screenNameEnum.UserProfileScreen}
                         component={UserProfileScreen}
+                    />
+                    <RootStack.Screen
+                        name={screenNameEnum.TopTabBar}
+                        component={TopTabBar}
                     />
                 </>
                 }

@@ -10,14 +10,8 @@ const App = () => {
     <>
       <StatusBar
         animated={true}
-        // backgroundColor={colorPalates.AppTheme.primary}
-        barStyle={
-          Platform.OS === 'ios'
-            ? colorScheme === 'dark'
-              ? 'dark-content'
-              : null
-            : null
-        }
+        backgroundColor={'#f2f2f2'}
+        barStyle={'dark-content'}
       />
       <AppNavigation />
     </>

@@ -10,7 +10,7 @@ export default ScaledSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         paddingHorizontal:ms(15),
-        paddingVertical: ms(6),
+        paddingVertical: ms(4),
         // borderBottomLeftRadius: ms(20),
         // borderBottomRightRadius: ms(20),
         borderRadius:ms(10),

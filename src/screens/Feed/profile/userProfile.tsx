@@ -40,6 +40,17 @@ const UserProfileScreen = () => {
     const onPressEditProfile = () => {
         navigation.navigate(screenNameEnum.EditProfileScreen)
     }
+
+    const onPressFollowers = () => {
+        console.log('followers clicked')
+        navigation.navigate(screenNameEnum.TopTabBar,{index: 0})
+    }
+
+    const onPressFollowing = () => {
+        console.log('following clicked')
+        navigation.navigate(screenNameEnum.TopTabBar,{index: 1})
+    }
+
     return(
         <>
         <SafeAreaView>
@@ -57,14 +68,14 @@ const UserProfileScreen = () => {
                     <Text style={userProfileScreenStyle.Counter}>23.5K</Text>
                     <Text style={userProfileScreenStyle.conterText}>Posts</Text>
                 </View>
-                <View style={userProfileScreenStyle.CounterContainer}>
+                <TouchableOpacity style={userProfileScreenStyle.CounterContainer} onPress={onPressFollowers}>
                     <Text style={userProfileScreenStyle.Counter}>23.5K</Text>
                     <Text style={userProfileScreenStyle.conterText}>Followers</Text>
-                </View>
-                <View style={userProfileScreenStyle.CounterContainer}>
+                </TouchableOpacity>
+                <TouchableOpacity style={userProfileScreenStyle.CounterContainer} onPress={onPressFollowing}>
                     <Text style={userProfileScreenStyle.Counter}>23.5K</Text>
                     <Text style={userProfileScreenStyle.conterText}>Following</Text>
-                </View>
+                </TouchableOpacity>
             </View>
             <View style={userProfileScreenStyle.bioContainer}>
                 <Text style={userProfileScreenStyle.fullName}>mihir kuvardiya</Text>
