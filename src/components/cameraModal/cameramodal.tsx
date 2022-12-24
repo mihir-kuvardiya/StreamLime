@@ -1,6 +1,10 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
+import IconIonicons from 'react-native-vector-icons/Ionicons';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import cameraModalStyle from './cameraModalStyle';
+import colorPalates from '../../theme/colorPalates';
 
 export interface cameraModelProps {
     isVisible?: boolean;
@@ -17,14 +21,21 @@ const CameraModel = ({isVisible,onPressCamera,onPressGallery,onClose}:cameraMode
             onBackButtonPress={onClose}
             onDismiss={onClose}
             coverScreen={true}
-            onSwipeComplete={onClose}
             swipeDirection={'down'}
-            propagateSwipe={true}
-            animationIn={'slideInUp'}
-            animationOut={'slideInDown'}
+            useNativeDriver={true}
+            style={{margin:0}}
         >
-            <View>
-                <Text style={{color:'red'}}>Hello world</Text>
+            <View style={cameraModalStyle.container}>
+                <View style={cameraModalStyle.secondContainer}>
+                    <TouchableOpacity style={cameraModalStyle.touchableView} onPress={onPressCamera}>
+                        <IconIonicons name='camera-outline' size={50} color={colorPalates.AppTheme.text}/>
+                        <Text style={cameraModalStyle.text}>Camera</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{alignItems:'center'}} onPress={onPressGallery}>
+                        <IconAntDesign name='picture' size={50} color={colorPalates.AppTheme.text}/>
+                        <Text style={cameraModalStyle.text}>Gallery</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </Modal>
     )

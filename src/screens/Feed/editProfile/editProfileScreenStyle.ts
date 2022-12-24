@@ -33,11 +33,11 @@ export default ScaledSheet.create({
         shadowColor: colorPalates.AppTheme.text,
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 0.5,
         },
         shadowOpacity: 0.20,
-        shadowRadius: 3.65,
-        elevation: 5,
+        shadowRadius: 2.65,
+        elevation: 2,
     },
     bio:{
         backgroundColor:colorPalates.white,
