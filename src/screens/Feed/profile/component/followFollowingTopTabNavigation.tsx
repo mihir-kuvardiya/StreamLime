@@ -78,11 +78,11 @@ const style = ScaledSheet.create({
   renderTabBarText:{
     color: colorPalates.AppTheme.text,
     fontSize: ms(15),
-    fontFamily: 'Ubuntu-Medium'
+    fontWeight:'500'
   },
   renderFocusedTabBarText:{
     color: colorPalates.AppTheme.primary,
     fontSize: ms(15),
-    fontFamily: 'Ubuntu-Medium'
+    fontWeight:'500'
   }
 })
