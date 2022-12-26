@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View, ToastAndroid } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,7 +12,7 @@ import colorPalates from "../../../theme/colorPalates";
 import CameraModel from "../../../components/cameraModal/cameramodal";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Permission from "../../../helper/permission";
-import { getUploadMediaUrl } from "../../../helper/helper";
+import { getUploadMediaUrl, showToast } from "../../../helper/helper";
 
 const CreateFeedScreen = () => {
 
@@ -32,7 +32,7 @@ const CreateFeedScreen = () => {
         setIsModalVisible(false);
         const cameraPermission = await Permission.getCameraPermission();
         if(!cameraPermission){
-            ToastAndroid.show('Please allow the camera permission', ToastAndroid.SHORT);
+            showToast('Please allow the camera permission');
             return;
         }
 
@@ -61,7 +61,7 @@ const CreateFeedScreen = () => {
               type: cameraResponse.assets[0].type,
             };
             if (resp?.fileSize / 1000000 > 10) {
-                ToastAndroid.show('Select an Image with less then 10 MB.', ToastAndroid.SHORT);
+                showToast('Select an Image with less then 10 MB.');
                 return;
             }
             const ext = resp?.type.split('/')[1];
@@ -71,7 +71,7 @@ const CreateFeedScreen = () => {
                 setImage(dataImage)
                 console.log(cameraResponse.assets[0])
             } else {
-                ToastAndroid.show('select only .jpg, .jpeg and .png formate image', ToastAndroid.SHORT);
+                showToast('select only .jpg, .jpeg and .png formate image');
                 return;
             }
           });
@@ -82,7 +82,7 @@ const CreateFeedScreen = () => {
         setIsModalVisible(false);
         const storagePermission = await Permission.getStoragePermission();
         if(!storagePermission){
-            ToastAndroid.show('Please allow the camera permission', ToastAndroid.SHORT);
+            showToast('Please allow the camera permission');
             return;
         }
         launchImageLibrary({
@@ -113,7 +113,7 @@ const CreateFeedScreen = () => {
             };
       
             if (resp?.fileSize / 1000000 > 10) {
-                ToastAndroid.show('Select an Image with less then 10 MB.', ToastAndroid.SHORT);
+                showToast('Select an Image with less then 10 MB.');
                 return;
             }
       
@@ -124,7 +124,7 @@ const CreateFeedScreen = () => {
                 setImage(dataImage)
                 console.log(cameraResponse.assets[0])
             } else {
-                ToastAndroid.show('select only .jpg, .jpeg and .png formate image', ToastAndroid.SHORT);
+                showToast('select only .jpg, .jpeg and .png formate image');
                 return;
             }
           });

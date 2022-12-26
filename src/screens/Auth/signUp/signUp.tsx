@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react"
+import React, { useState } from "react"
 import { Text, TextInput, View } from "react-native"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ms } from "react-native-size-matters";
 import ThemeButton from "../../../components/themeButton/themeButton";
+import { showToast } from "../../../helper/helper";
 import screenNameEnum from "../../../helper/screenNameEnum";
 import colors from "../../../theme/colors";
 import signUpScreenStyle from "./signUpScreenStyle";
@@ -11,13 +12,31 @@ import signUpScreenStyle from "./signUpScreenStyle";
 const SignUpScreen = () => {
 
     const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPass, setRepeatPass] = useState('');
 
     const OnPressLogin = () => {
         navigation.navigate(screenNameEnum.LoginScreen)
     }
 
-    const onPressSignUp = () => {
-        navigation.navigate(screenNameEnum.VerifyEmailScreen)
+    const onPressSignUp = (email:string,password:string) => {
+        // navigation.navigate(screenNameEnum.VerifyEmailScreen)
+        console.log(email,password);
+        const trimmedEmail = email.trim();
+
+        if(trimmedEmail === ''){
+            showToast('Enter an email address');
+            return;
+        }
+        if(password.length < 6){
+            showToast('password must be six character long');
+            return;
+        }
+        if(password !== repeatPass){
+            showToast('password and Repeat password does not match');
+            return;
+        }
     }
 
     return(
@@ -29,19 +48,26 @@ const SignUpScreen = () => {
                 placeholder="Enter email"
                 placeholderTextColor={colors.grayShade8F}
                 style={signUpScreenStyle.textInput}
+                value={email}
+                onChangeText={val=>setEmail(val)}
+                keyboardType={'email-address'}
             />
             <TextInput 
                 placeholder="Enter password"
                 placeholderTextColor={colors.grayShade8F}
                 style={signUpScreenStyle.textInput}
+                value={password}
+                onChangeText={val=>setPassword(val)}
             />
             <TextInput 
                 placeholder="Re-enter password"
                 placeholderTextColor={colors.grayShade8F}
                 style={signUpScreenStyle.textInput}
+                value={repeatPass}
+                onChangeText={val=>setRepeatPass(val)}
             />
             </View>
-            <ThemeButton title="Sign Up" onPress={onPressSignUp}/>
+            <ThemeButton title="Sign Up" onPress={()=>onPressSignUp(email,password)}/>
             <View style={{alignItems:'center',marginTop:ms(50)}}>
             <Text style={signUpScreenStyle.loginText}>Already have an acoount 
                     <Text 

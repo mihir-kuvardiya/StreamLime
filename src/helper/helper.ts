@@ -1,4 +1,4 @@
-import { Platform } from "react-native";
+import { Platform, ToastAndroid } from "react-native";
 import RNFS from 'react-native-fs';
 
 interface PhotoModel {
@@ -45,3 +45,7 @@ export const getUploadMediaUrl = async (objMedia: PhotoModel)  => {
       return objMedia.uri;
     }
   };
+
+export const showToast = (text:string) => {
+  ToastAndroid.show(text,ToastAndroid.SHORT);
+}
