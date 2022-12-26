@@ -12,7 +12,7 @@ import TopTabBar from "../screens/Feed/profile/component/followFollowingTopTabNa
 const AppNavigation = () => {
 
     const RootStack = createNativeStackNavigator();
-    const user = true;
+    const user = false;
 
     return(
         <NavigationContainer>
