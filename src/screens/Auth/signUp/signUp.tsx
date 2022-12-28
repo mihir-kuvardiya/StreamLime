@@ -8,6 +8,7 @@ import { showToast } from "../../../helper/helper";
 import screenNameEnum from "../../../helper/screenNameEnum";
 import colors from "../../../theme/colors";
 import signUpScreenStyle from "./signUpScreenStyle";
+import auth from '@react-native-firebase/auth';
 
 const SignUpScreen = () => {
 
@@ -37,6 +38,27 @@ const SignUpScreen = () => {
             showToast('password and Repeat password does not match');
             return;
         }
+
+        auth().createUserWithEmailAndPassword(trimmedEmail, password)
+        .then((res) => {
+            console.log(res,'rrrrrrrrr')
+            console.log(res.user.metadata,'rrrrrrrrr')
+            console.log(res.user.uid,'rrrrrrrrr')
+            console.log(res.additionalUserInfo?.isNewUser,'rrrrrrrrr')
+            console.log('User account created & signed in!');
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+                showToast('That email address is already in use!')
+                console.log('That email address is already in use!');
+            }
+
+            if (error.code === 'auth/invalid-email') {
+                showToast('That email address is invalid!')
+                console.log('That email address is invalid!');
+            }
+            console.log(error);
+        });
     }
 
     return(
