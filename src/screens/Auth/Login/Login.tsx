@@ -68,7 +68,7 @@ const LoginScreen = () => {
                 <SvgXml xml={svg.login} />
                 <Text style={LoginScreenStyle.loginText}>Login</Text>
             </View>
-            <View style={{marginVertical:ms(10)}}>
+            <View style={{marginVertical:ms(20)}}>
             <TextInput 
                 placeholder="Enter email"
                 placeholderTextColor={colors.grayShade8F}
@@ -87,7 +87,7 @@ const LoginScreen = () => {
             </View>
             <ThemeButton title="Login" onPress={()=>onPressLogin(email,pass)}/>
             <View style={{alignItems:'center',marginTop:ms(50)}}>
-            <Text style={LoginScreenStyle.signupText}>I Don't have an acoount 
+            <Text style={LoginScreenStyle.signupText}>Don't have an acoount 
                     <Text 
                         style={LoginScreenStyle.signUpBlackButtonText} 
                         onPress={onPressSignUp}

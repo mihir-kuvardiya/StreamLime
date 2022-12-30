@@ -9,7 +9,7 @@ export default ScaledSheet.create({
         marginTop:ms(80)
     },
     loginText:{
-        fontFamily:'Ubuntu-Regular',
+        fontFamily:'Ubuntu-Medium',
         color:colorPalates.AppTheme.text,
         fontSize:ms(25),
         marginVertical:ms(20)
