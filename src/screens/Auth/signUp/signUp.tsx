@@ -9,6 +9,8 @@ import screenNameEnum from "../../../helper/screenNameEnum";
 import colors from "../../../theme/colors";
 import signUpScreenStyle from "./signUpScreenStyle";
 import auth from '@react-native-firebase/auth';
+import { SvgXml } from "react-native-svg";
+import svg from "../../../theme/svg/svg";
 
 const SignUpScreen = () => {
 
@@ -64,8 +66,11 @@ const SignUpScreen = () => {
     return(
         <KeyboardAwareScrollView keyboardShouldPersistTaps="always" style={{marginBottom: ms(16)}}>
         <View style={signUpScreenStyle.container}>
-            <Text style={signUpScreenStyle.SignUpText}>SignUp</Text>
-            <View style={{marginVertical:ms(25)}}>
+            <View style={signUpScreenStyle.svgContainer}>
+                <SvgXml xml={svg.signup}/>
+                <Text style={signUpScreenStyle.SignUpText}>Sign Up</Text>
+            </View>
+            <View style={{marginVertical:ms(10)}}>
             <TextInput 
                 placeholder="Enter email"
                 placeholderTextColor={colors.grayShade8F}
@@ -89,6 +94,7 @@ const SignUpScreen = () => {
                 onChangeText={val=>setRepeatPass(val)}
             />
             </View>
+            <View style={{marginVertical:ms(10)}}/>
             <ThemeButton title="Sign Up" onPress={()=>onPressSignUp(email,password)}/>
             <View style={{alignItems:'center',marginTop:ms(50)}}>
             <Text style={signUpScreenStyle.loginText}>Already have an acoount 

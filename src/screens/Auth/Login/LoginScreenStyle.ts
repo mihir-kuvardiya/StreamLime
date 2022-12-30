@@ -6,13 +6,12 @@ export default ScaledSheet.create({
     container:{
         flex:1,
         marginHorizontal:ms(16),
-        marginTop:ms(180)
+        marginTop:ms(80)
     },
     loginText:{
-        color:colorPalates.AppTheme.primary,
+        fontFamily:'Ubuntu-Regular',
+        color:colorPalates.AppTheme.text,
         fontSize:ms(25),
-        fontWeight:'600',
-        textAlign:'center',
         marginVertical:ms(20)
     },
     textInput:{
@@ -43,5 +42,8 @@ export default ScaledSheet.create({
     },
     signUpBlackButtonText:{
         color:colorPalates.AppTheme.text
+    },
+    svgContainer: {
+        alignItems:'center'
     }
 })

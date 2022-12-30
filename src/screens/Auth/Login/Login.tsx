@@ -9,6 +9,8 @@ import screenNameEnum from "../../../helper/screenNameEnum";
 import colors from "../../../theme/colors";
 import LoginScreenStyle from "./LoginScreenStyle";
 import auth from '@react-native-firebase/auth';
+import { SvgXml } from "react-native-svg";
+import svg from "../../../theme/svg/svg";
 
 const LoginScreen = () => {
 
@@ -62,8 +64,11 @@ const LoginScreen = () => {
     return(
         <KeyboardAwareScrollView keyboardShouldPersistTaps="always" style={{marginBottom: ms(16)}}>
         <View style={LoginScreenStyle.container}>
-            <Text style={LoginScreenStyle.loginText}>Login</Text>
-            <View style={{marginVertical:ms(25)}}>
+            <View style={LoginScreenStyle.svgContainer}>
+                <SvgXml xml={svg.login} />
+                <Text style={LoginScreenStyle.loginText}>Login</Text>
+            </View>
+            <View style={{marginVertical:ms(10)}}>
             <TextInput 
                 placeholder="Enter email"
                 placeholderTextColor={colors.grayShade8F}
@@ -80,7 +85,7 @@ const LoginScreen = () => {
             />
                 <Text onPress={onPressForgotPassword} style={LoginScreenStyle.forgotPasswordText}>Forgot Password ?</Text>
             </View>
-            <ThemeButton title="Log in" onPress={()=>onPressLogin(email,pass)}/>
+            <ThemeButton title="Login" onPress={()=>onPressLogin(email,pass)}/>
             <View style={{alignItems:'center',marginTop:ms(50)}}>
             <Text style={LoginScreenStyle.signupText}>I Don't have an acoount 
                     <Text 
