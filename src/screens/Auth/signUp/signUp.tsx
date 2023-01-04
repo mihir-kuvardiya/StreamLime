@@ -11,6 +11,7 @@ import signUpScreenStyle from "./signUpScreenStyle";
 import auth from '@react-native-firebase/auth';
 import { SvgXml } from "react-native-svg";
 import svg from "../../../theme/svg/svg";
+import firestore from '@react-native-firebase/firestore';
 
 const SignUpScreen = () => {
 
@@ -24,8 +25,7 @@ const SignUpScreen = () => {
     }
 
     const onPressSignUp = (email:string,password:string) => {
-        // navigation.navigate(screenNameEnum.VerifyEmailScreen)
-        console.log(email,password);
+
         const trimmedEmail = email.trim();
 
         if(trimmedEmail === ''){
@@ -41,13 +41,23 @@ const SignUpScreen = () => {
             return;
         }
 
+        const username = `${trimmedEmail.split('@')[0]}${Math.floor(1000 + Math.random() * 9000)}`;
+
         auth().createUserWithEmailAndPassword(trimmedEmail, password)
         .then((res) => {
-            console.log(res,'rrrrrrrrr')
-            console.log(res.user.metadata,'rrrrrrrrr')
-            console.log(res.user.uid,'rrrrrrrrr')
-            console.log(res.additionalUserInfo?.isNewUser,'rrrrrrrrr')
             console.log('User account created & signed in!');
+            firestore().collection('user').doc(res.user.uid)
+            .set({
+                userName:username,
+                profilePicture:'',
+                totalPosts:0,
+                followers:0,
+                followings:0,
+                bio:''
+            })
+            .then(() => {
+                console.log('User added!');
+            });
         })
         .catch(error => {
             if (error.code === 'auth/email-already-in-use') {

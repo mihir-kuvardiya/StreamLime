@@ -11,6 +11,7 @@ import LoginScreenStyle from "./LoginScreenStyle";
 import auth from '@react-native-firebase/auth';
 import { SvgXml } from "react-native-svg";
 import svg from "../../../theme/svg/svg";
+import firestore from '@react-native-firebase/firestore';
 
 const LoginScreen = () => {
 
@@ -31,10 +32,11 @@ const LoginScreen = () => {
         }
         console.log('login button clicked');
         auth().signInWithEmailAndPassword(trimmedEmail, pass)
-        .then((res) => {
+        .then(async (res) => {
             console.log(res,'rrrrrrrrr')
-            // console.log(res.user.uid,'rrrrrrrrr')
             console.log('User signed in!');
+            const user = await firestore().collection('user').doc(res.user.uid).get();
+            console.log('user get in login',user)
         })
         .catch(error => {
             if (error.code === 'auth/wrong-password') {
