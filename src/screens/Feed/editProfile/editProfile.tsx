@@ -1,14 +1,52 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Image, ScrollView, Text, TextInput, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../../components/header/header";
+import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
 import colors from "../../../theme/colors";
 import editProfileScreenStyle from "./editProfileScreenStyle";
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation } from "@react-navigation/native";
+import { showToast } from "../../../helper/helper";
 
 const EditProfileScreen = () => {
+
+    const userData = useUserData();
+    const navigation = useNavigation();
+    const [userName, setUserName] = useState('');
+    const [bio, setBio] = useState('');
+    const [displayName, setDisplayName] = useState('');
+    const [loading, setLoading] =  useState(false);
+
+    useEffect(()=>{
+        setUserName(userData?.userName);
+        setDisplayName(userData?.displayName);
+        setBio(userData?.bio)
+    },[])
+
+    const onPressProfileSave = () => {
+        setLoading(true);
+        try {
+            firestore().collection('user').doc(userData?.userId).update({
+                userName:userName,
+                displayName:displayName,
+                profilePicture:'',
+                bio:bio
+            })
+            .then(() => { console.log('User updated!')})
+            setLoading(false);
+            navigation.goBack();
+            showToast('Profile saved')
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+       
+    }
+
     return(
         <SafeAreaView style={editProfileScreenStyle.container}>
-            <Header title="mihir_2811" isBack={true} isProfileSave={true}/>
+            <Header title="mihir_2811" isBack={true} isProfileSave={true} onPressProfileSave={onPressProfileSave}/>
             <ScrollView>
                 <Image
                     style={editProfileScreenStyle.Image}
@@ -23,6 +61,8 @@ const EditProfileScreen = () => {
                         placeholder="Username"
                         placeholderTextColor={colors.grayShade8F}
                         style={editProfileScreenStyle.textInput}
+                        value={userName}
+                        onChangeText={val => setUserName(val)}
                     />
                     <View style={editProfileScreenStyle.emptyView}/>
                     <Text style={editProfileScreenStyle.text}>Disaplay name</Text>
@@ -30,6 +70,8 @@ const EditProfileScreen = () => {
                         placeholder="Disaplay name"
                         placeholderTextColor={colors.grayShade8F}
                         style={editProfileScreenStyle.textInput}
+                        value={displayName}
+                        onChangeText={val => setDisplayName(val)}
                     />
                     <View style={editProfileScreenStyle.emptyView}/>
                     <Text style={editProfileScreenStyle.text}>Bio</Text>
@@ -38,6 +80,8 @@ const EditProfileScreen = () => {
                         placeholderTextColor={colors.grayShade8F}
                         style={editProfileScreenStyle.bio}
                         multiline={true}
+                        value={bio}
+                        onChangeText={val => setBio(val)}
                     />
                 </View>
             </ScrollView>

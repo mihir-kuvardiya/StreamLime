@@ -10,9 +10,10 @@ export interface HeaderProps {
     title?: string,
     isBack?: boolean,
     isProfileSave?: boolean,
+    onPressProfileSave?: ()=>void,
 }
 
-const Header = ({title='Header', isBack=false, isProfileSave=false}:HeaderProps) => {
+const Header = ({title='Header', isBack=false, isProfileSave=false,onPressProfileSave}:HeaderProps) => {
     
     const naviagtion = useNavigation();
 
@@ -45,9 +46,9 @@ const Header = ({title='Header', isBack=false, isProfileSave=false}:HeaderProps)
                 }
                 <Text style={headerStyle.headerTitle}>{title}</Text>
                 {!isProfileSave ? <View style={headerStyle.emptyView}/> :
-                <View style={headerStyle.iconContainer}>
+                <TouchableOpacity style={headerStyle.iconContainer} onPress={onPressProfileSave}>
                     <IconFeather name="user-check" size={25} color={colorPalates.AppTheme.text}/>
-                </View>}
+                </TouchableOpacity>}
             </View>
         </SafeAreaView>
     )

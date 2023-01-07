@@ -31,6 +31,7 @@ export default ScaledSheet.create({
         marginVertical: ms(2),
         paddingHorizontal: ms(15),
         shadowColor: colorPalates.AppTheme.text,
+        color: colorPalates.AppTheme.text,
         shadowOffset: {
             width: 0,
             height: 0.5,
@@ -46,6 +47,7 @@ export default ScaledSheet.create({
         marginVertical: ms(2),
         paddingHorizontal: ms(15),
         shadowColor: colorPalates.AppTheme.text,
+        color: colorPalates.AppTheme.text,
         shadowOffset: {
             width: 0,
             height: 2,

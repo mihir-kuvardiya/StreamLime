@@ -49,6 +49,7 @@ const SignUpScreen = () => {
             firestore().collection('user').doc(res.user.uid)
             .set({
                 userName:username,
+                displayName:'',
                 profilePicture:'',
                 totalPosts:0,
                 followers:0,

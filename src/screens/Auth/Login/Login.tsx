@@ -38,7 +38,11 @@ const LoginScreen = () => {
         auth().signInWithEmailAndPassword(trimmedEmail, pass)
         .then(async (res) => {
             const user = await firestore().collection('user').doc(res.user.uid).get();
-            dispatch(userAction.setUserData(user._data))
+            const createReduxUser = {
+                ...user._data,
+                userId: res.user.uid
+            }
+            dispatch(userAction.setUserData(createReduxUser))
             setIsLoading(false);
         })
         .catch(error => {
