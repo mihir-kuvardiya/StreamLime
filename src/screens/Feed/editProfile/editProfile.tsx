@@ -15,6 +15,7 @@ import CameraModel from "../../../components/cameraModal/cameramodal";
 import images from "../../../theme/images";
 import Permission from "../../../helper/permission";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import storage from '@react-native-firebase/storage';
 
 const EditProfileScreen = () => {
 
@@ -22,14 +23,16 @@ const EditProfileScreen = () => {
     const userData = useUserData();
     const navigation = useNavigation();
     const [bio, setBio] = useState('');
-    const [userName, setUserName] = useState('');
     const [image, setImage] = useState('');
+    const [userName, setUserName] = useState('');
+    const [uploadUrl, setUploadUrl] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [loading, setLoading] =  useState(false);
     const [logoutLoading, setLogoutLoading] = useState(false);
     const [iSModalVisible, setIsModalVisible] = useState(false);
+    const [progress, setProgress] = useState(0);
 
-    console.log(userData,':::::::')
+    console.log(progress,'pppppppppppppp')
 
     useEffect(()=>{
         setUserName(userData?.userName);
@@ -39,29 +42,41 @@ const EditProfileScreen = () => {
     },[])
 
     const onPressProfileSave = () => {
-        setLoading(true);
-        try {
-            firestore().collection('user').doc(userData?.userId).update({
-                userName:userName,
-                displayName:displayName,
-                profilePicture:'',
-                bio:bio
-            })
-            .then(() => { 
-                dispatch(userAction.setUserData({
-                    ...userData,
-                    userName: userName,
-                    displayName: displayName,
-                    bio:bio
-               }))
-            })
-            setLoading(false);
-            navigation.goBack();
-            showToast('Profile saved')
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
+
+        if(uploadUrl){
+            try {
+                const filename= `${userData?.userId}${new Date().getTime()}`
+                const task = storage().ref(filename).putFile(uploadUrl);
+                task.on('state_changed', snapshot =>{
+                    setProgress(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
+                })
+            } catch (error) {
+                console.log(error,'error')
+            }
         }
+        // setLoading(true);
+        // try {
+        //     firestore().collection('user').doc(userData?.userId).update({
+        //         userName:userName,
+        //         displayName:displayName,
+        //         profilePicture:'',
+        //         bio:bio
+        //     })
+        //     .then(() => { 
+        //         dispatch(userAction.setUserData({
+        //             ...userData,
+        //             userName: userName,
+        //             displayName: displayName,
+        //             bio:bio
+        //        }))
+        //     })
+        //     setLoading(false);
+        //     navigation.goBack();
+        //     showToast('Profile saved')
+        // } catch (error) {
+        //     console.log(error);
+        //     setLoading(false);
+        // }
     }
 
     const onPressLogout = () => {
@@ -117,8 +132,8 @@ const EditProfileScreen = () => {
 
             if (ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
                 const dataImage = await getUploadMediaUrl(resp);
-                setImage(dataImage)
-                console.log(cameraResponse.assets[0])
+                setImage(dataImage);
+                setUploadUrl(resp?.uri)
             } else {
                 showToast('select only .jpg, .jpeg and .png formate image');
                 return;
@@ -170,7 +185,8 @@ const EditProfileScreen = () => {
             if (ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
                 const dataImage = await getUploadMediaUrl(resp);
                 setImage(dataImage)
-                console.log(cameraResponse.assets[0])
+                setUploadUrl(resp?.uri)
+                console.log(dataImage,'dddddddddd')
             } else {
                 showToast('select only .jpg, .jpeg and .png formate image');
                 return;
