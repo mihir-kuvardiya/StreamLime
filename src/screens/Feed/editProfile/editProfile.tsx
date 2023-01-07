@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Image, ScrollView, Text, TextInput, View, ActivityIndicator} from "react-native"
+import { Image, ScrollView, Text, TextInput, View, ActivityIndicator, TouchableOpacity} from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../../components/header/header";
 import { userAction, useUserData } from "../../../redux/reducers/userSlice/userSlice";
@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { showToast } from "../../../helper/helper";
 import colorPalates from "../../../theme/colorPalates";
 import { useDispatch } from "react-redux";
+import auth from '@react-native-firebase/auth';
 
 const EditProfileScreen = () => {
 
@@ -20,6 +21,7 @@ const EditProfileScreen = () => {
     const [bio, setBio] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [loading, setLoading] =  useState(false);
+    const [logoutLoading, setLogoutLoading] = useState(false);
 
     useEffect(()=>{
         setUserName(userData?.userName);
@@ -51,7 +53,19 @@ const EditProfileScreen = () => {
             console.log(error);
             setLoading(false);
         }
-       
+    }
+
+    const onPressLogout = () => {
+        setLogoutLoading(true);
+        try {
+            auth().signOut().then(() =>{
+                dispatch(userAction.clearUser());
+                setLogoutLoading(false);
+            });
+        } catch (error) {
+            console.log(error,'error');
+            setLogoutLoading(false);
+        }
     }
 
     return(
@@ -97,6 +111,15 @@ const EditProfileScreen = () => {
                             value={bio}
                             onChangeText={val => setBio(val)}
                         />
+                    </View>
+                    <View style={editProfileScreenStyle.logoutView}>
+                        <TouchableOpacity style={editProfileScreenStyle.logoutButton} onPress={onPressLogout}>
+                            {logoutLoading ?
+                                <ActivityIndicator size={'small'} color={colorPalates.AppTheme.secondary}/>
+                            :
+                                <Text style={editProfileScreenStyle.logoutText}>Logout</Text>
+                            }
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
                 </>

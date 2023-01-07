@@ -50,14 +50,32 @@ export default ScaledSheet.create({
         color: colorPalates.AppTheme.text,
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 0.5,
         },
         shadowOpacity: 0.20,
-        shadowRadius: 3.65,
-        elevation: 5,
+        shadowRadius: 2.65,
+        elevation: 2,
         textAlignVertical: 'top'
     },
     emptyView:{
         marginTop: ms(10)
+    },
+    logoutView:{
+        alignItems:'center',
+        marginTop:ms(150)
+    },
+    logoutButton:{
+        backgroundColor:colorPalates.white,
+        borderColor:colorPalates.AppTheme.border,
+        borderWidth:1,
+        width:'40%',
+        borderRadius: ms(10),
+    },
+    logoutText:{
+        color: colorPalates.AppTheme.secondary,
+        fontSize: ms(16),
+        marginVertical:ms(6),
+        textAlign:'center',
+        fontWeight:'500'
     }
 })
