@@ -70,6 +70,8 @@ export default ScaledSheet.create({
         borderWidth:1,
         width:'40%',
         borderRadius: ms(10),
+        height:ms(35),
+        justifyContent:'center'
     },
     logoutText:{
         color: colorPalates.AppTheme.secondary,

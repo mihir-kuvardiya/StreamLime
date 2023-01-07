@@ -6,11 +6,12 @@ export default ScaledSheet.create({
         bottom:0,
         left:0,
         right:0,
+        margin:0,
         position:'absolute',
         justifyContent:'flex-end',
         backgroundColor:colorPalates.white,
-        margin:0,
-        borderRadius:ms(20)
+        borderTopLeftRadius:ms(20),
+        borderTopRightRadius:ms(20)
     },
     secondContainer:{
         flexDirection:'row',

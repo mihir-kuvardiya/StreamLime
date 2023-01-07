@@ -7,26 +7,35 @@ import colors from "../../../theme/colors";
 import editProfileScreenStyle from "./editProfileScreenStyle";
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from "@react-navigation/native";
-import { showToast } from "../../../helper/helper";
+import { getUploadMediaUrl, showToast } from "../../../helper/helper";
 import colorPalates from "../../../theme/colorPalates";
 import { useDispatch } from "react-redux";
 import auth from '@react-native-firebase/auth';
+import CameraModel from "../../../components/cameraModal/cameramodal";
+import images from "../../../theme/images";
+import Permission from "../../../helper/permission";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 
 const EditProfileScreen = () => {
 
     const dispatch = useDispatch()
     const userData = useUserData();
     const navigation = useNavigation();
-    const [userName, setUserName] = useState('');
     const [bio, setBio] = useState('');
+    const [userName, setUserName] = useState('');
+    const [image, setImage] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [loading, setLoading] =  useState(false);
     const [logoutLoading, setLogoutLoading] = useState(false);
+    const [iSModalVisible, setIsModalVisible] = useState(false);
+
+    console.log(userData,':::::::')
 
     useEffect(()=>{
         setUserName(userData?.userName);
         setDisplayName(userData?.displayName);
         setBio(userData?.bio);
+        setImage(userData?.profilePicture)
     },[])
 
     const onPressProfileSave = () => {
@@ -68,21 +77,122 @@ const EditProfileScreen = () => {
         }
     }
 
+    const onPressCamera = async () => {
+        setIsModalVisible(false);
+        const cameraPermission = await Permission.getCameraPermission();
+        if(!cameraPermission){
+            showToast('Please allow the camera permission');
+            return;
+        }
+
+        launchCamera({
+            mediaType: 'photo',
+            quality: 1,
+            videoQuality: 'high',
+            presentationStyle: 'fullScreen',
+        }).then(async (cameraResponse: any) => {
+            if (cameraResponse.didCancel) {
+              return;
+            }
+            if (cameraResponse.errorCode) {
+              return;
+            }
+            if (cameraResponse.errorMessage) {
+              return;
+            }
+            const resp = {
+              uri: cameraResponse?.assets[0].uri,
+              fileSize: cameraResponse?.assets[0].fileSize,
+              filename: cameraResponse.assets[0].fileName,
+              height: cameraResponse.assets[0].height,
+              width: cameraResponse.assets[0].width,
+              timestamp: cameraResponse.assets[0].timestamp,
+              type: cameraResponse.assets[0].type,
+            };
+            if (resp?.fileSize / 1000000 > 10) {
+                showToast('Select an Image with less then 10 MB.');
+                return;
+            }
+            const ext = resp?.type.split('/')[1];
+
+            if (ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
+                const dataImage = await getUploadMediaUrl(resp);
+                setImage(dataImage)
+                console.log(cameraResponse.assets[0])
+            } else {
+                showToast('select only .jpg, .jpeg and .png formate image');
+                return;
+            }
+        });
+    }
+
+    const onPressGallery = async () => {
+        setIsModalVisible(false);
+        const storagePermission = await Permission.getStoragePermission();
+        if(!storagePermission){
+            showToast('Please allow the camera permission');
+            return;
+        }
+        launchImageLibrary({
+            mediaType: 'photo',
+            quality: 1,
+            selectionLimit: 1,
+            includeExtra: true,
+            presentationStyle: 'fullScreen',
+          }).then(async (cameraResponse: any) => {
+            if (cameraResponse.didCancel) {
+              return;
+            }
+            if (cameraResponse.errorCode) {
+              return;
+            }
+            if (cameraResponse.errorMessage) {
+              return;
+            }
+      
+            const resp = {
+              uri: cameraResponse?.assets[0].uri,
+              fileSize: cameraResponse?.assets[0].fileSize,
+              filename: cameraResponse.assets[0].fileName,
+              height: cameraResponse.assets[0].height,
+              width: cameraResponse.assets[0].width,
+              timestamp: cameraResponse.assets[0].timestamp,
+              type: cameraResponse.assets[0].type,
+            };
+      
+            if (resp?.fileSize / 1000000 > 10) {
+                showToast('Select an Image with less then 10 MB.');
+                return;
+            }
+      
+            const ext = resp?.type.split('/')[1];
+      
+            if (ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
+                const dataImage = await getUploadMediaUrl(resp);
+                setImage(dataImage)
+                console.log(cameraResponse.assets[0])
+            } else {
+                showToast('select only .jpg, .jpeg and .png formate image');
+                return;
+            }
+        });
+    }
+
     return(
         <SafeAreaView style={editProfileScreenStyle.container}>
             {loading ?
                 <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary}/>
             :
             <>
-                <Header title="mihir_2811" isBack={true} isProfileSave={true} onPressProfileSave={onPressProfileSave}/>
+                <Header title={userData?.userName} isBack={true} isProfileSave={true} onPressProfileSave={onPressProfileSave}/>
                 <ScrollView>
+                    <TouchableOpacity onPress={()=>setIsModalVisible(true)}>
                     <Image
                         style={editProfileScreenStyle.Image}
-                        source={{
-                            uri:'https://images.pexels.com/photos/1031081/pexels-photo-1031081.jpeg?auto=compress&cs=tinysrgb&w=600',
-                        }}
+                        source={image ? { uri:image } : images.dp}
                         resizeMode={"cover"} 
                     />
+                    </TouchableOpacity>
                     <View style={editProfileScreenStyle.secondContainer}>
                         <Text style={editProfileScreenStyle.text}>Username</Text>
                         <TextInput 
@@ -122,6 +232,7 @@ const EditProfileScreen = () => {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                <CameraModel isVisible={iSModalVisible} onClose={()=>setIsModalVisible(false)} onPressCamera={onPressCamera} onPressGallery={onPressGallery}/>
                 </>
             }
         </SafeAreaView>
