@@ -32,51 +32,66 @@ const EditProfileScreen = () => {
     const [iSModalVisible, setIsModalVisible] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    console.log(progress,'pppppppppppppp')
+    console.log(progress,'pppppp')
 
     useEffect(()=>{
         setUserName(userData?.userName);
         setDisplayName(userData?.displayName);
         setBio(userData?.bio);
-        setImage(userData?.profilePicture)
+        setImage(userData?.profilePicture);
+        setUploadUrl('');
     },[])
 
     const onPressProfileSave = () => {
 
+        setLoading(true);
+        let filename= `${userData?.userId}${new Date().getTime()}`;
         if(uploadUrl){
             try {
-                const filename= `${userData?.userId}${new Date().getTime()}`
                 const task = storage().ref(filename).putFile(uploadUrl);
                 task.on('state_changed', snapshot =>{
                     setProgress(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
                 })
             } catch (error) {
                 console.log(error,'error')
+                setUploadUrl('');
             }
         }
-        // setLoading(true);
-        // try {
-        //     firestore().collection('user').doc(userData?.userId).update({
-        //         userName:userName,
-        //         displayName:displayName,
-        //         profilePicture:'',
-        //         bio:bio
-        //     })
-        //     .then(() => { 
-        //         dispatch(userAction.setUserData({
-        //             ...userData,
-        //             userName: userName,
-        //             displayName: displayName,
-        //             bio:bio
-        //        }))
-        //     })
-        //     setLoading(false);
-        //     navigation.goBack();
-        //     showToast('Profile saved')
-        // } catch (error) {
-        //     console.log(error);
-        //     setLoading(false);
-        // }
+        var input = {
+            userName:userName,
+            displayName:displayName,
+            bio:bio
+        }
+        var reduxUpdateUSer = {
+            ...userData,
+            userName: userName,
+            displayName: displayName,
+            bio:bio
+        }
+        if(uploadUrl){
+            var input = { ...input, profilePicture: filename};
+            var reduxUpdateUSer = {
+                ...userData,
+                userName: userName,
+                displayName: displayName,
+                bio:bio,
+                profilePicture: filename
+            }
+        }
+        try {
+            firestore().collection('user').doc(userData?.userId).update(input)
+            .then(() => { 
+                dispatch(userAction.setUserData(reduxUpdateUSer))
+                setUploadUrl('');
+            })
+            setLoading(false);
+            navigation.goBack();
+            showToast('Profile saved')
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+            setUploadUrl('');
+        }
     }
 
     const onPressLogout = () => {
@@ -186,7 +201,6 @@ const EditProfileScreen = () => {
                 const dataImage = await getUploadMediaUrl(resp);
                 setImage(dataImage)
                 setUploadUrl(resp?.uri)
-                console.log(dataImage,'dddddddddd')
             } else {
                 showToast('select only .jpg, .jpeg and .png formate image');
                 return;
