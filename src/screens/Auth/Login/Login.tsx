@@ -12,12 +12,16 @@ import auth from '@react-native-firebase/auth';
 import { SvgXml } from "react-native-svg";
 import svg from "../../../theme/svg/svg";
 import firestore from '@react-native-firebase/firestore';
+import { useDispatch } from "react-redux";
+import { userAction } from "../../../redux/reducers/userSlice/userSlice";
 
 const LoginScreen = () => {
 
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('')
+    const [loading, setIsLoading] = useState(false);
 
     const onPressLogin = (email:string,pass:string) => {
 
@@ -30,13 +34,12 @@ const LoginScreen = () => {
             showToast('password must be six character long');
             return;
         }
-        console.log('login button clicked');
+        setIsLoading(true);
         auth().signInWithEmailAndPassword(trimmedEmail, pass)
         .then(async (res) => {
-            console.log(res,'rrrrrrrrr')
-            console.log('User signed in!');
             const user = await firestore().collection('user').doc(res.user.uid).get();
-            console.log('user get in login',user)
+            dispatch(userAction.setUserData(user._data))
+            setIsLoading(false);
         })
         .catch(error => {
             if (error.code === 'auth/wrong-password') {
@@ -52,6 +55,7 @@ const LoginScreen = () => {
                 console.log('That email address is invalid!');
             }
             console.log(error);
+            setIsLoading(false);
         });
     }
 
@@ -87,7 +91,7 @@ const LoginScreen = () => {
             />
                 <Text onPress={onPressForgotPassword} style={LoginScreenStyle.forgotPasswordText}>Forgot Password ?</Text>
             </View>
-            <ThemeButton title="Login" onPress={()=>onPressLogin(email,pass)}/>
+            <ThemeButton loading={loading} title="Login" onPress={()=>onPressLogin(email,pass)}/>
             <View style={{alignItems:'center',marginTop:ms(50)}}>
             <Text style={LoginScreenStyle.signupText}>Don't have an acoount 
                     <Text 

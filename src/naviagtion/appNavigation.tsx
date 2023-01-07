@@ -8,16 +8,17 @@ import CommentScreen from "../screens/Feed/commentScreen/commentScreen";
 import FeedDetailScreen from "../screens/Feed/feedDetail/feedDetail";
 import UserProfileScreen from "../screens/Feed/profile/userProfile";
 import TopTabBar from "../screens/Feed/profile/component/followFollowingTopTabNavigation";
+import { useUserData } from "../redux/reducers/userSlice/userSlice";
 
 const AppNavigation = () => {
 
     const RootStack = createNativeStackNavigator();
-    const user = false;
+    const userData = useUserData();
 
     return(
         <NavigationContainer>
             <RootStack.Navigator screenOptions={{headerShown: false}}>
-                {!user ?
+                {!userData ?
                 <RootStack.Screen
                     name={screenNameEnum.AuthStack}
                     component={AuthNavigation}
