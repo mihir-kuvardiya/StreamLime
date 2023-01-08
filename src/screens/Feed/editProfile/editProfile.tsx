@@ -35,7 +35,7 @@ const EditProfileScreen = () => {
         setUserName(userData?.userName);
         setDisplayName(userData?.displayName);
         setBio(userData?.bio);
-        storage().ref(userData?.profilePicture).getDownloadURL().then((url)=>setImage(url))
+        setImage(userData?.profilePicture)
         setUploadUrl('');
     },[])
 
@@ -50,23 +50,25 @@ const EditProfileScreen = () => {
                 reject()
             })
             promise.then(()=>{
-                firestore().collection('user').doc(userData?.userId).update({
-                    userName:userName,
-                    displayName:displayName,
-                    bio:bio,
-                    profilePicture:filename
+                storage().ref(filename).getDownloadURL().then((url)=>{
+                    firestore().collection('user').doc(userData?.userId).update({
+                        userName:userName,
+                        displayName:displayName,
+                        bio:bio,
+                        profilePicture: url
+                    })
+                    dispatch(userAction.setUserData({
+                        ...userData,
+                        userName: userName,
+                        displayName: displayName,
+                        bio:bio,
+                        profilePicture: url
+                    }))
+                    setUploadUrl('');
+                    setLoading(false);
+                    navigation.goBack();
+                    showToast('Profile saved')
                 })
-                dispatch(userAction.setUserData({
-                    ...userData,
-                    userName: userName,
-                    displayName: displayName,
-                    bio:bio,
-                    profilePicture:filename
-                }))
-                setUploadUrl('');
-                setLoading(false);
-                navigation.goBack();
-                showToast('Profile saved')
             })
         }else{
             firestore().collection('user').doc(userData?.userId).update({

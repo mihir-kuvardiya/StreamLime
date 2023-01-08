@@ -7,7 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 import screenNameEnum from "../../helper/screenNameEnum";
 import { useUserData } from "../../redux/reducers/userSlice/userSlice";
 import images from "../../theme/images";
-import storage from '@react-native-firebase/storage';
 
 export interface HeaderProps {
     title?: string,
@@ -20,14 +19,9 @@ const Header = ({title='Header', isBack=false, isProfileSave=false,onPressProfil
     
     const userData = useUserData();
     const naviagtion = useNavigation();
-    const [image, setImage] = useState('');
-    
-    useEffect(()=>{
-        storage().ref(userData?.profilePicture).getDownloadURL().then((url)=>setImage(url))
-    },[])
 
     const onPressProfile = () => {
-        naviagtion.navigate(screenNameEnum.UserProfileScreen);
+        naviagtion.navigate(screenNameEnum.UserProfileScreen,{userId: userData?.userId});
     }
 
     const onPressBack = () => {
@@ -46,7 +40,7 @@ const Header = ({title='Header', isBack=false, isProfileSave=false,onPressProfil
                     <TouchableOpacity onPress={onPressProfile}>
                         <Image
                             style={headerStyle.profileImage}
-                            source={image ? { uri: image }: images.dp}
+                            source={userData?.profilePicture ? { uri: userData?.profilePicture }: images.dp}
                             resizeMode={"cover"} 
                         />
                     </TouchableOpacity>

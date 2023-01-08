@@ -43,18 +43,20 @@ const CreateFeedScreen = () => {
             reject()
         })
         promise.then(()=>{
-            firestore().collection('posts').doc(postId).set({
-                postId: postId,
-                postUrl: filename,
-                postDescription: description,
-                userId: userData?.userId,
-                isLiked: false
+            storage().ref(filename).getDownloadURL().then((url)=>{
+                firestore().collection('posts').doc(postId).set({
+                    postId: postId,
+                    postUrl: url,
+                    postDescription: description,
+                    userId: userData?.userId,
+                    isLiked: false
+                })
+                setUploading(false);
+                setUploadUrl('');
+                setImage('');
+                setDescription('');
+                navigation.navigate(screenNameEnum.FeedList)
             })
-            setUploading(false);
-            setUploadUrl('');
-            setImage('');
-            setDescription('');
-            navigation.navigate(screenNameEnum.FeedList)
         })
         promise.catch(()=>{
             setUploading(false);

@@ -1,12 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import { Image, SafeAreaView, Text, TouchableOpacity, View ,FlatList} from "react-native";
-import { ms } from "react-native-size-matters";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Image, SafeAreaView, Text, TouchableOpacity, View ,FlatList, ActivityIndicator} from "react-native";
 import Header from "../../../components/header/header";
 import screenNameEnum from "../../../helper/screenNameEnum";
-import EditProfileScreen from "../editProfile/editProfile";
+import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
+import colorPalates from "../../../theme/colorPalates";
 import ImageLoader from "./component/imageLoader";
 import userProfileScreenStyle from "./userProfileScreenStyle";
+import firestore from '@react-native-firebase/firestore';
+import images from "../../../theme/images";
 
 const imageData = [
     'https://images.pexels.com/photos/8972265/pexels-photo-8972265.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
@@ -34,34 +36,54 @@ const imageData = [
 
 const UserProfileScreen = () => {
 
+    const userData = useUserData();
+    const route = useRoute();
     const navigation = useNavigation();
-    const [isYou, setYou] = useState(true)
+    const [loading, setLoading] = useState(false);
+    const [profileUser, setProfileUser] = useState([]);
+
+    useEffect(()=>{
+        getUserDetail();    
+    },[])
+
+    const getUserDetail = async () => {
+        setLoading(true)
+        try {
+            const user = await firestore().collection('user').doc(userData?.userId).get();
+            setProfileUser(user._data);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.log(error,'error from get user data in user profile')
+        }
+        
+    }
 
     const onPressEditProfile = () => {
         navigation.navigate(screenNameEnum.EditProfileScreen)
     }
 
     const onPressFollowers = () => {
-        console.log('followers clicked')
         navigation.navigate(screenNameEnum.TopTabBar,{index: 0})
     }
 
     const onPressFollowing = () => {
-        console.log('following clicked')
         navigation.navigate(screenNameEnum.TopTabBar,{index: 1})
     }
 
     return(
-        <>
-        <SafeAreaView>
-            <Header title='mihir_2811' isBack={true}/>
-        </SafeAreaView>
+        <SafeAreaView style={{flex:1}}>
+        {loading ?
+            <View style={userProfileScreenStyle.loadingContainer}>
+                <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary}/>
+            </View>
+        :
+            <>
+            <Header title={profileUser?.userName} isBack={true}/>
             <View style={userProfileScreenStyle.headerContainer}>
                 <Image 
                     style={userProfileScreenStyle.profileImage}
-                    source={{
-                        uri: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600',
-                    }}
+                    source={profileUser?.profilePicture ? { uri: profileUser?.profilePicture }: images.dp}
                     resizeMode={"cover"} 
                 />
                 <View style={userProfileScreenStyle.CounterContainer}>
@@ -78,10 +100,10 @@ const UserProfileScreen = () => {
                 </TouchableOpacity>
             </View>
             <View style={userProfileScreenStyle.bioContainer}>
-                <Text style={userProfileScreenStyle.fullName}>mihir kuvardiya</Text>
-                <Text style={userProfileScreenStyle.bio}>hello hiii i am mihir kuvardiya{'\n'}welcome to my profile{'\n'}how are you guys</Text>
+                {profileUser?.displayName && <Text style={userProfileScreenStyle.fullName}>{profileUser?.displayName}</Text>}
+                {profileUser?.bio && <Text style={userProfileScreenStyle.bio}>{profileUser?.bio}</Text>}
             </View>
-            {isYou ?
+            {route?.params?.userId === userData?.userId ?
                 <TouchableOpacity style={userProfileScreenStyle.editButton} onPress={onPressEditProfile}>
                     <Text style={userProfileScreenStyle.editProfileText}>Edit Profile</Text>
                 </TouchableOpacity>
@@ -103,6 +125,8 @@ const UserProfileScreen = () => {
                     contentContainerStyle={userProfileScreenStyle.flatListContainer}
                 />
         </>
+        }
+        </SafeAreaView>
     )
 }
 

@@ -4,6 +4,11 @@ import colors from "../../../theme/colors"
 
 
 export default ScaledSheet.create({
+    loadingContainer:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center',
+    },
     headerContainer:{
         flexDirection:'row',
         justifyContent:'space-between',
