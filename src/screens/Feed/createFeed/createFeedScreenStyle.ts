@@ -11,13 +11,18 @@ export default ScaledSheet.create({
         borderRadius:ms(10),
         justifyContent:'center'
     },
+    loadingContainer:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
     descriptionTextInput:{
         margin:ms(16),
         height:ms(100),
         borderColor:colorPalates.AppTheme.border,
         backgroundColor:colorPalates.white,
         borderWidth:1,
-        color:colorPalates.AppTheme.primary,
+        color:colorPalates.AppTheme.text,
         borderRadius:ms(10),
         textAlignVertical:'top',
         padding:ms(12)

@@ -34,7 +34,6 @@ export default ScaledSheet.create({
         fontFamily: 'Niconne-Regular',
         color:colorPalates.AppTheme.primary,
         fontSize:ms(28),
-        // fontWeight:'900',
     },
     profileImage:{
         height: ms(40),

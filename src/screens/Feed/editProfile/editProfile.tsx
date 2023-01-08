@@ -227,12 +227,14 @@ const EditProfileScreen = () => {
                             placeholderTextColor={colors.grayShade8F}
                             style={editProfileScreenStyle.textInput}
                             value={userName}
+                            maxLength={50}
                             onChangeText={val => setUserName(val)}
                         />
                         <View style={editProfileScreenStyle.emptyView}/>
                         <Text style={editProfileScreenStyle.text}>Disaplay name</Text>
                         <TextInput 
                             placeholder="Disaplay name"
+                            maxLength={50}
                             placeholderTextColor={colors.grayShade8F}
                             style={editProfileScreenStyle.textInput}
                             value={displayName}
@@ -242,6 +244,7 @@ const EditProfileScreen = () => {
                         <Text style={editProfileScreenStyle.text}>Bio</Text>
                         <TextInput 
                             placeholder="Bio"
+                            maxLength={200}
                             placeholderTextColor={colors.grayShade8F}
                             style={editProfileScreenStyle.bio}
                             multiline={true}

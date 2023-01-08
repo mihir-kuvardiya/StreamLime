@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import colorPalates from "../../theme/colorPalates";
 import headerStyle from "./headerStyle";
 import IconFeather from 'react-native-vector-icons/Feather';
 import { useNavigation } from "@react-navigation/native";
 import screenNameEnum from "../../helper/screenNameEnum";
+import { useUserData } from "../../redux/reducers/userSlice/userSlice";
+import images from "../../theme/images";
+import storage from '@react-native-firebase/storage';
 
 export interface HeaderProps {
     title?: string,
@@ -15,7 +18,13 @@ export interface HeaderProps {
 
 const Header = ({title='Header', isBack=false, isProfileSave=false,onPressProfileSave}:HeaderProps) => {
     
+    const userData = useUserData();
     const naviagtion = useNavigation();
+    const [image, setImage] = useState('');
+    
+    useEffect(()=>{
+        storage().ref(userData?.profilePicture).getDownloadURL().then((url)=>setImage(url))
+    },[])
 
     const onPressProfile = () => {
         naviagtion.navigate(screenNameEnum.UserProfileScreen);
@@ -37,9 +46,7 @@ const Header = ({title='Header', isBack=false, isProfileSave=false,onPressProfil
                     <TouchableOpacity onPress={onPressProfile}>
                         <Image
                             style={headerStyle.profileImage}
-                            source={{
-                                uri: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            }}
+                            source={image ? { uri: image }: images.dp}
                             resizeMode={"cover"} 
                         />
                     </TouchableOpacity>

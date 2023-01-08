@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,14 +13,56 @@ import CameraModel from "../../../components/cameraModal/cameramodal";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Permission from "../../../helper/permission";
 import { getUploadMediaUrl, showToast } from "../../../helper/helper";
+import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import { useNavigation } from "@react-navigation/native";
+import screenNameEnum from "../../../helper/screenNameEnum";
 
 const CreateFeedScreen = () => {
 
-    const [iSModalVisible, setIsModalVisible] = useState(false);
+    const userData = useUserData();
+    const navigation = useNavigation();
     const [image, setImage] = useState('');
+    const [uploadUrl, setUploadUrl] = useState('');
+    const [description, setDescription] = useState('');
+    const [iSModalVisible, setIsModalVisible] = useState(false);
+    const [uploading, setUploading] = useState(false);
 
     const createPost = () => {
-        console.log('create post clicked');
+        if(uploadUrl === ''){
+            showToast('Oops! there is not one image selected for the post.');
+            return;
+        }
+        setUploading(true);
+        let postId = `${userData?.userId}POST${new Date().getTime()}`;
+        let filename= `${userData?.userId}${new Date().getTime()}`;
+        let  promise = new Promise((resolve, reject) =>{
+            const task = storage().ref(filename).putFile(uploadUrl);
+            resolve(task);
+            reject()
+        })
+        promise.then(()=>{
+            firestore().collection('posts').doc(postId).set({
+                postId: postId,
+                postUrl: filename,
+                postDescription: description,
+                userId: userData?.userId,
+                isLiked: false
+            })
+            setUploading(false);
+            setUploadUrl('');
+            setImage('');
+            setDescription('');
+            navigation.navigate(screenNameEnum.FeedList)
+        })
+        promise.catch(()=>{
+            setUploading(false);
+            setUploadUrl('');
+            setImage('');
+            setDescription('');
+            console.log('failed to create post');
+        })
     }
 
     const removePhoto = () => {
@@ -68,8 +110,8 @@ const CreateFeedScreen = () => {
 
             if (ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
                 const dataImage = await getUploadMediaUrl(resp);
-                setImage(dataImage)
-                console.log(cameraResponse.assets[0])
+                setImage(dataImage);
+                setUploadUrl(resp?.uri);
             } else {
                 showToast('select only .jpg, .jpeg and .png formate image');
                 return;
@@ -121,8 +163,8 @@ const CreateFeedScreen = () => {
       
             if (ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
                 const dataImage = await getUploadMediaUrl(resp);
-                setImage(dataImage)
-                console.log(cameraResponse.assets[0])
+                setImage(dataImage);
+                setUploadUrl(resp?.uri);
             } else {
                 showToast('select only .jpg, .jpeg and .png formate image');
                 return;
@@ -131,7 +173,13 @@ const CreateFeedScreen = () => {
     }
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={{flex:1}}>
+            {uploading ?
+                <View style={createFeedScreenStyle.loadingContainer}>
+                    <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary}/>
+                </View>
+            :
+            <>
             <Header title="Create Post" isBack={true}/>
             <KeyboardAwareScrollView>
             {image ? 
@@ -165,6 +213,9 @@ const CreateFeedScreen = () => {
             }
             <TextInput 
                 placeholder="Description"
+                value={description}
+                onChangeText={val=>setDescription(val)}
+                maxLength={100}
                 placeholderTextColor={colors.grayShade8F}
                 style={createFeedScreenStyle.descriptionTextInput}
             />
@@ -173,6 +224,8 @@ const CreateFeedScreen = () => {
             </TouchableOpacity>
             <CameraModel isVisible={iSModalVisible} onClose={()=>setIsModalVisible(false)} onPressCamera={onPressCamera} onPressGallery={onPressGallery}/>
             </KeyboardAwareScrollView>
+            </>
+        }
         </SafeAreaView>
     )
 }
