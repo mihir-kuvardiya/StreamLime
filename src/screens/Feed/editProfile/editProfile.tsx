@@ -6,7 +6,7 @@ import { userAction, useUserData } from "../../../redux/reducers/userSlice/userS
 import colors from "../../../theme/colors";
 import editProfileScreenStyle from "./editProfileScreenStyle";
 import firestore from '@react-native-firebase/firestore';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { getUploadMediaUrl, showToast } from "../../../helper/helper";
 import colorPalates from "../../../theme/colorPalates";
 import { useDispatch } from "react-redux";
@@ -30,7 +30,6 @@ const EditProfileScreen = () => {
     const [loading, setLoading] =  useState(false);
     const [logoutLoading, setLogoutLoading] = useState(false);
     const [iSModalVisible, setIsModalVisible] = useState(false);
-    const [progress, setProgress] = useState(0);
 
     useEffect(()=>{
         setUserName(userData?.userName);
@@ -38,7 +37,6 @@ const EditProfileScreen = () => {
         setBio(userData?.bio);
         storage().ref(userData?.profilePicture).getDownloadURL().then((url)=>setImage(url))
         setUploadUrl('');
-        setProgress(0);
     },[])
 
     const onPressProfileSave = () => {
@@ -59,6 +57,7 @@ const EditProfileScreen = () => {
                     profilePicture:filename
                 })
                 dispatch(userAction.setUserData({
+                    ...userData,
                     userName: userName,
                     displayName: displayName,
                     bio:bio,
@@ -77,6 +76,7 @@ const EditProfileScreen = () => {
             })
             .then(() => { 
                 dispatch(userAction.setUserData({
+                    ...userData,
                     userName: userName,
                     displayName: displayName,
                     bio:bio,
@@ -206,7 +206,9 @@ const EditProfileScreen = () => {
     return(
         <SafeAreaView style={editProfileScreenStyle.container}>
             {loading ?
+            <View style={editProfileScreenStyle.loadingContainer}>
                 <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary}/>
+            </View>
             :
             <>
                 <Header title={userData?.userName} isBack={true} isProfileSave={true} onPressProfileSave={onPressProfileSave}/>

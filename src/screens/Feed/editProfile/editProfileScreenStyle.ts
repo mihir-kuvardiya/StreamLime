@@ -6,6 +6,11 @@ export default ScaledSheet.create({
     container:{
         flex:1
     },
+    loadingContainer:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center"
+    },
     Image:{
         height: ms(80),
         width: ms(80),
