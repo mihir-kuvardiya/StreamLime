@@ -32,65 +32,60 @@ const EditProfileScreen = () => {
     const [iSModalVisible, setIsModalVisible] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    console.log(progress,'pppppp')
-
     useEffect(()=>{
         setUserName(userData?.userName);
         setDisplayName(userData?.displayName);
         setBio(userData?.bio);
-        setImage(userData?.profilePicture);
+        storage().ref(userData?.profilePicture).getDownloadURL().then((url)=>setImage(url))
         setUploadUrl('');
+        setProgress(0);
     },[])
 
     const onPressProfileSave = () => {
 
         setLoading(true);
-        let filename= `${userData?.userId}${new Date().getTime()}`;
         if(uploadUrl){
-            try {
+            let filename= `${userData?.userId}${new Date().getTime()}`;
+            let  promise = new Promise((resolve, reject) =>{
                 const task = storage().ref(filename).putFile(uploadUrl);
-                task.on('state_changed', snapshot =>{
-                    setProgress(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000);
-                })
-            } catch (error) {
-                console.log(error,'error')
-                setUploadUrl('');
-            }
-        }
-        var input = {
-            userName:userName,
-            displayName:displayName,
-            bio:bio
-        }
-        var reduxUpdateUSer = {
-            ...userData,
-            userName: userName,
-            displayName: displayName,
-            bio:bio
-        }
-        if(uploadUrl){
-            var input = { ...input, profilePicture: filename};
-            var reduxUpdateUSer = {
-                ...userData,
-                userName: userName,
-                displayName: displayName,
-                bio:bio,
-                profilePicture: filename
-            }
-        }
-        try {
-            firestore().collection('user').doc(userData?.userId).update(input)
-            .then(() => { 
-                dispatch(userAction.setUserData(reduxUpdateUSer))
-                setUploadUrl('');
+                resolve(task);
+                reject()
             })
-            setLoading(false);
-            navigation.goBack();
-            showToast('Profile saved')
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-            setUploadUrl('');
+            promise.then(()=>{
+                firestore().collection('user').doc(userData?.userId).update({
+                    userName:userName,
+                    displayName:displayName,
+                    bio:bio,
+                    profilePicture:filename
+                })
+                dispatch(userAction.setUserData({
+                    userName: userName,
+                    displayName: displayName,
+                    bio:bio,
+                    profilePicture:filename
+                }))
+                setUploadUrl('');
+                setLoading(false);
+                navigation.goBack();
+                showToast('Profile saved')
+            })
+        }else{
+            firestore().collection('user').doc(userData?.userId).update({
+                userName:userName,
+                displayName:displayName,
+                bio:bio
+            })
+            .then(() => { 
+                dispatch(userAction.setUserData({
+                    userName: userName,
+                    displayName: displayName,
+                    bio:bio,
+                }))
+                setUploadUrl('');
+                setLoading(false);
+                navigation.goBack();
+                showToast('Profile saved')
+            })
         }
     }
 
