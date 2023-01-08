@@ -10,40 +10,19 @@ import userProfileScreenStyle from "./userProfileScreenStyle";
 import firestore from '@react-native-firebase/firestore';
 import images from "../../../theme/images";
 
-const imageData = [
-    'https://images.pexels.com/photos/8972265/pexels-photo-8972265.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/14704971/pexels-photo-14704971.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/11544093/pexels-photo-11544093.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/7787078/pexels-photo-7787078.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/14074800/pexels-photo-14074800.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/14610789/pexels-photo-14610789.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/14410988/pexels-photo-14410988.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/13539518/pexels-photo-13539518.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/10011640/pexels-photo-10011640.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/14691038/pexels-photo-14691038.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/12179758/pexels-photo-12179758.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/14505987/pexels-photo-14505987.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/8356400/pexels-photo-8356400.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/13877994/pexels-photo-13877994.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load', 
-    'https://images.pexels.com/photos/14388715/pexels-photo-14388715.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/11735849/pexels-photo-11735849.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/6530613/pexels-photo-6530613.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/6968340/pexels-photo-6968340.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/14589787/pexels-photo-14589787.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/13846070/pexels-photo-13846070.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    'https://images.pexels.com/photos/13369610/pexels-photo-13369610.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-]
-
 const UserProfileScreen = () => {
 
     const userData = useUserData();
     const route = useRoute();
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false);
+    const [postLoading, setPostLoading] = useState(false);
     const [profileUser, setProfileUser] = useState([]);
+    const [posts, setPosts] = useState([])
 
     useEffect(()=>{
-        getUserDetail();    
+        getUserDetail();   
+        getUserPosts();
     },[])
 
     const getUserDetail = async () => {
@@ -56,7 +35,19 @@ const UserProfileScreen = () => {
             setLoading(false);
             console.log(error,'error from get user data in user profile')
         }
-        
+    }
+
+    const getUserPosts = () => {
+        setPostLoading(true);
+        firestore().collection('posts').where('userId','==',route?.params?.userId).get()
+        .then((res)=>{
+            setPosts(res._docs);
+            setPostLoading(false);
+        })
+        .catch((error)=>{
+            setPostLoading(false);
+            console.log(error,'error from get posts in userprofile');
+        })
     }
 
     const onPressEditProfile = () => {
@@ -73,7 +64,7 @@ const UserProfileScreen = () => {
 
     return(
         <SafeAreaView style={{flex:1}}>
-        {loading ?
+        {loading||postLoading ?
             <View style={userProfileScreenStyle.loadingContainer}>
                 <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary}/>
             </View>
@@ -114,8 +105,8 @@ const UserProfileScreen = () => {
             }
             <View style={userProfileScreenStyle.emptyView}/>
                 <FlatList
-                    data={imageData}
-                    renderItem={({item,index})=>(<ImageLoader imageUrl={item} key={index}/>)}
+                    data={posts}
+                    renderItem={({item,index})=>(<ImageLoader item={item} key={index}/>)}
                     keyExtractor={item =>item}
                     numColumns={3}
                     horizontal={false}

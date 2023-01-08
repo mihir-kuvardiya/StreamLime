@@ -5,9 +5,9 @@ import { ms } from "react-native-size-matters";
 import screenNameEnum from "../../../../helper/screenNameEnum";
 
 export interface imageLoaderProps{
-    imageUrl:string;
+    item:object[]
 }
-const ImageLoader = ({imageUrl}:imageLoaderProps) => {
+const ImageLoader = ({item}:imageLoaderProps) => {
 
     const naviagtion = useNavigation();
 
@@ -18,7 +18,7 @@ const ImageLoader = ({imageUrl}:imageLoaderProps) => {
         style={{width:'32.5%',
         margin:ms(1)}}>
         <Image
-            source={{uri: imageUrl}}
+            source={{uri: item._data?.postUrl}}
             resizeMode={'cover'}
             style={{
                 width:'100%',
