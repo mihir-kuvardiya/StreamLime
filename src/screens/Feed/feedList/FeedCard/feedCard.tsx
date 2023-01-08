@@ -12,13 +12,16 @@ import screenNameEnum from "../../../../helper/screenNameEnum";
 import images from "../../../../theme/images";
 
 export interface FeedCardProps{
-    item: object
+    item: object[],
+    userProfile: object[],
 }
 
-const FeedCard = ({item}:FeedCardProps) => {
-    
+const FeedCard = ({item,userProfile}:FeedCardProps) => {
+
     const naviagtion = useNavigation();
     const [liked, setLiked] = useState(false);
+
+    console.log(userProfile,'uuuuuuuuu')
 
     const onPressComment = () => {
         naviagtion.navigate(screenNameEnum.CommentScreen);
@@ -29,14 +32,12 @@ const FeedCard = ({item}:FeedCardProps) => {
                 <View style={feedCardStyle.feedHeaderSecondContainer}>
                     <Image
                         style={feedCardStyle.feedHeaderImage}
-                        source={item?.profileImageUrl ? {
-                            uri: item?.profileImageUrl,
-                        } : images.dp}
+                        source={userProfile?.profilePicture ? { uri: userProfile?.profilePicture } : images.dp}
                         resizeMode={"cover"} 
                     />
                     <View style={feedCardStyle.feedHeaderTextContainer}>
-                        <Text style={feedCardStyle.feedHeaderUserName}>{item?.userName}</Text>
-                        <Text style={feedCardStyle.feedHeaderTime}>{item?.createdAt}</Text>
+                        <Text style={feedCardStyle.feedHeaderUserName}>{userProfile?.userName}</Text>
+                        <Text style={feedCardStyle.feedHeaderTime}>{123}</Text>
                     </View>
                 </View>
                 <IconEntypo name="dots-three-vertical" size={20} color={colors.grayShade8F} />
@@ -45,13 +46,13 @@ const FeedCard = ({item}:FeedCardProps) => {
                 <Image
                     style={feedCardStyle.feedMainImage}
                     source={{
-                        uri:item?.feedUrl,
+                        uri:item?.postUrl,
                     }}
                     resizeMode={"cover"} 
                 />
-                <Text style={feedCardStyle.feedDescription}>
-                    {item?.description}
-                </Text>
+                {item?.postDescription && <Text style={feedCardStyle.feedDescription}>
+                    {item?.postDescription}
+                </Text>}
             </View>
             <View style={feedCardStyle.FeedBottomContainer}>
                 <Pressable style={feedCardStyle.likeContainer} onPress={()=>setLiked(!liked)}>

@@ -13,7 +13,7 @@ const ImageLoader = ({item}:imageLoaderProps) => {
 
     return(
         <TouchableOpacity onPress={()=>{
-            naviagtion.navigate(screenNameEnum.FeedDetailScreen)
+            naviagtion.navigate(screenNameEnum.FeedDetailScreen,{postId: item._data?.postId})
         }}
         style={{width:'32.5%',
         margin:ms(1)}}>
