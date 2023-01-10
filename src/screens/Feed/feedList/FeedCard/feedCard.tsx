@@ -10,18 +10,16 @@ import feedCardStyle from "./feedCardStyle";
 import { useNavigation } from "@react-navigation/native";
 import screenNameEnum from "../../../../helper/screenNameEnum";
 import images from "../../../../theme/images";
+import moment from "moment";
 
 export interface FeedCardProps{
     item: object[],
-    userProfile: object[],
 }
 
-const FeedCard = ({item,userProfile}:FeedCardProps) => {
+const FeedCard = ({item}:FeedCardProps) => {
 
     const naviagtion = useNavigation();
     const [liked, setLiked] = useState(false);
-
-    console.log(userProfile,'uuuuuuuuu')
 
     const onPressComment = () => {
         naviagtion.navigate(screenNameEnum.CommentScreen);
@@ -32,16 +30,16 @@ const FeedCard = ({item,userProfile}:FeedCardProps) => {
                 <View style={feedCardStyle.feedHeaderSecondContainer}>
                     <Image
                         style={feedCardStyle.feedHeaderImage}
-                        source={userProfile?.profilePicture ? { uri: userProfile?.profilePicture } : images.dp}
+                        source={item?.profilePicture ? { uri: item?.profilePicture } : images.dp}
                         resizeMode={"cover"} 
                     />
                     <View style={feedCardStyle.feedHeaderTextContainer}>
-                        <Text style={feedCardStyle.feedHeaderUserName}>{userProfile?.userName}</Text>
-                        <Text style={feedCardStyle.feedHeaderTime}>{123}</Text>
+                        <Text style={feedCardStyle.feedHeaderUserName}>{item?.userName}</Text>
+                        <Text style={feedCardStyle.feedHeaderTime}>{moment(item?.createdAt).local().startOf('seconds').fromNow() || ''}</Text>
                     </View>
                 </View>
                 <IconEntypo name="dots-three-vertical" size={20} color={colors.grayShade8F} />
-            </View>
+            </View> 
             <View style={feedCardStyle.mainFeedContainer}>
                 <Image
                     style={feedCardStyle.feedMainImage}

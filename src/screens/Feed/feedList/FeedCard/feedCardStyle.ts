@@ -35,7 +35,7 @@ export default ScaledSheet.create({
         borderRadius: 25
     },
     feedHeaderTextContainer:{
-        flexDirection: 'column', 
+        justifyContent:'space-evenly',
         marginLeft: 15
     },
     feedHeaderUserName:{
@@ -45,8 +45,7 @@ export default ScaledSheet.create({
     },
     feedHeaderTime:{
         color: colors.grayShade8F, 
-        fontSize: 13, 
-        marginTop:ms(2)
+        fontSize: 13,
     },
     mainFeedContainer:{
         marginTop: ms(5),
