@@ -22,7 +22,8 @@ export default ScaledSheet.create({
         backgroundColor:colorPalates.white
     },
     mainTextContainer:{
-        marginLeft:ms(6)
+        marginLeft:ms(6),
+        flex:1
     },
     userNameContainer:{
         flexDirection:"row",
@@ -39,10 +40,12 @@ export default ScaledSheet.create({
         marginLeft: ms(5)
     },
     commentTextContainer:{
-        flex:1,
+        flexDirection:'row',
         marginTop:ms(2),
     },
     commentText:{
+        flex:1,
+        flexWrap:'wrap',
         color: colorPalates.AppTheme.text,
         fontSize: ms(13),
     }
