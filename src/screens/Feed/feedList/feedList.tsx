@@ -1,51 +1,54 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Text, View, FlatList, SafeAreaView } from "react-native"
 import { ms } from "react-native-size-matters";
 import Header from "../../../components/header/header";
 import FeedCard from "./FeedCard/feedCard";
-
-const data = [
-    {profileImageUrl: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
-        userName: 'Mihir',
-        createdAt: '1 Days Ago',
-        feedUrl: 'https://images.pexels.com/photos/5977791/pexels-photo-5977791.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-        description: 'First Post here',
-        isLiked: true,
-        likeCount: '1.1k',
-        commentCount: '1.1k'},
-    {profileImageUrl: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600',
-        userName: 'Raj',
-        createdAt: '2 Days Ago',
-        feedUrl: 'https://images.pexels.com/photos/14690503/pexels-photo-14690503.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-        description: 'second Post here',
-        isLiked: false,
-        likeCount: '2.1k',
-        commentCount: '2.1k'},
-    {profileImageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-        userName: 'Bhavin',
-        createdAt: '3 Days Ago',
-        feedUrl: 'https://images.pexels.com/photos/14417246/pexels-photo-14417246.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-        description: 'third Post here',
-        isLiked: true,
-        likeCount: '3.1k',
-        commentCount: '3.1k'},
-    {profileImageUrl: 'https://images.pexels.com/photos/2773977/pexels-photo-2773977.jpeg?auto=compress&cs=tinysrgb&w=600',
-        userName: 'Jaydeep',
-        createdAt: '4 Days Ago',
-        feedUrl: 'https://images.pexels.com/photos/2946354/pexels-photo-2946354.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-        description: 'fourth Post here',
-        isLiked: false,
-        likeCount: '4.1k',
-        commentCount: '4.1k'}
-]
+import firestore from '@react-native-firebase/firestore';
+import { useDispatch } from "react-redux";
+import { feedAction, useFeedListData } from "../../../redux/reducers/feedSlice/feedSlice";
 
 const FeedList = () => {
+
+    const dispatch = useDispatch();
+    const feedData = useFeedListData();
+    const [postArray, setPostArray] = useState([])
+
+    useEffect(()=>{
+        getInitPosts();
+    },[])
+
+    const getInitPosts = async () => {
+        const res = await firestore().collection('posts').get();
+        setPostArray([])
+        for(let i=0; i<res._docs.length;i++){
+            let date = new Date(res._docs[i]._data?.createdAt.toDate())
+            firestore().collection('user').doc(res._docs[i]._data?.userId).get()
+            .then((userRes)=>{
+                setPostArray((old)=>[...old,{
+                    postId: res._docs[i]._data?.postId,
+                    postUrl: res._docs[i]._data?.postUrl,
+                    postDescription: res._docs[i]._data?.postDescription,
+                    createdAt: date.toString(),
+                    isLiked: res._docs[i]._data?.isLiked,
+                    userId: res._docs[i]._data?.userId,
+                    profilePicture: userRes._data?.profilePicture,
+                    userName: userRes._data?.userName,
+                }])
+            })
+            .catch((e)=>{
+                console.log(e,'error in get user in feed screen');
+            });
+        };
+        dispatch(feedAction.setFeedData({collectionName:'feedList', data:postArray }))
+       
+    }
+
     return(
         <SafeAreaView>
             <Header title="StreamLine"/>
             <FlatList 
-                data={data}
-                renderItem={({item,i})=>(<FeedCard item={item} key={i}/>)}
+                data={feedData}
+                renderItem={({item,index})=>(<FeedCard item={item} key={index}/>)}
                 showsVerticalScrollIndicator={false}
                 disableVirtualization={true}
                 keyboardShouldPersistTaps="always"

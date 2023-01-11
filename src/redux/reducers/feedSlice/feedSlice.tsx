@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   feedDetail: null,
+  feedList: [],
 };
 
 const feedSlice = createSlice({
@@ -26,5 +27,10 @@ export const feedReducer = feedSlice.reducer;
 
 export const useFeedDetailData = () => {
   const feed = useSelector(state => state?.feed?.feedDetail);
+  return feed;
+};
+
+export const useFeedListData = () => {
+  const feed = useSelector(state => state?.feed?.feedList);
   return feed;
 };
