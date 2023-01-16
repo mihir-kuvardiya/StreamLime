@@ -18,8 +18,7 @@ const FeedList = () => {
     },[])
 
     const getInitPosts = async () => {
-        const res = await firestore().collection('posts').get();
-        setPostArray([])
+        const res = await firestore().collection('posts').orderBy('createdAt', 'desc').get();
         for(let i=0; i<res._docs.length;i++){
             let date = new Date(res._docs[i]._data?.createdAt.toDate())
             firestore().collection('user').doc(res._docs[i]._data?.userId).get()

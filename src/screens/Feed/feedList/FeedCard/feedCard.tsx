@@ -22,8 +22,9 @@ const FeedCard = ({item}:FeedCardProps) => {
     const [liked, setLiked] = useState(false);
 
     const onPressComment = () => {
-        naviagtion.navigate(screenNameEnum.CommentScreen);
+        naviagtion.navigate(screenNameEnum.CommentScreen,{postId:item?.postId});
     }
+    
     return(
         <View style={feedCardStyle.feedContainer}>
             <View style={feedCardStyle.feedHeaderContainer}>
