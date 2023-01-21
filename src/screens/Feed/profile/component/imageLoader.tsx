@@ -5,7 +5,7 @@ import { ms } from "react-native-size-matters";
 import screenNameEnum from "../../../../helper/screenNameEnum";
 
 export interface imageLoaderProps{
-    item:object[]
+    item: any
 }
 const ImageLoader = ({item}:imageLoaderProps) => {
 
@@ -23,8 +23,7 @@ const ImageLoader = ({item}:imageLoaderProps) => {
             style={{
                 width:'100%',
                 // height:500,
-                minHeight:ms(120),
-                maxHeight:ms(200),
+                height:ms(120),
                 borderRadius:ms(5)
             }}
         />

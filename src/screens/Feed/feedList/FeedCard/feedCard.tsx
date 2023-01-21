@@ -11,9 +11,10 @@ import { useNavigation } from "@react-navigation/native";
 import screenNameEnum from "../../../../helper/screenNameEnum";
 import images from "../../../../theme/images";
 import moment from "moment";
+import FeedImageLoader from "../../../../components/feedImageLoader/feedImageLoader";
 
 export interface FeedCardProps{
-    item: object[],
+    item: any,
 }
 
 const FeedCard = ({item}:FeedCardProps) => {
@@ -42,13 +43,14 @@ const FeedCard = ({item}:FeedCardProps) => {
                 <IconEntypo name="dots-three-vertical" size={20} color={colors.grayShade8F} />
             </View> 
             <View style={feedCardStyle.mainFeedContainer}>
-                <Image
+                {/* <Image
                     style={feedCardStyle.feedMainImage}
                     source={{
                         uri:item?.postUrl,
                     }}
                     resizeMode={"cover"} 
-                />
+                /> */}
+                <FeedImageLoader url={item?.postUrl}/>
                 {item?.postDescription && <Text style={feedCardStyle.feedDescription}>
                     {item?.postDescription}
                 </Text>}

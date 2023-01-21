@@ -39,7 +39,7 @@ const UserProfileScreen = () => {
 
     const getUserPosts = () => {
         setPostLoading(true);
-        firestore().collection('posts').where('userId','==',route?.params?.userId).get()
+        firestore().collection('posts').orderBy('createdAt', 'desc').where('userId','==',route?.params?.userId).get()
         .then((res)=>{
             setPosts(res._docs);
             setPostLoading(false);
