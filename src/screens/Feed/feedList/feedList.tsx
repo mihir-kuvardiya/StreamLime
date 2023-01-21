@@ -13,43 +13,59 @@ const FeedList = () => {
     const dispatch = useDispatch();
     const feedData = useFeedListData();
     const [loading, setLoading] = useState(false);
-    const [postArray, setPostArray] = useState([])
 
     useEffect(()=>{
-        getInitPosts();
+        getInitPosts()
     },[])
 
-    const getInitPosts = () => {
+    const getInitPosts = async () => {
         setLoading(true);
-        firestore().collection('posts').orderBy('createdAt', 'desc').get()
-        .then((res)=>{
-            for(let i=0; i<res._docs.length;i++){
-                let date = new Date(res._docs[i]._data?.createdAt.toDate())
-                firestore().collection('user').doc(res._docs[i]._data?.userId).get()
-                .then((userRes)=>{
-                    setPostArray((old)=>[...old,{
-                        postId: res._docs[i]._data?.postId,
-                        postUrl: res._docs[i]._data?.postUrl,
-                        postDescription: res._docs[i]._data?.postDescription,
+        try {
+            const res = firestore().collection('posts').orderBy('createdAt', 'desc').get();
+            let promises: any[] = [];
+            let posts: any[] = [];
+            (await res).forEach(element => {
+                let date = new Date(element.data().createdAt.toDate())
+                promises.push(getUserDetail(element.data().userId)
+                .then((val:any)=>{
+                    posts = [...posts,{
+                        postId:element.data().postId,
+                        postUrl:element.data().postUrl,
+                        postDescription:element.data().postDescription,
                         createdAt: date.toString(),
-                        isLiked: res._docs[i]._data?.isLiked,
-                        userId: res._docs[i]._data?.userId,
-                        profilePicture: userRes._data?.profilePicture,
-                        userName: userRes._data?.userName,
-                    }])
+                        isLiked:element.data().isLiked,
+                        userId:element.data().userId,
+                        profilePicture: val.profilePicture,
+                        userName: val.userName,
+                    }]
                 })
                 .catch((e)=>{
-                    console.log(e,'error in get user in feed screen');
+                    console.log(e,'erro from get promise rejection');
                     setLoading(false);
-                });
-            };
-            console.log(postArray,'ppppppppppppppppp')
-            dispatch(feedAction.setFeedData({collectionName:'feedList', data:postArray }))
+                })
+                )
+            });
+
+            await Promise.all(promises).then(()=>{
+                dispatch(feedAction.setFeedData({collectionName:'feedList', data: posts}));
+                setLoading(false);
+            })
+
+        } catch (error) {
+            console.log(error,'error from get posts');
             setLoading(false);
-        })
-        .catch((error)=>{
-            console.log(error,'error in get posts');
-            setLoading(false);
+        }
+    }
+
+    const getUserDetail = (val:string) => {
+        return new Promise((resolve, reject) => {
+            firestore().collection('user').doc(val).get()
+            .then((result)=>{
+                resolve(result.data())
+            })
+            .catch((err)=>{
+                reject(err);
+            })
         })
     }
 
