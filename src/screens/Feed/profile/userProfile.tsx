@@ -78,7 +78,7 @@ const UserProfileScreen = () => {
                     resizeMode={"cover"} 
                 />
                 <View style={userProfileScreenStyle.CounterContainer}>
-                    <Text style={userProfileScreenStyle.Counter}>23.5K</Text>
+                    <Text style={userProfileScreenStyle.Counter}>{posts.length}</Text>
                     <Text style={userProfileScreenStyle.conterText}>Posts</Text>
                 </View>
                 <TouchableOpacity style={userProfileScreenStyle.CounterContainer} onPress={onPressFollowers}>
