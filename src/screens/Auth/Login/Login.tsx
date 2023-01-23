@@ -17,7 +17,7 @@ import { userAction } from "../../../redux/reducers/userSlice/userSlice";
 
 const LoginScreen = () => {
 
-    const navigation = useNavigation();
+    const navigation:any = useNavigation();
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('')
@@ -37,7 +37,7 @@ const LoginScreen = () => {
         setIsLoading(true);
         auth().signInWithEmailAndPassword(trimmedEmail, pass)
         .then(async (res) => {
-            const user = await firestore().collection('user').doc(res.user.uid).get();
+            const user:any = await firestore().collection('user').doc(res.user.uid).get();
             const createReduxUser = {
                 ...user._data,
                 userId: res.user.uid

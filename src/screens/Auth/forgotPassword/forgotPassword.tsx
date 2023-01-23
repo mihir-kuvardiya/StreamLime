@@ -10,7 +10,7 @@ import forgotPasswordScreenStyle from "./forgotPasswordScreenStyle";
 
 const ForgotPasswordScreen = () => {
 
-    const naviagtion = useNavigation();
+    const naviagtion:any = useNavigation();
     const [confirmation, setConfirmation] = useState(false)
 
     const onPressGetOtp = () => {

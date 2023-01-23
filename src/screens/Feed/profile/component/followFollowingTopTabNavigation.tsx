@@ -10,7 +10,7 @@ import FollowingsScreen from './followings/followings';
 
 const TopTabBar = () => {
 
-    const route = useRoute();
+    const route:any = useRoute();
     const [index, setIndex] = React.useState(route?.params?.index || 0);
     const [routes] = React.useState([
       {key: 'followers', title: 'followers'},

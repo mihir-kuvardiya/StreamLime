@@ -9,7 +9,7 @@ export interface imageLoaderProps{
 }
 const ImageLoader = ({item}:imageLoaderProps) => {
 
-    const naviagtion = useNavigation();
+    const naviagtion:any = useNavigation();
 
     return(
         <TouchableOpacity onPress={()=>{

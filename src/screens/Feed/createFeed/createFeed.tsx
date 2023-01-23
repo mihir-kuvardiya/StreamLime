@@ -22,7 +22,7 @@ import screenNameEnum from "../../../helper/screenNameEnum";
 const CreateFeedScreen = () => {
 
     const userData = useUserData();
-    const navigation = useNavigation();
+    const navigation:any = useNavigation();
     const [image, setImage] = useState('');
     const [uploadUrl, setUploadUrl] = useState('');
     const [description, setDescription] = useState('');
@@ -96,7 +96,7 @@ const CreateFeedScreen = () => {
             if (cameraResponse.errorMessage) {
               return;
             }
-            const resp = {
+            const resp:any = {
               uri: cameraResponse?.assets[0].uri,
               fileSize: cameraResponse?.assets[0].fileSize,
               filename: cameraResponse.assets[0].fileName,
@@ -147,7 +147,7 @@ const CreateFeedScreen = () => {
               return;
             }
       
-            const resp = {
+            const resp:any = {
               uri: cameraResponse?.assets[0].uri,
               fileSize: cameraResponse?.assets[0].fileSize,
               filename: cameraResponse.assets[0].fileName,

@@ -13,8 +13,8 @@ import images from "../../../theme/images";
 const UserProfileScreen = () => {
 
     const userData = useUserData();
-    const route = useRoute();
-    const navigation = useNavigation();
+    const route:any = useRoute();
+    const navigation:any = useNavigation();
     const [loading, setLoading] = useState(false);
     const [postLoading, setPostLoading] = useState(false);
     const [profileUser, setProfileUser] = useState([]);
@@ -28,7 +28,7 @@ const UserProfileScreen = () => {
     const getUserDetail = async () => {
         setLoading(true)
         try {
-            const user = await firestore().collection('user').doc(userData?.userId).get();
+            const user:any = await firestore().collection('user').doc(userData?.userId).get();
             setProfileUser(user._data);
             setLoading(false);
         } catch (error) {
@@ -40,7 +40,7 @@ const UserProfileScreen = () => {
     const getUserPosts = () => {
         setPostLoading(true);
         firestore().collection('posts').orderBy('createdAt', 'desc').where('userId','==',route?.params?.userId).get()
-        .then((res)=>{
+        .then((res:any)=>{
             setPosts(res._docs);
             setPostLoading(false);
         })

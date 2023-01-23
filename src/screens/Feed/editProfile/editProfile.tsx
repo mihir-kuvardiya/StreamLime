@@ -127,7 +127,7 @@ const EditProfileScreen = () => {
             if (cameraResponse.errorMessage) {
               return;
             }
-            const resp = {
+            const resp:any = {
               uri: cameraResponse?.assets[0].uri,
               fileSize: cameraResponse?.assets[0].fileSize,
               filename: cameraResponse.assets[0].fileName,
@@ -177,7 +177,7 @@ const EditProfileScreen = () => {
               return;
             }
       
-            const resp = {
+            const resp:any = {
               uri: cameraResponse?.assets[0].uri,
               fileSize: cameraResponse?.assets[0].fileSize,
               filename: cameraResponse.assets[0].fileName,

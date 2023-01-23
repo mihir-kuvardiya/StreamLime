@@ -13,46 +13,9 @@ import { useDispatch } from "react-redux";
 import { commentAction, useCommentistData } from "../../../redux/reducers/commentSlice/commetnSlice";
 import NoCommentsView from "./noComments/noComments";
 
-const data = [
-    
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    
-]
-
 const CommentScreen = () => {
 
-    const route = useRoute();
+    const route:any = useRoute();
     const dispatch = useDispatch();
     const userData = useUserData();
     const postId = route?.params?.postId;

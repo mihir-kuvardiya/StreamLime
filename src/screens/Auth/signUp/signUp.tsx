@@ -15,7 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 
 const SignUpScreen = () => {
 
-    const navigation = useNavigation();
+    const navigation:any = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPass, setRepeatPass] = useState('');

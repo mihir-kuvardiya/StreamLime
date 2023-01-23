@@ -19,7 +19,7 @@ export interface FeedCardProps{
 
 const FeedCard = ({item}:FeedCardProps) => {
 
-    const naviagtion = useNavigation();
+    const naviagtion:any = useNavigation();
     const [liked, setLiked] = useState(false);
 
     const onPressComment = () => {
