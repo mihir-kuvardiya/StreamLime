@@ -49,7 +49,7 @@ export default ScaledSheet.create({
     },
     mainFeedContainer:{
         marginTop: ms(5),
-        padding:ms(8)
+        paddingVertical:ms(8)
     },
     feedMainImage:{
         width:'100%',

@@ -8,7 +8,6 @@ export default ScaledSheet.create({
     },
     totalComments:{
         color:colorPalates.AppTheme.text,
-        fontFamily:'Ubuntu-Rgular',
         fontSize:ms(16),
         marginTop:ms(10)
     },

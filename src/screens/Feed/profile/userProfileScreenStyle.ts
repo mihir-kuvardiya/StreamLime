@@ -39,7 +39,6 @@ export default ScaledSheet.create({
     },
     fullName:{
         color:colorPalates.AppTheme.text,
-        fontFamily:'Ubuntu-Rgular',
         fontSize:ms(16)
     },
     bio:{
