@@ -12,18 +12,62 @@ import screenNameEnum from "../../../../helper/screenNameEnum";
 import images from "../../../../theme/images";
 import moment from "moment";
 import FeedImageLoader from "../../../../components/feedImageLoader/feedImageLoader";
+import firestore from '@react-native-firebase/firestore';
+import { useUserData } from "../../../../redux/reducers/userSlice/userSlice";
 
 export interface FeedCardProps{
     item: any,
 }
 
 const FeedCard = ({item}:FeedCardProps) => {
-
+console.log('item',item)
+    const userData = useUserData();
     const naviagtion:any = useNavigation();
     const [liked, setLiked] = useState(false);
 
+    // firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).get()
+    // .then((result)=>{
+    //     console.log('called')
+    //     if(result.exists){
+    //         setLiked(true)
+    //     }else{
+    //         setLiked(false)
+    //     }
+    // }) 
+    // .catch((err)=>{
+    //     console.log(err,'error in get like ot not in feedCard');
+    // })
+
     const onPressComment = () => {
         naviagtion.navigate(screenNameEnum.CommentScreen,{postId:item?.postId});
+    }
+
+    const onPressLike = () => {
+        setLiked(!liked)
+        try {
+            firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).get()
+            .then((result)=>{
+                if(result.exists){
+                    firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).delete()
+                    .then(() => {
+                        console.log('like removed!');
+                    });
+                }else{
+                    firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).set({
+                        postId: item?.postId,
+                        userId: userData?.userId,
+                        createdAt: new Date()
+                    })
+                    setLiked(false)
+                }
+            })
+            .catch((err)=>{
+                console.log(err,'error in get like ot not in feedCard');
+            })
+            
+        } catch (error) {
+            console.log(error,'error in like post')
+        }
     }
     
     return(
@@ -56,11 +100,11 @@ const FeedCard = ({item}:FeedCardProps) => {
                 </Text>}
             </View>
             <View style={feedCardStyle.FeedBottomContainer}>
-                <Pressable style={feedCardStyle.likeContainer} onPress={()=>setLiked(!liked)}>
+                <Pressable style={feedCardStyle.likeContainer} onPress={onPressLike}>
                         <IconAntDesign 
-                            name={item?.isLiked ? "heart" : "hearto"}  
+                            name={liked ? "heart" : "hearto"}  
                             size={25} 
-                            color={item?.isLiked ? colorPalates.AppTheme.secondary : colorPalates.AppTheme.text}
+                            color={liked ? colorPalates.AppTheme.secondary : colorPalates.AppTheme.text}
                         />
                     <Text style={feedCardStyle.likeCount}>{item?.likeCount}</Text>
                 </Pressable>

@@ -7,10 +7,12 @@ import firestore from '@react-native-firebase/firestore';
 import { useDispatch } from "react-redux";
 import { feedAction, useFeedListData } from "../../../redux/reducers/feedSlice/feedSlice";
 import colorPalates from "../../../theme/colorPalates";
+import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
 
 const FeedList = () => {
 
     const dispatch = useDispatch();
+    const userData = useUserData();
     const feedData = useFeedListData();
     const [loading, setLoading] = useState(false);
 
@@ -28,16 +30,16 @@ const FeedList = () => {
                 let date = new Date(element.data().createdAt.toDate())
                 promises.push(getUserDetail(element.data().userId)
                 .then((val:any)=>{
-                    posts = [...posts,{
-                        postId:element.data().postId,
-                        postUrl:element.data().postUrl,
-                        postDescription:element.data().postDescription,
-                        createdAt: date.toString(),
-                        isLiked:element.data().isLiked,
-                        userId:element.data().userId,
-                        profilePicture: val.profilePicture,
-                        userName: val.userName,
-                    }]
+                        posts = [...posts,{
+                            postId:element.data().postId,
+                            postUrl:element.data().postUrl,
+                            postDescription:element.data().postDescription,
+                            createdAt: date.toString(),
+                            // isLiked:isLiked,
+                            userId:element.data().userId,
+                            profilePicture: val.profilePicture,
+                            userName: val.userName,
+                        }]
                 })
                 .catch((e)=>{
                     console.log(e,'erro from get promise rejection');
@@ -47,6 +49,7 @@ const FeedList = () => {
             });
 
             await Promise.all(promises).then(()=>{
+                console.log('called')
                 dispatch(feedAction.setFeedData({collectionName:'feedList', data: posts}));
                 setLoading(false);
             })
@@ -62,6 +65,22 @@ const FeedList = () => {
             firestore().collection('user').doc(val).get()
             .then((result)=>{
                 resolve(result.data())
+            })
+            .catch((err)=>{
+                reject(err);
+            })
+        })
+    }
+
+    const getLikeDetail = (val:string) => {
+        return new Promise((resolve,reject)=>{
+            firestore().collection('likes').doc(val).get()
+            .then((result)=>{
+                if(result.exists){
+                    resolve(true)
+                }else{
+                    resolve(false)
+                }
             })
             .catch((err)=>{
                 reject(err);

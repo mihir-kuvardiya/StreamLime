@@ -49,7 +49,6 @@ const CreateFeedScreen = () => {
                     postUrl: url,
                     postDescription: description,
                     userId: userData?.userId,
-                    isLiked: false,
                     createdAt: new Date()
                 })
                 setUploading(false);

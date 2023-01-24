@@ -32,7 +32,7 @@ const FeedDetailScreen = () => {
                     postUrl:postData._data?.postUrl,
                     postDescription:postData._data?.postDescription,
                     createdAt:date.toString(),
-                    isLiked:postData._data?.isLiked,
+                    // isLiked:postData._data?.isLiked,
                     userId:postData._data?.userId,
                     profilePicture:userDetail._data?.profilePicture,
                     userName:userDetail._data?.userName,
