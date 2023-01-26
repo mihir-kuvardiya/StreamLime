@@ -23,20 +23,7 @@ const FeedCard = ({item}:FeedCardProps) => {
 console.log('item',item)
     const userData = useUserData();
     const naviagtion:any = useNavigation();
-    const [liked, setLiked] = useState(false);
-
-    // firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).get()
-    // .then((result)=>{
-    //     console.log('called')
-    //     if(result.exists){
-    //         setLiked(true)
-    //     }else{
-    //         setLiked(false)
-    //     }
-    // }) 
-    // .catch((err)=>{
-    //     console.log(err,'error in get like ot not in feedCard');
-    // })
+    const [liked, setLiked] = useState(item.isLiked);
 
     const onPressComment = () => {
         naviagtion.navigate(screenNameEnum.CommentScreen,{postId:item?.postId});

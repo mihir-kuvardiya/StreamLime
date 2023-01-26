@@ -30,13 +30,14 @@ const FeedList = () => {
                 let date = new Date(element.data().createdAt.toDate())
                 promises.push(
                     getUserDetail(element.data().userId)
-                    .then((val:any)=>{
+                    .then(async (val:any)=>{
+                        const isLike = await firestore().collection('likes').doc(`LIKE#${element.data().postId}#${userData?.userId}`).get()
                         posts = [...posts,{
                             postId:element.data().postId,
                             postUrl:element.data().postUrl,
                             postDescription:element.data().postDescription,
                             createdAt: date.toString(),
-                            // isLiked:isLiked,
+                            isLiked: isLike.exists ? true : false,
                             userId:element.data().userId,
                             profilePicture: val.profilePicture,
                             userName: val.userName,

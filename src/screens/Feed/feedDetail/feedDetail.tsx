@@ -7,11 +7,13 @@ import firestore from '@react-native-firebase/firestore';
 import { useDispatch } from "react-redux";
 import { feedAction, useFeedDetailData } from "../../../redux/reducers/feedSlice/feedSlice";
 import colorPalates from "../../../theme/colorPalates";
+import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
 
 const FeedDetailScreen = () => {
 
     const route:any = useRoute();
     const dispatch = useDispatch();
+    const userData = useUserData();             
     const feedDetail = useFeedDetailData();
     const [loading, setLoading] = useState(false);
 
@@ -25,6 +27,8 @@ const FeedDetailScreen = () => {
             const postData:any = await firestore().collection('posts').doc(route?.params?.postId).get();
             let date = new Date(postData._data?.createdAt.toDate())
             const userDetail:any = await firestore().collection('user').doc(postData._data.userId).get();
+            const isLike = await firestore().collection('likes').doc(`LIKE#${postData._data?.postId}#${userData?.userId}`).get()
+            
             dispatch(feedAction.setFeedData({
                 collectionName:'feedDetail',
                 data:{
@@ -32,7 +36,7 @@ const FeedDetailScreen = () => {
                     postUrl:postData._data?.postUrl,
                     postDescription:postData._data?.postDescription,
                     createdAt:date.toString(),
-                    // isLiked:postData._data?.isLiked,
+                    isLiked: isLike.exists ? true : false,
                     userId:postData._data?.userId,
                     profilePicture:userDetail._data?.profilePicture,
                     userName:userDetail._data?.userName,
