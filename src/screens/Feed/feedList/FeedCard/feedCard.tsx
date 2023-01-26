@@ -50,7 +50,7 @@ console.log('item',item)
                 if(result.exists){
                     firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).delete()
                     .then(() => {
-                        console.log('like removed!');
+                        console.log('like removed !');
                     });
                 }else{
                     firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).set({
@@ -58,7 +58,9 @@ console.log('item',item)
                         userId: userData?.userId,
                         createdAt: new Date()
                     })
-                    setLiked(false)
+                    .then(()=>{
+                        console.log('like added !');
+                    })
                 }
             })
             .catch((err)=>{

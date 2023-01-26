@@ -28,8 +28,9 @@ const FeedList = () => {
             let posts: any[] = [];
             (await res).forEach(element => {
                 let date = new Date(element.data().createdAt.toDate())
-                promises.push(getUserDetail(element.data().userId)
-                .then((val:any)=>{
+                promises.push(
+                    getUserDetail(element.data().userId)
+                    .then((val:any)=>{
                         posts = [...posts,{
                             postId:element.data().postId,
                             postUrl:element.data().postUrl,
