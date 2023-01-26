@@ -12,7 +12,7 @@ import colorPalates from "../../../theme/colorPalates";
 import CameraModel from "../../../components/cameraModal/cameramodal";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Permission from "../../../helper/permission";
-import { getUploadMediaUrl, showToast } from "../../../helper/helper";
+import { Emmiter, getUploadMediaUrl, showToast } from "../../../helper/helper";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -55,7 +55,10 @@ const CreateFeedScreen = () => {
                 setUploadUrl('');
                 setImage('');
                 setDescription('');
-                navigation.navigate(screenNameEnum.FeedList)
+                navigation.navigate(screenNameEnum.FeedList);
+                setTimeout(() => {
+                    Emmiter.emit('getFeed');
+                }, 500);
             })
         })
         promise.catch(()=>{

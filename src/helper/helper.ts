@@ -1,5 +1,8 @@
 import { Platform, ToastAndroid } from "react-native";
 import RNFS from 'react-native-fs';
+import {EventEmitter} from 'fbemitter';
+
+export const Emmiter = new EventEmitter();
 
 interface PhotoModel {
   uri: string;

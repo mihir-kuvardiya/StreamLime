@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { Text, View, FlatList, SafeAreaView, ActivityIndicator } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
+import { Text, View, FlatList, SafeAreaView, ActivityIndicator, RefreshControl } from "react-native"
 import { ms } from "react-native-size-matters";
 import Header from "../../../components/header/header";
 import FeedCard from "./FeedCard/feedCard";
@@ -8,16 +8,30 @@ import { useDispatch } from "react-redux";
 import { feedAction, useFeedListData } from "../../../redux/reducers/feedSlice/feedSlice";
 import colorPalates from "../../../theme/colorPalates";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
+import { Emmiter } from "../../../helper/helper";
 
 const FeedList = () => {
 
     const dispatch = useDispatch();
     const userData = useUserData();
     const feedData = useFeedListData();
+    const FlatListRef = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(()=>{
         getInitPosts()
+        const emit = Emmiter.addListener('getFeed', () => {
+            getInitPosts();
+            if(feedData.length <= 1){
+                return;
+            }
+            FlatListRef.current?.scrollToIndex({
+                index: 0,
+                animated: true,
+            });
+        })
+        return () => {emit.remove();};
     },[])
 
     const getInitPosts = async () => {
@@ -51,6 +65,7 @@ const FeedList = () => {
                 .catch((e)=>{
                     console.log(e,'erro from get promise rejection');
                     setLoading(false);
+                    setRefreshing(false);
                 })
                 )
             });
@@ -59,11 +74,13 @@ const FeedList = () => {
                 console.log('called')
                 dispatch(feedAction.setFeedData({collectionName:'feedList', data: posts}));
                 setLoading(false);
+                setRefreshing(false);
             })
 
         } catch (error) {
             console.log(error,'error from get posts');
             setLoading(false);
+            setRefreshing(false);
         }
     }
 
@@ -79,6 +96,11 @@ const FeedList = () => {
         })
     }
 
+    const onRefreshFlatList = () => {
+        setRefreshing(true);
+        getInitPosts();
+    };
+
     return(
         <SafeAreaView style={{flex:1}}>
             <Header title="StreamLine"/>
@@ -86,6 +108,7 @@ const FeedList = () => {
             <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary} style={{flex:1,justifyContent:'center',alignItems:'center'}}/>
             :<FlatList 
                 data={feedData}
+                ref={FlatListRef}
                 renderItem={({item,index})=>(<FeedCard item={item} key={index}/>)}
                 showsVerticalScrollIndicator={false}
                 disableVirtualization={true}
@@ -94,6 +117,13 @@ const FeedList = () => {
                 maxToRenderPerBatch={5}
                 windowSize={50}
                 contentContainerStyle={{paddingBottom: 160}}
+                refreshControl={
+                    <RefreshControl
+                      colors={[colorPalates.AppTheme.primary]}
+                      refreshing={refreshing}
+                      onRefresh={onRefreshFlatList}
+                    />
+                }
             />}
         </SafeAreaView>
     )
