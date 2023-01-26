@@ -77,6 +77,6 @@ export default ScaledSheet.create({
     likeCount:{
         color:colors.grayShade8F,
         fontSize:ms(13),
-        marginLeft:ms(5)
+        marginLeft:ms(10)
     }
 })

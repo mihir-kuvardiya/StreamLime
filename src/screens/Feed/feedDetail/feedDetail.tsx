@@ -28,6 +28,8 @@ const FeedDetailScreen = () => {
             let date = new Date(postData._data?.createdAt.toDate())
             const userDetail:any = await firestore().collection('user').doc(postData._data.userId).get();
             const isLike = await firestore().collection('likes').doc(`LIKE#${postData._data?.postId}#${userData?.userId}`).get()
+            const likeCount = await firestore().collection('likes').where('postId','==',postData._data?.postId).get();
+            const commentCount = await firestore().collection('comment').where('postId','==',postData._data?.postId).get();
             
             dispatch(feedAction.setFeedData({
                 collectionName:'feedDetail',
@@ -40,6 +42,8 @@ const FeedDetailScreen = () => {
                     userId:postData._data?.userId,
                     profilePicture:userDetail._data?.profilePicture,
                     userName:userDetail._data?.userName,
+                    likeCount: likeCount.size,
+                    commentCount: commentCount.size,
                 }
             }))
            setLoading(false);

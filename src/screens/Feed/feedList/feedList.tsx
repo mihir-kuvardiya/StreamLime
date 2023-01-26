@@ -31,7 +31,10 @@ const FeedList = () => {
                 promises.push(
                     getUserDetail(element.data().userId)
                     .then(async (val:any)=>{
-                        const isLike = await firestore().collection('likes').doc(`LIKE#${element.data().postId}#${userData?.userId}`).get()
+                        const isLike = await firestore().collection('likes').doc(`LIKE#${element.data().postId}#${userData?.userId}`).get();
+                        const likeCount = await firestore().collection('likes').where('postId','==',element.data().postId).get();
+                        const commentCount = await firestore().collection('comment').where('postId','==',element.data().postId).get();
+
                         posts = [...posts,{
                             postId:element.data().postId,
                             postUrl:element.data().postUrl,
@@ -41,6 +44,8 @@ const FeedList = () => {
                             userId:element.data().userId,
                             profilePicture: val.profilePicture,
                             userName: val.userName,
+                            likeCount: likeCount.size,
+                            commentCount: commentCount.size,
                         }]
                 })
                 .catch((e)=>{
@@ -67,22 +72,6 @@ const FeedList = () => {
             firestore().collection('user').doc(val).get()
             .then((result)=>{
                 resolve(result.data())
-            })
-            .catch((err)=>{
-                reject(err);
-            })
-        })
-    }
-
-    const getLikeDetail = (val:string) => {
-        return new Promise((resolve,reject)=>{
-            firestore().collection('likes').doc(val).get()
-            .then((result)=>{
-                if(result.exists){
-                    resolve(true)
-                }else{
-                    resolve(false)
-                }
             })
             .catch((err)=>{
                 reject(err);
