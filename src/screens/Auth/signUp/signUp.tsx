@@ -19,6 +19,7 @@ const SignUpScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPass, setRepeatPass] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const OnPressLogin = () => {
         navigation.navigate(screenNameEnum.LoginScreen)
@@ -42,7 +43,7 @@ const SignUpScreen = () => {
         }
 
         const username = `${trimmedEmail.split('@')[0]}${Math.floor(1000 + Math.random() * 9000)}`;
-
+        setLoading(true);
         auth().createUserWithEmailAndPassword(trimmedEmail, password)
         .then((res) => {
             console.log('User account created & signed in!');
@@ -58,6 +59,8 @@ const SignUpScreen = () => {
             })
             .then(() => {
                 console.log('User added!');
+                setLoading(false);
+                navigation.navigate(screenNameEnum.LoginScreen)
             });
         })
         .catch(error => {
@@ -71,6 +74,7 @@ const SignUpScreen = () => {
                 console.log('That email address is invalid!');
             }
             console.log(error);
+            setLoading(false);
         });
     }
 
@@ -106,7 +110,7 @@ const SignUpScreen = () => {
             />
             </View>
             <View style={{marginVertical:ms(10)}}/>
-            <ThemeButton title="Sign Up" onPress={()=>onPressSignUp(email,password)}/>
+            <ThemeButton title="Sign Up" loading={loading} onPress={()=>onPressSignUp(email,password)}/>
             <View style={{alignItems:'center',marginTop:ms(50)}}>
             <Text style={signUpScreenStyle.loginText}>Already have an acoount 
                     <Text 
