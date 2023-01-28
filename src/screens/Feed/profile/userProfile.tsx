@@ -20,11 +20,15 @@ const UserProfileScreen = () => {
     const [profileUser, setProfileUser] = useState([]);
     const [posts, setPosts] = useState([])
     const [isFollow, setIsFollow] = useState(false);
+    const [followersCount, setFollowersCount] = useState(0);
+    const [followingCount, setFollowingCount] = useState(0);
 
     useEffect(()=>{
         getUserDetail();   
         getUserPosts();
         isFollowOrNot();
+        getFollowerCount();
+        getFollowingCount();
     },[])
 
     const getUserDetail = async () => {
@@ -63,6 +67,16 @@ const UserProfileScreen = () => {
         })
     }
 
+    const getFollowerCount = () => {
+        firestore().collection('followFollowing').where('oppositeUserId','==',route?.params?.userId).get()
+        .then((result)=>setFollowersCount(result.size))
+    }
+
+    const getFollowingCount = () => {
+        firestore().collection('followFollowing').where('userId','==',route?.params?.userId).get()
+        .then((result)=>setFollowingCount(result.size))
+    }
+
     const onPressEditProfile = () => {
         navigation.navigate(screenNameEnum.EditProfileScreen)
     }
@@ -84,6 +98,7 @@ const UserProfileScreen = () => {
                     firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${route?.params?.userId}`).delete()
                     .then(()=>{
                         console.log('unfollow')
+                        setFollowersCount(followersCount - 1)
                     })
                 }else{
                     firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${route?.params?.userId}`).set({
@@ -91,6 +106,7 @@ const UserProfileScreen = () => {
                         oppositeUserId: route?.params?.userId
                     }).then(()=>{
                         console.log('following')
+                        setFollowersCount(followersCount + 1)
                     })
                 }
             })
@@ -119,11 +135,11 @@ const UserProfileScreen = () => {
                     <Text style={userProfileScreenStyle.conterText}>Posts</Text>
                 </View>
                 <TouchableOpacity style={userProfileScreenStyle.CounterContainer} onPress={onPressFollowers}>
-                    <Text style={userProfileScreenStyle.Counter}>23.5K</Text>
+                    <Text style={userProfileScreenStyle.Counter}>{followersCount}</Text>
                     <Text style={userProfileScreenStyle.conterText}>Followers</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={userProfileScreenStyle.CounterContainer} onPress={onPressFollowing}>
-                    <Text style={userProfileScreenStyle.Counter}>23.5K</Text>
+                    <Text style={userProfileScreenStyle.Counter}>{followingCount}</Text>
                     <Text style={userProfileScreenStyle.conterText}>Following</Text>
                 </TouchableOpacity>
             </View>
