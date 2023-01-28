@@ -19,16 +19,18 @@ const UserProfileScreen = () => {
     const [postLoading, setPostLoading] = useState(false);
     const [profileUser, setProfileUser] = useState([]);
     const [posts, setPosts] = useState([])
+    const [isFollow, setIsFollow] = useState(false);
 
     useEffect(()=>{
         getUserDetail();   
         getUserPosts();
+        isFollowOrNot();
     },[])
 
     const getUserDetail = async () => {
         setLoading(true)
         try {
-            const user:any = await firestore().collection('user').doc(userData?.userId).get();
+            const user:any = await firestore().collection('user').doc(route?.params?.userId).get();
             setProfileUser(user._data);
             setLoading(false);
         } catch (error) {
@@ -50,6 +52,17 @@ const UserProfileScreen = () => {
         })
     }
 
+    const isFollowOrNot = () => {
+        firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${route?.params?.userId}`).get()
+        .then((result)=>{
+            if(result.exists){
+                setIsFollow(true)
+            }else{
+                setIsFollow(false)
+            }
+        })
+    }
+
     const onPressEditProfile = () => {
         navigation.navigate(screenNameEnum.EditProfileScreen)
     }
@@ -60,6 +73,30 @@ const UserProfileScreen = () => {
 
     const onPressFollowing = () => {
         navigation.navigate(screenNameEnum.TopTabBar,{index: 1})
+    }
+
+    const onPressFollow = () => {
+        setIsFollow(!isFollow)
+        try {
+            firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${route?.params?.userId}`).get()
+            .then((result)=>{
+                if(result.exists){
+                    firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${route?.params?.userId}`).delete()
+                    .then(()=>{
+                        console.log('unfollow')
+                    })
+                }else{
+                    firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${route?.params?.userId}`).set({
+                        userId: userData?.userId,
+                        oppositeUserId: route?.params?.userId
+                    }).then(()=>{
+                        console.log('following')
+                    })
+                }
+            })
+        } catch (error) {
+            console.log(error,'error in is follow in user profile')
+        }
     }
 
     return(
@@ -99,8 +136,8 @@ const UserProfileScreen = () => {
                     <Text style={userProfileScreenStyle.editProfileText}>Edit Profile</Text>
                 </TouchableOpacity>
             :
-                <TouchableOpacity style={userProfileScreenStyle.editButton}>
-                    <Text style={userProfileScreenStyle.editProfileText}>Unfollow</Text>
+                <TouchableOpacity style={userProfileScreenStyle.editButton} onPress={onPressFollow}>
+                    <Text style={userProfileScreenStyle.editProfileText}>{isFollow ? 'Following' : 'Follow'}</Text>
                 </TouchableOpacity>
             }
             <View style={userProfileScreenStyle.emptyView}/>

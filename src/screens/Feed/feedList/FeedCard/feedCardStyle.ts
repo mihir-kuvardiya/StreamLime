@@ -48,8 +48,7 @@ export default ScaledSheet.create({
         fontSize: 13,
     },
     mainFeedContainer:{
-        marginTop: ms(5),
-        paddingVertical:ms(8)
+        paddingVertical:ms(2)
     },
     feedMainImage:{
         width:'100%',

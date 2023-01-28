@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { Image, Text, View, Pressable } from "react-native";
+import { Image, Text, View, Pressable, TouchableOpacity } from "react-native";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
 import IconEntypo from "react-native-vector-icons/Entypo";
@@ -23,7 +23,11 @@ const FeedCard = ({item}:FeedCardProps) => {
 console.log('item',item)
     const userData = useUserData();
     const naviagtion:any = useNavigation();
-    const [liked, setLiked] = useState(item.isLiked);
+    const [liked, setLiked] = useState(item?.isLiked);
+
+    const onPressProfile = () => {
+        naviagtion.navigate(screenNameEnum.UserProfileScreen,{userId: item?.userId})
+    }
 
     const onPressComment = () => {
         naviagtion.navigate(screenNameEnum.CommentScreen,{postId:item?.postId});
@@ -68,21 +72,14 @@ console.log('item',item)
                         source={item?.profilePicture ? { uri: item?.profilePicture } : images.dp}
                         resizeMode={"cover"} 
                     />
-                    <View style={feedCardStyle.feedHeaderTextContainer}>
+                    <TouchableOpacity style={feedCardStyle.feedHeaderTextContainer} onPress={onPressProfile}>
                         <Text style={feedCardStyle.feedHeaderUserName}>{item?.userName}</Text>
                         <Text style={feedCardStyle.feedHeaderTime}>{moment(item?.createdAt).local().startOf('seconds').fromNow() || ''}</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <IconEntypo name="dots-three-vertical" size={20} color={colors.grayShade8F} />
             </View> 
             <View style={feedCardStyle.mainFeedContainer}>
-                {/* <Image
-                    style={feedCardStyle.feedMainImage}
-                    source={{
-                        uri:item?.postUrl,
-                    }}
-                    resizeMode={"cover"} 
-                /> */}
                 <FeedImageLoader url={item?.postUrl}/>
                 {item?.postDescription && <Text style={feedCardStyle.feedDescription}>
                     {item?.postDescription}
