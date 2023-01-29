@@ -71,6 +71,33 @@ const FollowersScreen = () => {
     }
 
     const FollowerRow = ({item}) => {
+
+        const [isFollow, setIsFollow] = useState(item?.isFollow);
+
+        const onPressFollow = () => {
+            setIsFollow(!isFollow)
+            try {
+                firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).get()
+                .then((result)=>{
+                    if(result.exists){
+                        firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).delete()
+                        .then(()=>{
+                            console.log('unfollow in followers List')
+                        })
+                    }else{
+                        firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).set({
+                            userId: userData?.userId,
+                            oppositeUserId: item?.userId
+                        }).then(()=>{
+                            console.log('following in followers List')
+                        })
+                    }
+                })
+            } catch (error) {
+                console.log(error,'error in is follow in followerlist')
+            }
+        }
+        
         return(
         <View style={followersStyle.rowContainer}>
             <View style={followersStyle.rowSecondContainer}>
@@ -88,13 +115,8 @@ const FollowersScreen = () => {
                 <Text style={followersStyle.followingText}>You</Text>
             </View>
             :
-            item?.isFollow ?
-            <TouchableOpacity style={followersStyle.followingButton}>
-                <Text style={followersStyle.followingText}>Following</Text>
-            </TouchableOpacity>
-            :
-            <TouchableOpacity style={followersStyle.followButton}>
-                <Text style={followersStyle.followText}>Follow</Text>
+            <TouchableOpacity style={isFollow ? followersStyle.followingButton : followersStyle.followButton} onPress={onPressFollow}>
+                <Text style={isFollow ? followersStyle.followingText : followersStyle.followText}>{isFollow ? 'Following' : 'Follow'}</Text>
             </TouchableOpacity>
             }
         </View>

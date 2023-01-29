@@ -11,17 +11,6 @@ import colorPalates from "../../../../../theme/colorPalates";
 import IconEntypo from "react-native-vector-icons/Entypo";
 import { useUserData } from "../../../../../redux/reducers/userSlice/userSlice";
 
-const data = [
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin123',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-    {imageUrl: '',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty'},
-]
-
 const FollowingsScreen = () => {
 
     const route:any = useRoute();
@@ -82,6 +71,33 @@ const FollowingsScreen = () => {
     }
 
     const FollowingRow = ({item}) => {
+
+        const [isFollow, setIsFollow] = useState(item?.isFollow);
+
+        const onPressFollow = () => {
+            setIsFollow(!isFollow)
+            try {
+                firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).get()
+                .then((result)=>{
+                    if(result.exists){
+                        firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).delete()
+                        .then(()=>{
+                            console.log('unfollow in followers List')
+                        })
+                    }else{
+                        firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).set({
+                            userId: userData?.userId,
+                            oppositeUserId: item?.userId
+                        }).then(()=>{
+                            console.log('following in followers List')
+                        })
+                    }
+                })
+            } catch (error) {
+                console.log(error,'error in follow in following list')
+            }
+        }
+
         return(
         <View style={followingStyle.rowContainer}>
             <View style={followingStyle.rowSecondContainer}>
@@ -99,13 +115,8 @@ const FollowingsScreen = () => {
                 <Text style={followingStyle.followingText}>You</Text>
             </View>
             :
-            item?.isFollow ?
-            <TouchableOpacity style={followingStyle.followingButton}>
-                <Text style={followingStyle.followingText}>Following</Text>
-            </TouchableOpacity>
-            : 
-            <TouchableOpacity style={followingStyle.followButton}>
-                <Text style={followingStyle.followText}>Follow</Text>
+            <TouchableOpacity style={isFollow ? followingStyle.followingButton : followingStyle.followButton} onPress={onPressFollow}>
+                <Text style={isFollow ? followingStyle.followingText : followingStyle.followText}>{isFollow ? 'Following' : 'Follow'}</Text>
             </TouchableOpacity>
             }
         </View>

@@ -82,11 +82,11 @@ const UserProfileScreen = () => {
     }
 
     const onPressFollowers = () => {
-        navigation.navigate(screenNameEnum.TopTabBar,{index: 0, userId: route?.params?.userId})
+        navigation.navigate(screenNameEnum.TopTabBar,{index: 0, userId: route?.params?.userId, userName:profileUser?.userName})
     }
 
     const onPressFollowing = () => {
-        navigation.navigate(screenNameEnum.TopTabBar,{index: 1, userId: route?.params?.userId})
+        navigation.navigate(screenNameEnum.TopTabBar,{index: 1, userId: route?.params?.userId, userName:profileUser?.userName})
     }
 
     const onPressFollow = () => {

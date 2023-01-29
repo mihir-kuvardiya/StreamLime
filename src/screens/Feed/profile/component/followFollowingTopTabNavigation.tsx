@@ -50,7 +50,7 @@ const TopTabBar = () => {
 
     return(
         <SafeAreaView style={{flex:1}}>
-            <Header title='mihir_2811' isBack={true}/>
+            <Header title={route?.params?.userName} isBack={true}/>
             <TabView
                 renderTabBar={renderTabBar}
                 navigationState={{index, routes}}
