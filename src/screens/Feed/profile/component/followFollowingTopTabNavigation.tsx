@@ -21,11 +21,11 @@ const TopTabBar = () => {
         switch (route?.key) {
           case 'followers':
             return (
-              <FollowersScreen {...route} jumpTo={jumpTo} />
+              <FollowersScreen {...route} jumpTo={jumpTo} userId={route?.params?.userId}/>
             );
           case 'following':
             return (
-              <FollowingsScreen {...route} jumpTo={jumpTo}/>
+              <FollowingsScreen {...route} jumpTo={jumpTo} userId={route?.params?.userId}/>
             );
         }
       };

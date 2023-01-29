@@ -3,6 +3,7 @@ import colorPalates from "../../../../../theme/colorPalates";
 
 export default ScaledSheet.create({
     flatListContainer:{
+        flex:1,
         paddingBottom: ms(40),
         paddingTop: ms(3)
     },

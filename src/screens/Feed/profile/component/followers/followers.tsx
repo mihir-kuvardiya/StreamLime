@@ -1,24 +1,74 @@
-import React from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { ms } from "react-native-size-matters";
-import colorPalates from "../../../../../theme/colorPalates";
+import { useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import images from "../../../../../theme/images";
 import followersStyle from "./followersStyle";
-
-const data = [
-    {imageUrl: 'https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?auto=compress&cs=tinysrgb&w=600',
-    userName: 'Bhavin123',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty',
-    isFollow: true},
-    {imageUrl: '',
-    userName: 'Bhavin',
-    createdAt: '3d',
-    commentText: 'hey looking Nice and Pretty',
-    isFollow: false},
-]
+import firestore from '@react-native-firebase/firestore';
+import { useDispatch } from "react-redux";
+import { followFollowingAction, useFollowersListData } from "../../../../../redux/reducers/followFollowingSlice/followFollowingSlice";
+import colorPalates from "../../../../../theme/colorPalates";
+import IconEntypo from "react-native-vector-icons/Entypo";
+import { ms } from "react-native-size-matters";
+import { useUserData } from "../../../../../redux/reducers/userSlice/userSlice";
 
 const FollowersScreen = () => {
+
+    const route:any = useRoute();
+    const dispatch = useDispatch();
+    const userData = useUserData();
+    const followersListRedux = useFollowersListData();
+    const userId = route?.params?.userId;
+    const [loading, setLoading] = useState(false);
+
+    useEffect(()=>{
+        getFollowers();
+    },[])
+
+    const getFollowers = async () => {
+        setLoading(true);
+        try {
+            const res = firestore().collection('followFollowing').where('oppositeUserId','==',route?.params?.userId).get()
+            let promises: any[] = [];
+            let followersList: any[] = [];
+            (await res).forEach(element => {
+                promises.push(
+                    getUserDetail(element.data().userId)
+                    .then(async (val:any)=>{
+                        const isFollow = await firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${element.data().userId}`).get()
+                        followersList = [...followersList,{
+                            userId: element.data().userId,
+                            userName: val.userName,
+                            profilePicture: val.profilePicture,
+                            isFollow: isFollow.exists ? true : false
+                        }] 
+                    })
+                    .catch((e)=>{
+                        setLoading(false);
+                        console.log(e,'promise rejection in followers list')
+                    })
+                )
+            })
+            await Promise.all(promises).then(()=>{
+                setLoading(false);
+                dispatch(followFollowingAction.setFollowerListData(followersList))
+            })
+        } catch (error) {
+            setLoading(false);
+            console.log(error,'error in get followers')
+        }
+    }
+
+    const getUserDetail = (val:string) => {
+        return new Promise((resolve, reject) => {
+            firestore().collection('user').doc(val).get()
+            .then((result)=>{
+                resolve(result.data())
+            })
+            .catch((err)=>{
+                reject(err);
+            })
+        })
+    }
 
     const FollowerRow = ({item}) => {
         return(
@@ -26,14 +76,19 @@ const FollowersScreen = () => {
             <View style={followersStyle.rowSecondContainer}>
             <Image
                  style={followersStyle.image}
-                 source={item?.imageUrl ? {
-                     uri: item?.imageUrl,
+                 source={item?.profilePicture ? {
+                     uri: item?.profilePicture,
                  } : images.dp}
                  resizeMode={"cover"} 
             />
             <Text style={followersStyle.userName}>{item?.userName}</Text>
             </View>
-            {item?.isFollow ?
+            {item?.userId === userData?.userId ?
+            <View style={followersStyle.followingButton}>
+                <Text style={followersStyle.followingText}>You</Text>
+            </View>
+            :
+            item?.isFollow ?
             <TouchableOpacity style={followersStyle.followingButton}>
                 <Text style={followersStyle.followingText}>Following</Text>
             </TouchableOpacity>
@@ -45,19 +100,30 @@ const FollowersScreen = () => {
         </View>
         )
     }
+
     return(
         <View style={{flex:1}}>
-        <FlatList 
-            data={data}
-            renderItem={({item,index})=>(<FollowerRow item={item} key={index}/>)}
-            showsVerticalScrollIndicator={false}
-            disableVirtualization={true}
-            keyboardShouldPersistTaps="always"
-            scrollEventThrottle={16}
-            maxToRenderPerBatch={5}
-            windowSize={50}
-            contentContainerStyle={followersStyle.flatListContainer}
-        />
+            {loading ? 
+                <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary} style={{flex:1,justifyContent:'center',alignItems:'center'}}/>
+            : 
+                <FlatList 
+                    data={followersListRedux}
+                    renderItem={({item,index})=>(<FollowerRow item={item} key={index}/>)}
+                    showsVerticalScrollIndicator={false}
+                    disableVirtualization={true}
+                    keyboardShouldPersistTaps="always"
+                    scrollEventThrottle={16}
+                    maxToRenderPerBatch={5}
+                    windowSize={50}
+                    contentContainerStyle={followersStyle.flatListContainer}
+                    ListEmptyComponent={
+                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                            <IconEntypo name="slideshare" size={150} color={colorPalates.AppTheme.primary}/>
+                            <Text style={{fontSize:ms(22),fontFamily:'Ubuntu-Regular',marginTop:ms(20),color:colorPalates.AppTheme.primary}}>No Followers</Text>
+                        </View>
+                    }
+                />
+            }
         </View>
     )
 }

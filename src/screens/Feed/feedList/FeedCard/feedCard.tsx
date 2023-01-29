@@ -20,7 +20,6 @@ export interface FeedCardProps{
 }
 
 const FeedCard = ({item}:FeedCardProps) => {
-console.log('item',item)
     const userData = useUserData();
     const naviagtion:any = useNavigation();
     const [liked, setLiked] = useState(item?.isLiked);
