@@ -14,6 +14,8 @@ import moment from "moment";
 import FeedImageLoader from "../../../../components/feedImageLoader/feedImageLoader";
 import firestore from '@react-native-firebase/firestore';
 import { useUserData } from "../../../../redux/reducers/userSlice/userSlice";
+import { useDispatch } from "react-redux";
+import { feedAction } from "../../../../redux/reducers/feedSlice/feedSlice";
 
 export interface FeedCardProps{
     item: any,
@@ -21,8 +23,8 @@ export interface FeedCardProps{
 
 const FeedCard = ({item}:FeedCardProps) => {
     const userData = useUserData();
+    const dispatch = useDispatch();
     const naviagtion:any = useNavigation();
-    const [liked, setLiked] = useState(item?.isLiked);
 
     const onPressProfile = () => {
         naviagtion.navigate(screenNameEnum.UserProfileScreen,{userId: item?.userId})
@@ -33,7 +35,9 @@ const FeedCard = ({item}:FeedCardProps) => {
     }
 
     const onPressLike = () => {
-        setLiked(!liked)
+        dispatch(feedAction.updateLike({
+            id:item?.postId
+        }))
         try {
             firestore().collection('likes').doc(`LIKE#${item?.postId}#${userData?.userId}`).get()
             .then((result)=>{
@@ -87,9 +91,9 @@ const FeedCard = ({item}:FeedCardProps) => {
             <View style={feedCardStyle.FeedBottomContainer}>
                 <Pressable style={feedCardStyle.likeContainer} onPress={onPressLike}>
                         <IconAntDesign 
-                            name={liked ? "heart" : "hearto"}  
+                            name={item?.isLiked ? "heart" : "hearto"}  
                             size={25} 
-                            color={liked ? colorPalates.AppTheme.secondary : colorPalates.AppTheme.text}
+                            color={item?.isLiked ? colorPalates.AppTheme.secondary : colorPalates.AppTheme.text}
                         />
                     <Text style={feedCardStyle.likeCount}>{item?.likeCount}</Text>
                 </Pressable>

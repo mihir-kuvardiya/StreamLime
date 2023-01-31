@@ -141,7 +141,7 @@ const FollowingsScreen = () => {
                         ListEmptyComponent={
                             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                                 <IconEntypo name="slideshare" size={150} color={colorPalates.AppTheme.primary}/>
-                                <Text style={{fontSize:ms(22),fontFamily:'Ubuntu-Regular',marginTop:ms(20),color:colorPalates.AppTheme.primary}}>No Followers</Text>
+                                <Text style={{fontSize:ms(22),fontFamily:'Ubuntu-Regular',marginTop:ms(20),color:colorPalates.AppTheme.primary}}>0 Followings</Text>
                             </View>
                         }
                     />
