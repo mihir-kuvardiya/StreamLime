@@ -10,8 +10,8 @@ import { showToast } from "../../../helper/helper";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
 import firestore from '@react-native-firebase/firestore';
 import { useDispatch } from "react-redux";
-import { commentAction, useCommentistData } from "../../../redux/reducers/commentSlice/commetnSlice";
 import NoCommentsView from "./noComments/noComments";
+import { feedAction, useCommentistData } from "../../../redux/reducers/feedSlice/feedSlice";
 
 const CommentScreen = () => {
 
@@ -22,8 +22,6 @@ const CommentScreen = () => {
     const commentData = useCommentistData();
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
-
-    console.log(commentData,'ccccccccc')
 
     useEffect(()=>{
         getInitComments();
@@ -57,7 +55,7 @@ const CommentScreen = () => {
             })
 
             await Promise.all(promises).then(()=>{
-                dispatch(commentAction.setCommentData({collectionName:'commentsList', data: comments}));
+                dispatch(feedAction.setCommentData({collectionName:'commentsList', data: comments}));
                 setLoading(false);
             })
         } catch (error) {
@@ -85,7 +83,7 @@ const CommentScreen = () => {
             return;
         }
 
-        const commentId = `comment#${userData.userId}` 
+        const commentId = `comment#${userData.userId}#${postId}#${new Date()}` 
 
         firestore().collection('comment').doc(commentId)
         .set({
@@ -98,6 +96,17 @@ const CommentScreen = () => {
         .then(() => {
             console.log('comment added!');
             setComment('')
+            dispatch(feedAction.updateComment({
+                data:{
+                    commentId: commentId,
+                    commentText: comment,
+                    createdAt: new Date(),
+                    postId: postId,
+                    userId: userData.userId,
+                    profilePicture: userData.profilePicture,
+                    userName: userData.userName,
+                },
+            }))
         });
     }
 
@@ -109,15 +118,14 @@ const CommentScreen = () => {
                 <>
                 <Header isBack={true} title={'comments'}/>
                 <View style={commentScreenStyle.mainContainer}>
-                        {commentData.length === 0 || commentData.length===1 ? 
-                            <Text style={commentScreenStyle.totalComments}>
-                                {commentData.length} comment
-                            </Text>:    
-                            <Text style={commentScreenStyle.totalComments}>
-                                {commentData.length} comments
-                            </Text>    
-                        }
-                    
+                    {commentData.length === 0 || commentData.length === 1 ? 
+                        <Text style={commentScreenStyle.totalComments}>
+                            {commentData.length} comment
+                        </Text>:    
+                        <Text style={commentScreenStyle.totalComments}>
+                            {commentData.length} comments
+                        </Text>    
+                    }
                 </View>
                 <FlatList 
                     data={commentData}
