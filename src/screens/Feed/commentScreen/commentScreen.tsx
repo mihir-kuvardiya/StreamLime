@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, SafeAreaView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, SafeAreaView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Header from "../../../components/header/header";
 import colorPalates from "../../../theme/colorPalates";
 import commentScreenStyle from "./commentScreenStyle";
@@ -22,6 +22,7 @@ const CommentScreen = () => {
     const commentData = useCommentistData();
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(()=>{
         getInitComments();
@@ -50,6 +51,7 @@ const CommentScreen = () => {
                 .catch((e)=>{
                     console.log(e,'erro from get promise rejection');
                     setLoading(false);
+                    setRefreshing(false);
                 })
                 )
             })
@@ -57,10 +59,12 @@ const CommentScreen = () => {
             await Promise.all(promises).then(()=>{
                 dispatch(feedAction.setCommentData({collectionName:'commentsList', data: comments}));
                 setLoading(false);
+                setRefreshing(false);
             })
         } catch (error) {
             console.log(error,'error in get init comments')
             setLoading(false);
+            setRefreshing(false);
         }
     }
 
@@ -110,6 +114,11 @@ const CommentScreen = () => {
         });
     }
 
+    const onRefreshFlatList = () => {
+        setRefreshing(true);
+        getInitComments();
+    };
+
     return(
         <SafeAreaView style={{flex:1}}>
             {loading ?
@@ -141,6 +150,13 @@ const CommentScreen = () => {
                         <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                         <NoCommentsView/>
                         </View>
+                    }
+                    refreshControl={
+                        <RefreshControl
+                          colors={[colorPalates.AppTheme.primary]}
+                          refreshing={refreshing}
+                          onRefresh={onRefreshFlatList}
+                        />
                     }
                 />
                 <View style={commentScreenStyle.CommentTextInputView}>
