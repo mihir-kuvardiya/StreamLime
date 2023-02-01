@@ -18,6 +18,8 @@ import { useDispatch } from "react-redux";
 import { feedAction } from "../../../../redux/reducers/feedSlice/feedSlice";
 import DeleteModal from "../../../../components/deleteModal/deleteModal";
 import { err } from "react-native-svg/lib/typescript/xml";
+import ReportModal from "../../../../components/reportModal/reportModal";
+import { showToast } from "../../../../helper/helper";
 
 export interface FeedCardProps{
     item: any,
@@ -28,6 +30,7 @@ const FeedCard = ({item}:FeedCardProps) => {
     const dispatch = useDispatch();
     const naviagtion:any = useNavigation();
     const [visible, setIsVisible] = useState(false);
+    const [reportVisible, setReportVisible] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
 
     const onPressProfile = () => {
@@ -73,6 +76,8 @@ const FeedCard = ({item}:FeedCardProps) => {
     const onPressMenu = () => {
         if(item?.userId === userData?.userId){
             setIsVisible(true);
+        }else{
+            setReportVisible(true);
         }
     }
 
@@ -108,8 +113,12 @@ const FeedCard = ({item}:FeedCardProps) => {
             console.log(error,'error from delete post')
             setDeleteLoading(false);
             setIsVisible(false);
-            
         }
+    }
+
+    const onPressReport = () => {
+        setReportVisible(false);
+        showToast('post has been reported!')
     }
     
     return(
@@ -127,7 +136,7 @@ const FeedCard = ({item}:FeedCardProps) => {
                         <Text style={feedCardStyle.feedHeaderTime}>{moment(item?.createdAt).local().startOf('seconds').fromNow() || ''}</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={onPressMenu}>
+                <TouchableOpacity onPress={onPressMenu} hitSlop={{bottom:10,left:10,right:10,top:10}}>
                     <IconEntypo name="dots-three-vertical" size={20} color={colors.grayShade8F} />
                 </TouchableOpacity>
             </View> 
@@ -154,6 +163,7 @@ const FeedCard = ({item}:FeedCardProps) => {
             </View>
         </View>
         <DeleteModal loading={deleteLoading} isVisible={visible} onClose={()=>setIsVisible(false)} onPressDelete={onPressDelete}/>
+        <ReportModal isVisible={reportVisible} onClose={()=>setReportVisible(false)} onPressReport={onPressReport}/>
         </>
     )
 }
