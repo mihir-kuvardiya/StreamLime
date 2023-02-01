@@ -16,6 +16,8 @@ import firestore from '@react-native-firebase/firestore';
 import { useUserData } from "../../../../redux/reducers/userSlice/userSlice";
 import { useDispatch } from "react-redux";
 import { feedAction } from "../../../../redux/reducers/feedSlice/feedSlice";
+import DeleteModal from "../../../../components/deleteModal/deleteModal";
+import { err } from "react-native-svg/lib/typescript/xml";
 
 export interface FeedCardProps{
     item: any,
@@ -25,6 +27,8 @@ const FeedCard = ({item}:FeedCardProps) => {
     const userData = useUserData();
     const dispatch = useDispatch();
     const naviagtion:any = useNavigation();
+    const [visible, setIsVisible] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     const onPressProfile = () => {
         naviagtion.navigate(screenNameEnum.UserProfileScreen,{userId: item?.userId})
@@ -65,8 +69,51 @@ const FeedCard = ({item}:FeedCardProps) => {
             console.log(error,'error in like post')
         }
     }
+
+    const onPressMenu = () => {
+        if(item?.userId === userData?.userId){
+            setIsVisible(true);
+        }
+    }
+
+    const onPressDelete = () => {
+        console.log('deleteClicked')
+        // setDeleteLoading(true);
+        dispatch(feedAction.deletePost({
+            id:item?.postId
+        }))
+        setDeleteLoading(true);
+        try {
+            firestore().collection('posts').where('postId','==',item?.postId).get()
+            .then((querySnapshot)=>{
+                querySnapshot.forEach(function(doc) {
+                    doc.ref.delete();
+                });
+            })
+            firestore().collection('likes').where('postId','==',item?.postId).get()
+            .then((querySnapshot)=>{
+                querySnapshot.forEach(function(doc) {
+                    doc.ref.delete();
+                });
+            })
+            firestore().collection('comment').where('postId','==',item?.postId).get()
+            .then((querySnapshot)=>{
+                querySnapshot.forEach(function(doc) {
+                    doc.ref.delete();
+                });
+            })
+            setDeleteLoading(false);
+            setIsVisible(false);
+        } catch (error) {
+            console.log(error,'error from delete post')
+            setDeleteLoading(false);
+            setIsVisible(false);
+            
+        }
+    }
     
     return(
+        <>
         <View style={feedCardStyle.feedContainer}>
             <View style={feedCardStyle.feedHeaderContainer}>
                 <View style={feedCardStyle.feedHeaderSecondContainer}>
@@ -80,7 +127,9 @@ const FeedCard = ({item}:FeedCardProps) => {
                         <Text style={feedCardStyle.feedHeaderTime}>{moment(item?.createdAt).local().startOf('seconds').fromNow() || ''}</Text>
                     </TouchableOpacity>
                 </View>
-                <IconEntypo name="dots-three-vertical" size={20} color={colors.grayShade8F} />
+                <TouchableOpacity onPress={onPressMenu}>
+                    <IconEntypo name="dots-three-vertical" size={20} color={colors.grayShade8F} />
+                </TouchableOpacity>
             </View> 
             <View style={feedCardStyle.mainFeedContainer}>
                 <FeedImageLoader url={item?.postUrl}/>
@@ -104,6 +153,8 @@ const FeedCard = ({item}:FeedCardProps) => {
             <IconFontAwesome5 name="share" size={25} color={colorPalates.AppTheme.primary}/>
             </View>
         </View>
+        <DeleteModal loading={deleteLoading} isVisible={visible} onClose={()=>setIsVisible(false)} onPressDelete={onPressDelete}/>
+        </>
     )
 }
 
