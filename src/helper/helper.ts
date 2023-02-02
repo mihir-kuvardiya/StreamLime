@@ -1,6 +1,7 @@
-import { Platform, ToastAndroid } from "react-native";
+import { Linking, Platform, ToastAndroid } from "react-native";
 import RNFS from 'react-native-fs';
 import {EventEmitter} from 'fbemitter';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 export const Emmiter = new EventEmitter();
 
@@ -80,4 +81,34 @@ export const timeStampComment = (date:string) => {
       return Math.floor(interval) + " m";
     }
     return Math.floor(seconds) + " s";
+}
+
+export const createShareLink = async (postId,imageUrl) =>{
+  const link = await dynamicLinks().buildShortLink({
+    link : `https://streamlline.page.link/feed/${postId}`,
+    domainUriPrefix: 'https://streamlline.page.link',
+    social:{
+      title:'streamline',
+      descriptionText:'Engage to new genaration.',
+      imageUrl: imageUrl
+    },
+    android:{
+      packageName:'com.streamline'
+    }
+  },
+    dynamicLinks.ShortLinkType.SHORT
+  )
+  return link;
+}
+
+export const openUrl = async (data) => {
+
+  const link = data.replace('https://streamlline.page.link','streamline:/')
+
+  Linking.canOpenURL(link).then(() => {
+    console.log('URL works');
+    Linking.openURL(link).catch(error => {
+      console.log('An error has occurred in URL:', error);
+    });
+  });
 }

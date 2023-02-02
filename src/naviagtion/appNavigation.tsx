@@ -1,5 +1,5 @@
-import React from "react";
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useEffect } from "react";
+import { LinkingOptions, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthNavigation from "./authNaviagtion";
 import screenNameEnum from "../helper/screenNameEnum";
@@ -9,14 +9,50 @@ import FeedDetailScreen from "../screens/Feed/feedDetail/feedDetail";
 import UserProfileScreen from "../screens/Feed/profile/userProfile";
 import TopTabBar from "../screens/Feed/profile/component/followFollowingTopTabNavigation";
 import { useUserData } from "../redux/reducers/userSlice/userSlice";
+import { openUrl } from "../helper/helper";
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
+const deepLinksConf = {
+    initialRouteName: 'BottomTabNavigation',
+    screens: {
+        FeedDetailScreen: {
+            path: 'feed/:postId',
+            parse: {postId: id => id},
+        }
+    },
+};
+
+
+const linking: LinkingOptions = {
+    prefixes: ['streamline://', 'https://streamlline.page.link'],
+    config: deepLinksConf,
+};
 
 const AppNavigation = () => {
 
-    const RootStack = createNativeStackNavigator();
     const userData = useUserData();
+    const RootStack = createNativeStackNavigator();
+
+    useEffect(()=>{
+
+        setTimeout(() => {
+            const unsubscribe = dynamicLinks().onLink(link => {
+                if (link) {
+                  openUrl(link?.url);
+                }
+            });
+            //background listener
+            dynamicLinks().getInitialLink().then(link => {
+                if (link) {
+                    openUrl(link?.url);
+                }
+            });
+            return () => unsubscribe();
+        }, 8000);
+    },[])
 
     return(
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
             <RootStack.Navigator screenOptions={{headerShown: false}}>
                 {!userData ?
                 <RootStack.Screen

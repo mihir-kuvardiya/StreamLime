@@ -19,7 +19,7 @@ const FeedDetailScreen = () => {
 
     useEffect(()=>{
         getUniquePost();
-    },[])
+    },[route])
     
     const getUniquePost = async () => {
         setLoading(true);

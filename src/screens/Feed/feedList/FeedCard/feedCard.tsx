@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { Image, Text, View, Pressable, TouchableOpacity } from "react-native";
+import { Image, Text, View, Pressable, TouchableOpacity, Share } from "react-native";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
 import IconEntypo from "react-native-vector-icons/Entypo";
@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import { feedAction } from "../../../../redux/reducers/feedSlice/feedSlice";
 import DeleteModal from "../../../../components/deleteModal/deleteModal";
 import ReportModal from "../../../../components/reportModal/reportModal";
-import { showToast } from "../../../../helper/helper";
+import { createShareLink, showToast } from "../../../../helper/helper";
 
 export interface FeedCardProps{
     item: any,
@@ -119,6 +119,17 @@ const FeedCard = ({item}:FeedCardProps) => {
         setReportVisible(false);
         showToast('post has been reported!')
     }
+
+    const onPressShare = async () =>{
+        try {
+            const link = await createShareLink(item?.postId,item?.postUrl)
+            await Share.share({
+                message: `${link}`
+            })
+        } catch (error) {
+            showToast('Oops!, Something went wrong.')
+        }
+    }
     
     return(
         <>
@@ -158,7 +169,9 @@ const FeedCard = ({item}:FeedCardProps) => {
             		<IconMaterialIcons name="comment" size={25} color={colors.blueShade00}/>
          			<Text style={feedCardStyle.likeCount}>{item?.commentCount}</Text>
                 </Pressable>
-            <IconFontAwesome5 name="share" size={25} color={colorPalates.AppTheme.primary}/>
+                <Pressable onPress={onPressShare}>
+                    <IconFontAwesome5 name="share" size={25} color={colorPalates.AppTheme.primary}/>
+                </Pressable>
             </View>
         </View>
         <DeleteModal loading={deleteLoading} isVisible={visible} onClose={()=>setIsVisible(false)} onPressDelete={onPressDelete}/>
