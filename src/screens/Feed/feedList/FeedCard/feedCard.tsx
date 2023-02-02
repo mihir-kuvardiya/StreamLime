@@ -17,7 +17,6 @@ import { useUserData } from "../../../../redux/reducers/userSlice/userSlice";
 import { useDispatch } from "react-redux";
 import { feedAction } from "../../../../redux/reducers/feedSlice/feedSlice";
 import DeleteModal from "../../../../components/deleteModal/deleteModal";
-import { err } from "react-native-svg/lib/typescript/xml";
 import ReportModal from "../../../../components/reportModal/reportModal";
 import { showToast } from "../../../../helper/helper";
 

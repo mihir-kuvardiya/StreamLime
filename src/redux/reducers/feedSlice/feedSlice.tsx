@@ -87,6 +87,32 @@ const feedSlice = createSlice({
       }
       state.feedList = items;
       state.feedDetail = feedDetailPostItems;
+    },
+    deleteComment : (state,action) => {
+      let comments = JSON.parse(JSON.stringify(state.commentsList));
+      let commentIndex = _.findIndex(comments, {commentId: action.payload.id});
+
+      let items = JSON.parse(JSON.stringify(state.feedList));
+      let postIndex = _.findIndex(items, {postId: action.payload.postId});
+
+      let feedDetailPostItems = JSON.parse(JSON.stringify(state.feedDetail));
+
+      if (commentIndex !== -1) {
+        _.remove(comments, function (c) {
+          return c.commentId === comments[commentIndex].commentId;
+        });
+      }
+      
+      if (postIndex !== -1) {
+        items[postIndex].commentCount--;
+      }
+      if (state.feedDetail !== null) {
+          feedDetailPostItems.commentCount--;
+      }
+
+      state.commentsList = comments;
+      state.feedList = items;
+      state.feedDetail = feedDetailPostItems;
     }
   },
 });
