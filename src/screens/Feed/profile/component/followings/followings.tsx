@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
@@ -10,12 +10,14 @@ import { ms } from "react-native-size-matters";
 import colorPalates from "../../../../../theme/colorPalates";
 import IconEntypo from "react-native-vector-icons/Entypo";
 import { useUserData } from "../../../../../redux/reducers/userSlice/userSlice";
+import screenNameEnum from "../../../../../helper/screenNameEnum";
 
 const FollowingsScreen = () => {
 
     const route:any = useRoute();
     const dispatch = useDispatch();
     const userData = useUserData();
+    const navigation = useNavigation();
     const followingsListRedux = useFollowingListData();
     const userId = route?.params?.userId;
     const [loading, setLoading] = useState(false);
@@ -83,6 +85,11 @@ const FollowingsScreen = () => {
 
         const [isFollow, setIsFollow] = useState(item?.isFollow);
 
+        const onPressUserProfile = () => {
+            navigation.navigate(screenNameEnum.UserProfileScreen,{userId: item?.userId})
+            
+        }
+
         const onPressFollow = () => {
             setIsFollow(!isFollow)
             try {
@@ -109,7 +116,7 @@ const FollowingsScreen = () => {
 
         return(
         <View style={followingStyle.rowContainer}>
-            <View style={followingStyle.rowSecondContainer}>
+            <TouchableOpacity style={followingStyle.rowSecondContainer} onPress={onPressUserProfile}>
             <Image
                  style={followingStyle.image}
                  source={item?.profilePicture ? {
@@ -118,7 +125,7 @@ const FollowingsScreen = () => {
                  resizeMode={"cover"} 
             />
             <Text style={followingStyle.userName}>{item?.userName}</Text>
-            </View>
+            </TouchableOpacity>
             {item?.userId === userData?.userId ?
             <View style={followingStyle.followingButton}>
                 <Text style={followingStyle.followingText}>You</Text>

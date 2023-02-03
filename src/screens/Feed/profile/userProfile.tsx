@@ -30,7 +30,7 @@ const UserProfileScreen = () => {
         isFollowOrNot();
         getFollowerCount();
         getFollowingCount();
-    },[])
+    },[route])
 
     const getUserDetail = async () => {
         setLoading(true)
