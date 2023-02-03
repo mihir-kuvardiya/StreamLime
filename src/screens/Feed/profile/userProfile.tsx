@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Image, SafeAreaView, Text, TouchableOpacity, View ,FlatList, ActivityIndicator} from "react-native";
+import { Image, SafeAreaView, Text, TouchableOpacity, View ,FlatList, ActivityIndicator, RefreshControl} from "react-native";
 import Header from "../../../components/header/header";
 import screenNameEnum from "../../../helper/screenNameEnum";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
@@ -22,6 +22,7 @@ const UserProfileScreen = () => {
     const [isFollow, setIsFollow] = useState(false);
     const [followersCount, setFollowersCount] = useState(0);
     const [followingCount, setFollowingCount] = useState(0);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(()=>{
         getUserDetail();   
@@ -49,9 +50,11 @@ const UserProfileScreen = () => {
         .then((res:any)=>{
             setPosts(res._docs);
             setPostLoading(false);
+            setRefreshing(false);
         })
         .catch((error)=>{
             setPostLoading(false);
+            setRefreshing(false);
             console.log(error,'error from get posts in userprofile');
         })
     }
@@ -115,6 +118,11 @@ const UserProfileScreen = () => {
         }
     }
 
+    const onRefreshFlatList = () => {
+        setRefreshing(true);
+        getUserPosts();
+    };
+
     return(
         <SafeAreaView style={{flex:1}}>
         {loading||postLoading ?
@@ -167,6 +175,13 @@ const UserProfileScreen = () => {
                     disableVirtualization={true}
                     keyboardShouldPersistTaps="always"
                     contentContainerStyle={userProfileScreenStyle.flatListContainer}
+                    refreshControl={
+                        <RefreshControl
+                          colors={[colorPalates.AppTheme.primary]}
+                          refreshing={refreshing}
+                          onRefresh={onRefreshFlatList}
+                        />
+                    }
                 />
         </>
         }

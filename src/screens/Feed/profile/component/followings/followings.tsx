@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { followFollowingAction, useFollowingListData } from "../../../../../redux/reducers/followFollowingSlice/followFollowingSlice";
 import images from "../../../../../theme/images";
@@ -19,6 +19,7 @@ const FollowingsScreen = () => {
     const followingsListRedux = useFollowingListData();
     const userId = route?.params?.userId;
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(()=>{
         getFollowings();
@@ -44,15 +45,18 @@ const FollowingsScreen = () => {
                     })
                     .catch((e)=>{
                         setLoading(false);
+                        setRefreshing(false);
                         console.log(e,'promise rejection in followers list')
                     })
                 )
             })
             await Promise.all(promises).then(()=>{
                 setLoading(false);
+                setRefreshing(false);
                 dispatch(followFollowingAction.setFollowingListData(followingList))
             })
         } catch (error) {
+            setRefreshing(false);
             setLoading(false);
             console.log(error,'error from get followings in followings list')
         }
@@ -69,6 +73,11 @@ const FollowingsScreen = () => {
             })
         })
     }
+
+    const onRefreshFlatList = () => {
+        setRefreshing(true);
+        getFollowings();
+    };
 
     const FollowingRow = ({item}) => {
 
@@ -143,6 +152,13 @@ const FollowingsScreen = () => {
                                 <IconEntypo name="slideshare" size={150} color={colorPalates.AppTheme.primary}/>
                                 <Text style={{fontSize:ms(22),fontFamily:'Ubuntu-Regular',marginTop:ms(20),color:colorPalates.AppTheme.primary}}>0 Followings</Text>
                             </View>
+                        }
+                        refreshControl={
+                            <RefreshControl
+                              colors={[colorPalates.AppTheme.primary]}
+                              refreshing={refreshing}
+                              onRefresh={onRefreshFlatList}
+                            />
                         }
                     />
             }

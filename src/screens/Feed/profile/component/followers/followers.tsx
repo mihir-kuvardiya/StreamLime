@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import images from "../../../../../theme/images";
 import followersStyle from "./followersStyle";
 import firestore from '@react-native-firebase/firestore';
@@ -19,6 +19,7 @@ const FollowersScreen = () => {
     const followersListRedux = useFollowersListData();
     const userId = route?.params?.userId;
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(()=>{
         getFollowers();
@@ -44,16 +45,19 @@ const FollowersScreen = () => {
                     })
                     .catch((e)=>{
                         setLoading(false);
+                        setRefreshing(false);
                         console.log(e,'promise rejection in followers list')
                     })
                 )
             })
             await Promise.all(promises).then(()=>{
                 setLoading(false);
+                setRefreshing(false);
                 dispatch(followFollowingAction.setFollowerListData(followersList))
             })
         } catch (error) {
             setLoading(false);
+            setRefreshing(false);
             console.log(error,'error in get followers')
         }
     }
@@ -69,6 +73,11 @@ const FollowersScreen = () => {
             })
         })
     }
+
+    const onRefreshFlatList = () => {
+        setRefreshing(true);
+        getFollowers();
+    };
 
     const FollowerRow = ({item}) => {
 
@@ -143,6 +152,13 @@ const FollowersScreen = () => {
                             <IconEntypo name="slideshare" size={150} color={colorPalates.AppTheme.primary}/>
                             <Text style={{fontSize:ms(22),fontFamily:'Ubuntu-Regular',marginTop:ms(20),color:colorPalates.AppTheme.primary}}>0 Followers</Text>
                         </View>
+                    }
+                    refreshControl={
+                        <RefreshControl
+                          colors={[colorPalates.AppTheme.primary]}
+                          refreshing={refreshing}
+                          onRefresh={onRefreshFlatList}
+                        />
                     }
                 />
             }
