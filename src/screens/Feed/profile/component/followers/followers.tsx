@@ -11,6 +11,7 @@ import IconEntypo from "react-native-vector-icons/Entypo";
 import { ms } from "react-native-size-matters";
 import { useUserData } from "../../../../../redux/reducers/userSlice/userSlice";
 import screenNameEnum from "../../../../../helper/screenNameEnum";
+import { Emmiter } from "../../../../../helper/helper";
 
 const FollowersScreen = () => {
 
@@ -98,6 +99,7 @@ const FollowersScreen = () => {
                         firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).delete()
                         .then(()=>{
                             console.log('unfollow in followers List')
+                            Emmiter.emit('removeFollowers')
                         })
                     }else{
                         firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).set({
@@ -105,6 +107,7 @@ const FollowersScreen = () => {
                             oppositeUserId: item?.userId
                         }).then(()=>{
                             console.log('following in followers List')
+                            Emmiter.emit('addFollowers')
                         })
                     }
                 })

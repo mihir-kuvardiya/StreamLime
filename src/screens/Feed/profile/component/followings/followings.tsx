@@ -11,6 +11,7 @@ import colorPalates from "../../../../../theme/colorPalates";
 import IconEntypo from "react-native-vector-icons/Entypo";
 import { useUserData } from "../../../../../redux/reducers/userSlice/userSlice";
 import screenNameEnum from "../../../../../helper/screenNameEnum";
+import { Emmiter } from "../../../../../helper/helper";
 
 const FollowingsScreen = () => {
 
@@ -99,6 +100,9 @@ const FollowingsScreen = () => {
                         firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).delete()
                         .then(()=>{
                             console.log('unfollow in followers List')
+                            setTimeout(() => {
+                            Emmiter.emit('removeFollowers');
+                            }, 1000);
                         })
                     }else{
                         firestore().collection('followFollowing').doc(`FOLLOWING#${userData?.userId}#${item?.userId}`).set({
@@ -106,6 +110,9 @@ const FollowingsScreen = () => {
                             oppositeUserId: item?.userId
                         }).then(()=>{
                             console.log('following in followers List')
+                            setTimeout(() => {
+                            Emmiter.emit('addFollowers');
+                            }, 1000);
                         })
                     }
                 })

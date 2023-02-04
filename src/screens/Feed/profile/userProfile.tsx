@@ -9,6 +9,7 @@ import ImageLoader from "./component/imageLoader";
 import userProfileScreenStyle from "./userProfileScreenStyle";
 import firestore from '@react-native-firebase/firestore';
 import images from "../../../theme/images";
+import { Emmiter } from "../../../helper/helper";
 
 const UserProfileScreen = () => {
 
@@ -31,6 +32,27 @@ const UserProfileScreen = () => {
         getFollowerCount();
         getFollowingCount();
     },[route])
+
+    useEffect (()=>{
+        const emit = Emmiter.addListener('addFollowers',() => {
+            if (route?.params?.userId === userData?.userId) {
+                console.log('+++++++++++++++++')
+                setFollowingCount(val => val + 1);
+            }
+        })
+        return () => {emit.remove();};
+    },[])
+
+    useEffect (()=>{
+        const emit = Emmiter.addListener('removeFollowers', () => {
+            if (route?.params?.userId === userData?.userId) {
+                console.log('-------------')
+                setFollowingCount(val => val - 1);
+            }
+        })
+        return () => {emit.remove();};
+    },[])
+
 
     const getUserDetail = async () => {
         setLoading(true)
