@@ -55,7 +55,8 @@ const SignUpScreen = () => {
                 totalPosts:0,
                 followers:0,
                 followings:0,
-                bio:''
+                bio:'',
+                userId:res.user.uid
             })
             .then(() => {
                 console.log('User added!');

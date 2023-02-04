@@ -20,5 +20,33 @@ export default ScaledSheet.create({
         padding:0,
         marginLeft:ms(10),
         color:colors.blackShade1B
-    }
+    },
+    rowContainer:{
+        flexDirection: 'row',
+        marginHorizontal: ms(16),
+        marginVertical: ms(3),
+        padding:ms(5),
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderColor:colorPalates.AppTheme.border,
+        borderWidth:1,
+        backgroundColor:colorPalates.white,
+        borderRadius:ms(10),
+    },
+    rowSecondContainer:{
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    image:{
+        height: ms(40),
+        width: ms(40),
+        borderRadius: ms(20),
+        margin:ms(2)
+    },
+    userName:{
+        color: colorPalates.AppTheme.text,
+        fontSize: ms(15),
+        marginLeft:ms(10),
+        fontWeight:'500'
+    },
 })

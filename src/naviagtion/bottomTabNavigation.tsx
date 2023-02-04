@@ -7,7 +7,7 @@ import screenNameEnum from "../helper/screenNameEnum";
 import { ms, ScaledSheet } from "react-native-size-matters";
 import colorPalates from "../theme/colorPalates";
 import IconFeather from 'react-native-vector-icons/Feather';
-import EditProfileScreen from "../screens/Feed/editProfile/editProfile";
+import SearchUser from "../screens/Feed/searchUser/searchUser";
 
 const BottomTabNavigation = () => {
 
@@ -27,9 +27,9 @@ const BottomTabNavigation = () => {
             icon: 'plus-square'
         },
         {
-            route: screenNameEnum.EditProfileScreen,
-            label: 'EditProfileScreen',
-            component: EditProfileScreen,
+            route: screenNameEnum.SearchUser,
+            label: 'SearchUser',
+            component: SearchUser,
             icon: 'user'
         }
     ]
