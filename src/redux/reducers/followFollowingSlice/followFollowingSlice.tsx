@@ -4,7 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
     followersList: [],
-    followingList: []
+    followingList: [],
+    myFollowings:[]
 };
 
 const followFollowingSlice = createSlice({
@@ -17,6 +18,9 @@ const followFollowingSlice = createSlice({
       setFollowingListData: (state, action) => {
         state.followingList = action.payload;
       },
+      setMyFollowingList: (state,action) => {
+        state.myFollowings = action.payload;
+      }
     },
 });
   
@@ -36,4 +40,9 @@ export const useFollowersListData = () => {
 export const useFollowingListData = () => {
     const following = useSelector(state => state?.followFollowing?.followingList);
     return following;
+};
+
+export const useMyFollowingListData = () => {
+  const myFollowings = useSelector(state => state?.followFollowing?.myFollowings);
+  return myFollowings;
 };

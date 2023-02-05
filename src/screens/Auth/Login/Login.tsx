@@ -14,6 +14,7 @@ import svg from "../../../theme/svg/svg";
 import firestore from '@react-native-firebase/firestore';
 import { useDispatch } from "react-redux";
 import { userAction } from "../../../redux/reducers/userSlice/userSlice";
+import { followFollowingAction } from "../../../redux/reducers/followFollowingSlice/followFollowingSlice";
 
 const LoginScreen = () => {
 
@@ -38,11 +39,15 @@ const LoginScreen = () => {
         auth().signInWithEmailAndPassword(trimmedEmail, pass)
         .then(async (res) => {
             const user:any = await firestore().collection('user').doc(res.user.uid).get();
-            const createReduxUser = {
-                ...user._data,
-                userId: res.user.uid
-            }
-            dispatch(userAction.setUserData(createReduxUser))
+            const followings = await firestore().collection('followFollowing').where('userId','==',res.user.uid).get();
+            let followingUsers : any[] = [];
+            followings.forEach(element => {
+                followingUsers = [...followingUsers,element.data().oppositeUserId];
+            });
+            followingUsers = [...followingUsers,res.user.uid];
+            console.log(followingUsers,'uuuuuuuuuuuu')
+            dispatch(followFollowingAction.setMyFollowingList(followingUsers));
+            dispatch(userAction.setUserData(user._data));
             setIsLoading(false);
         })
         .catch(error => {

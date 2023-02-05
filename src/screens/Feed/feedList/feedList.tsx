@@ -9,12 +9,12 @@ import { feedAction, useFeedListData } from "../../../redux/reducers/feedSlice/f
 import colorPalates from "../../../theme/colorPalates";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
 import { Emmiter } from "../../../helper/helper";
-import { useFollowingListData } from "../../../redux/reducers/followFollowingSlice/followFollowingSlice";
+import { useMyFollowingListData } from "../../../redux/reducers/followFollowingSlice/followFollowingSlice";
 
 const FeedList = () => {
 
     const dispatch = useDispatch();
-    const followingData = useFollowingListData();
+    const followingData = useMyFollowingListData();
     const userData = useUserData();
     const feedData = useFeedListData();
     const FlatListRef = useRef(null);
@@ -39,13 +39,10 @@ const FeedList = () => {
     },[])
 
     const getInitPosts = async () => {
-        
-        followingData.filter((val)=>setFollowingUsers([...followingUsers,val.userId]));
-        setFollowingUsers([...followingUsers,userData?.userId])
 
         setLoading(true);
         try {
-            const res = firestore().collection('posts').where('userId','in',followingUsers).orderBy('createdAt', 'desc').get();
+            const res = firestore().collection('posts').where('userId','in',followingData).orderBy('createdAt', 'desc').get();
             let promises: any[] = [];
             let posts: any[] = [];
             (await res).forEach(element => {

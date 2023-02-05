@@ -11,6 +11,7 @@ import TopTabBar from "../screens/Feed/profile/component/followFollowingTopTabNa
 import { useUserData } from "../redux/reducers/userSlice/userSlice";
 import { openUrl } from "../helper/helper";
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import EditProfileScreen from "../screens/Feed/editProfile/editProfile";
 
 const deepLinksConf = {
     initialRouteName: 'BottomTabNavigation',
@@ -80,6 +81,10 @@ const AppNavigation = () => {
                     <RootStack.Screen
                         name={screenNameEnum.TopTabBar}
                         component={TopTabBar}
+                    />
+                    <RootStack.Screen
+                        name={screenNameEnum.EditProfileScreen}
+                        component={EditProfileScreen}
                     />
                 </>
                 }
