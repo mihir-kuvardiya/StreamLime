@@ -14,14 +14,11 @@ import { useMyFollowingListData } from "../../../redux/reducers/followFollowingS
 const FeedList = () => {
 
     const dispatch = useDispatch();
-    const followingData = useMyFollowingListData();
     const userData = useUserData();
     const feedData = useFeedListData();
     const FlatListRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [followingUsers, setFollowingUsers] = useState([]);
-
 
     useEffect(()=>{
         getInitPosts()
@@ -42,7 +39,13 @@ const FeedList = () => {
 
         setLoading(true);
         try {
-            const res = firestore().collection('posts').where('userId','in',followingData).orderBy('createdAt', 'desc').get();
+            const followings = await firestore().collection('followFollowing').where('userId','==',userData?.userId).get();
+            let followingsData: any[] = [];
+            followings.forEach(element => {
+                followingsData.push(element.data().oppositeUserId);
+            });
+            followingsData.push(userData?.userId);
+            const res = firestore().collection('posts').where('userId','in',followingsData).orderBy('createdAt', 'desc').get();
             let promises: any[] = [];
             let posts: any[] = [];
             (await res).forEach(element => {
