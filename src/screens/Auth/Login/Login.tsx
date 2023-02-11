@@ -15,6 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useDispatch } from "react-redux";
 import { userAction } from "../../../redux/reducers/userSlice/userSlice";
 import { followFollowingAction } from "../../../redux/reducers/followFollowingSlice/followFollowingSlice";
+import IconFeather from "react-native-vector-icons/Feather"
 
 const LoginScreen = () => {
 
@@ -23,6 +24,7 @@ const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('')
     const [loading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(true);
 
     const onPressLogin = (email:string,pass:string) => {
 
@@ -91,13 +93,26 @@ const LoginScreen = () => {
                 value={email}
                 onChangeText={val=>setEmail(val)}
             />
-            <TextInput 
-                placeholder="Enter password"
-                placeholderTextColor={colors.grayShade8F}
-                style={LoginScreenStyle.textInput}
-                value={pass}
-                onChangeText={val=>setPass(val)}
-            />
+            <View style={LoginScreenStyle.passwordTextInputView}>
+                <TextInput 
+                    placeholder="Enter password"
+                    placeholderTextColor={colors.grayShade8F}
+                    style={LoginScreenStyle.passwordTextInput}
+                    value={pass}
+                    secureTextEntry={showPassword}
+                    onChangeText={val=>setPass(val)}
+                />
+                <TouchableOpacity
+                    hitSlop={{top: 10, bottom: 10, left: 20, right: 10}}
+                    onPress={() => setShowPassword(!showPassword)}
+                >
+                <IconFeather
+                    name={showPassword ? 'eye' : 'eye-off'}
+                    size={ms(18)}
+                    color={'#7D7D7D'}
+                />
+                </TouchableOpacity>
+            </View>
                 <Text onPress={onPressForgotPassword} style={LoginScreenStyle.forgotPasswordText}>Forgot Password ?</Text>
             </View>
             <ThemeButton loading={loading} title="Login" onPress={()=>onPressLogin(email,pass)}/>

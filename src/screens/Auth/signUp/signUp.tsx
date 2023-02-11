@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react"
-import { Text, TextInput, View } from "react-native"
+import { Text, TextInput, TouchableOpacity, View } from "react-native"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ms } from "react-native-size-matters";
 import ThemeButton from "../../../components/themeButton/themeButton";
@@ -12,6 +12,7 @@ import auth from '@react-native-firebase/auth';
 import { SvgXml } from "react-native-svg";
 import svg from "../../../theme/svg/svg";
 import firestore from '@react-native-firebase/firestore';
+import IconFeather from "react-native-vector-icons/Feather"
 
 const SignUpScreen = () => {
 
@@ -20,6 +21,8 @@ const SignUpScreen = () => {
     const [password, setPassword] = useState('');
     const [repeatPass, setRepeatPass] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(true);
+    const [showRepeatPassword, setShowRepeatPassword] = useState(true);
 
     const OnPressLogin = () => {
         navigation.navigate(screenNameEnum.LoginScreen)
@@ -95,20 +98,46 @@ const SignUpScreen = () => {
                 onChangeText={val=>setEmail(val)}
                 keyboardType={'email-address'}
             />
-            <TextInput 
-                placeholder="Enter password"
-                placeholderTextColor={colors.grayShade8F}
-                style={signUpScreenStyle.textInput}
-                value={password}
-                onChangeText={val=>setPassword(val)}
-            />
-            <TextInput 
-                placeholder="Re-enter password"
-                placeholderTextColor={colors.grayShade8F}
-                style={signUpScreenStyle.textInput}
-                value={repeatPass}
-                onChangeText={val=>setRepeatPass(val)}
-            />
+            <View style={signUpScreenStyle.passwordTextInputView}>
+                    <TextInput 
+                        placeholder="Enter password"
+                        placeholderTextColor={colors.grayShade8F}
+                        style={signUpScreenStyle.passwordTextInput}
+                        value={password}
+                        secureTextEntry={showPassword}
+                        onChangeText={val=>setPassword(val)}
+                    />
+                    <TouchableOpacity
+                        hitSlop={{top: 10, bottom: 10, left: 20, right: 10}}
+                        onPress={() => setShowPassword(!showPassword)}
+                    >
+                        <IconFeather
+                            name={showPassword ? 'eye' : 'eye-off'}
+                            size={ms(18)}
+                            color={'#7D7D7D'}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={signUpScreenStyle.passwordTextInputView}>
+                    <TextInput 
+                        placeholder="Re-enter password"
+                        placeholderTextColor={colors.grayShade8F}
+                        style={signUpScreenStyle.passwordTextInput}
+                        value={repeatPass}
+                        onChangeText={val=>setRepeatPass(val)}
+                        secureTextEntry={showRepeatPassword}
+                    />
+                    <TouchableOpacity
+                        hitSlop={{top: 10, bottom: 10, left: 20, right: 10}}
+                        onPress={() => setShowRepeatPassword(!showRepeatPassword)}
+                    >
+                        <IconFeather
+                            name={showRepeatPassword ? 'eye' : 'eye-off'}
+                            size={ms(18)}
+                            color={'#7D7D7D'}
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
             <View style={{marginVertical:ms(10)}}/>
             <ThemeButton title="Sign Up" loading={loading} onPress={()=>onPressSignUp(email,password)}/>
@@ -126,3 +155,9 @@ const SignUpScreen = () => {
 }
 
 export default SignUpScreen;
+
+
+
+
+
+                

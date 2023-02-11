@@ -26,6 +26,25 @@ export default ScaledSheet.create({
         fontSize: ms(13),
         color: colorPalates.AppTheme.text
     },
+    passwordTextInputView:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        borderColor: '#CCCED2',
+        borderWidth: ms(1),
+        borderRadius: ms(10),
+        height: ms(45),
+        marginTop: ms(16),
+        paddingHorizontal:ms(10)
+    },
+    passwordTextInput:{
+        width:'90%',
+        paddingHorizontal:ms(10),
+        paddingVertical: ms(12),
+        fontSize: ms(13),
+        color: colorPalates.AppTheme.text
+    },
     forgotPasswordText:{
         color:colors.grayShadeAB,
         textAlign:'right',
