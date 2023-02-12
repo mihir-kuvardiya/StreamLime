@@ -7,7 +7,7 @@ import colors from "../../../theme/colors";
 import editProfileScreenStyle from "./editProfileScreenStyle";
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { getUploadMediaUrl, showToast } from "../../../helper/helper";
+import { Emmiter, getUploadMediaUrl, showToast } from "../../../helper/helper";
 import colorPalates from "../../../theme/colorPalates";
 import { useDispatch } from "react-redux";
 import auth from '@react-native-firebase/auth';
@@ -66,6 +66,7 @@ const EditProfileScreen = () => {
                     }))
                     setUploadUrl('');
                     setLoading(false);
+                    Emmiter.emit('userUpdate')
                     navigation.goBack();
                     showToast('Profile saved')
                 })

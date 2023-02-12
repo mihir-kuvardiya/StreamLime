@@ -31,6 +31,15 @@ const UserProfileScreen = () => {
         isFollowOrNot();
         getFollowerCount();
         getFollowingCount();
+
+        const emit = Emmiter.addListener('userUpdate', () => {
+            getUserDetail();   
+            getUserPosts();
+            isFollowOrNot();
+            getFollowerCount();
+            getFollowingCount();
+        })
+        return () => {emit.remove();};
     },[route])
 
     useEffect (()=>{
