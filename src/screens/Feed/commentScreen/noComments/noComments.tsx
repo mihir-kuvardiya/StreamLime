@@ -1,11 +1,12 @@
 import React, { Text, View } from 'react-native';
 import colorPalates from '../../../../theme/colorPalates';
-import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import IconIonicons from 'react-native-vector-icons/Ionicons'
 import { ms, ScaledSheet } from 'react-native-size-matters';
+
 const NoCommentsView = () => {
     return(
         <View style={style.container}>
-            <IconMaterialIcons name="comment" size={150} color={colorPalates.AppTheme.primary}/>
+            <IconIonicons name="ios-chatbox-ellipses-outline" size={100} color={colorPalates.AppTheme.primary}/>
             <Text style={style.noCommentText}>No Comments...</Text>
         </View>
     )
