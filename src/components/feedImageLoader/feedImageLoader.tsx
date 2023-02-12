@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Dimensions } from "react-native";
 import FastImage from "react-native-fast-image";
 import { ms, ScaledSheet } from "react-native-size-matters";
 
@@ -8,16 +9,18 @@ interface FeedImageProps{
 
 const FeedImageLoader = ({url}:FeedImageProps) => {
 
+    const windowDimensions = Dimensions.get('window');
+
     let imageAspectRatio=1;
     const [newAspectRatio, setNewAspectRatio] = useState(imageAspectRatio);
 
     const onLoadImage = (event: { nativeEvent: { width: number; height: number; }; }) => {
-        setNewAspectRatio(event.nativeEvent.width/event.nativeEvent.height)
+        setNewAspectRatio((event.nativeEvent.width)/event.nativeEvent.height)
     }
 
     return(
         <FastImage
-            style={[style.feedMainImage,{aspectRatio:newAspectRatio}]}
+            style={[style.feedMainImage,{aspectRatio:newAspectRatio,width:windowDimensions.width - 20}]}
             source={{
                 uri:url,
                 priority: FastImage.priority.high
@@ -32,7 +35,6 @@ export default FeedImageLoader;
 
 export const style = ScaledSheet.create({
     feedMainImage:{
-        width:'100%',
         borderRadius:ms(10)
     }
 })
