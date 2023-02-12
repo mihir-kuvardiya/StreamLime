@@ -1,6 +1,6 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react"
-import { ActivityIndicator, SafeAreaView, View, Text } from "react-native"
+import { ActivityIndicator, SafeAreaView, View, Text, TouchableOpacity } from "react-native"
 import Header from "../../../components/header/header";
 import FeedCard from "../feedList/FeedCard/feedCard";
 import firestore from '@react-native-firebase/firestore';
@@ -10,10 +10,13 @@ import colorPalates from "../../../theme/colorPalates";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ms } from "react-native-size-matters";
+import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
+import screenNameEnum from "../../../helper/screenNameEnum";
 
 const FeedDetailScreen = () => {
 
     const route:any = useRoute();
+    const navigation:any = useNavigation();
     const dispatch = useDispatch();
     const userData = useUserData();             
     const feedDetail = useFeedDetailData();
@@ -22,13 +25,20 @@ const FeedDetailScreen = () => {
     useEffect(()=>{
         getUniquePost();
     },[route])
+
+    const onPressCreateNewPost = () => {
+        navigation.navigate(screenNameEnum.CreateFeedScreen);
+    }
     
     const getUniquePost = async () => {
         setLoading(true);
         try {
             const postData:any = await firestore().collection('posts').doc(route?.params?.postId).get();
             if(!postData.exists){
-                dispatch(feedAction.setFeedData(null))
+                dispatch(feedAction.setFeedData({
+                    collectionName:'feedDetail',
+                    data: null
+                }))
                 setLoading(false);
                 return;
             }
@@ -70,8 +80,11 @@ const FeedDetailScreen = () => {
                 <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary} style={{flex:1,}}/>
             </View>
             : !feedDetail ?
-            <View style={{flex:1,justifyContent:"center",alignItems:'center'}}>
-                <Text style={{color:'red'}}>no post</Text>
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                <IconMaterialIcons name="insights" size={100} color={colorPalates.AppTheme.primary}/>
+                <TouchableOpacity onPress={onPressCreateNewPost}>
+                <Text style={{fontSize:ms(22),fontFamily:'Ubuntu-Regular',marginTop:ms(20),color:colorPalates.AppTheme.primary}}>Create a new post</Text>
+                </TouchableOpacity>
             </View>
                 :
             <KeyboardAwareScrollView style={{flex:1}}>
@@ -81,7 +94,6 @@ const FeedDetailScreen = () => {
                 />
                 </View>
             </KeyboardAwareScrollView>
-
             }
             </SafeAreaView>
         </>

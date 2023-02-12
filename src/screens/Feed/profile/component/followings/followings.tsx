@@ -8,7 +8,7 @@ import followingStyle from "./followingStyle";
 import firestore from '@react-native-firebase/firestore';
 import { ms } from "react-native-size-matters";
 import colorPalates from "../../../../../theme/colorPalates";
-import IconEntypo from "react-native-vector-icons/Entypo";
+import IconFeather from "react-native-vector-icons/Feather";
 import { useUserData } from "../../../../../redux/reducers/userSlice/userSlice";
 import screenNameEnum from "../../../../../helper/screenNameEnum";
 import { Emmiter } from "../../../../../helper/helper";
@@ -18,7 +18,7 @@ const FollowingsScreen = () => {
     const route:any = useRoute();
     const dispatch = useDispatch();
     const userData = useUserData();
-    const navigation = useNavigation();
+    const navigation:any = useNavigation();
     const followingsListRedux = useFollowingListData();
     const userId = route?.params?.userId;
     const [loading, setLoading] = useState(false);
@@ -163,7 +163,7 @@ const FollowingsScreen = () => {
                         contentContainerStyle={followingStyle.flatListContainer}
                         ListEmptyComponent={
                             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                                <IconEntypo name="slideshare" size={150} color={colorPalates.AppTheme.primary}/>
+                                <IconFeather name="wind" size={100} color={colorPalates.AppTheme.primary}/>
                                 <Text style={{fontSize:ms(22),fontFamily:'Ubuntu-Regular',marginTop:ms(20),color:colorPalates.AppTheme.primary}}>0 Followings</Text>
                             </View>
                         }

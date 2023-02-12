@@ -3,6 +3,7 @@ import { Image, Text, View, Pressable, TouchableOpacity, Share } from "react-nat
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
 import IconEntypo from "react-native-vector-icons/Entypo";
+import IconIonicons from "react-native-vector-icons/Ionicons";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import colorPalates from "../../../../theme/colorPalates";
 import colors from "../../../../theme/colors";
@@ -166,11 +167,11 @@ const FeedCard = ({item}:FeedCardProps) => {
                     <Text style={feedCardStyle.likeCount}>{item?.likeCount}</Text>
                 </Pressable>
                 <Pressable style={feedCardStyle.likeContainer} onPress={onPressComment}>
-            		<IconMaterialIcons name="comment" size={25} color={colors.blueShade00}/>
+            		<IconIonicons name="ios-chatbox-ellipses-outline" size={25} color={colors.blueShade00}/>
          			<Text style={feedCardStyle.likeCount}>{item?.commentCount}</Text>
                 </Pressable>
                 <Pressable onPress={onPressShare}>
-                    <IconFontAwesome5 name="share" size={25} color={colorPalates.AppTheme.primary}/>
+                    <IconIonicons name="ios-arrow-redo-outline" size={25} color={colorPalates.AppTheme.primary}/>
                 </Pressable>
             </View>
         </View>
