@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react"
-import { ActivityIndicator, SafeAreaView, View } from "react-native"
+import { ActivityIndicator, SafeAreaView, View, Text } from "react-native"
 import Header from "../../../components/header/header";
 import FeedCard from "../feedList/FeedCard/feedCard";
 import firestore from '@react-native-firebase/firestore';
@@ -27,6 +27,11 @@ const FeedDetailScreen = () => {
         setLoading(true);
         try {
             const postData:any = await firestore().collection('posts').doc(route?.params?.postId).get();
+            if(!postData.exists){
+                dispatch(feedAction.setFeedData(null))
+                setLoading(false);
+                return;
+            }
             let date = new Date(postData._data?.createdAt.toDate())
             const userDetail:any = await firestore().collection('user').doc(postData._data.userId).get();
             const isLike = await firestore().collection('likes').doc(`LIKE#${postData._data?.postId}#${userData?.userId}`).get()
@@ -57,22 +62,28 @@ const FeedDetailScreen = () => {
 
     return(
         <>
-            <SafeAreaView >
+            <SafeAreaView style={{flex:1}}>
                 <Header isBack={true} title={'StreamLine'} />
-            </SafeAreaView>
-            <KeyboardAwareScrollView style={{flex:1}}>
+            
             {loading ?
             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                 <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary} style={{flex:1,}}/>
             </View>
+            : !feedDetail ?
+            <View style={{flex:1,justifyContent:"center",alignItems:'center'}}>
+                <Text style={{color:'red'}}>no post</Text>
+            </View>
                 :
+            <KeyboardAwareScrollView style={{flex:1}}>
                 <View style={{marginBottom:ms(40)}}>
                 <FeedCard 
                     item={feedDetail}
                 />
                 </View>
-            }
             </KeyboardAwareScrollView>
+
+            }
+            </SafeAreaView>
         </>
     )
 }
