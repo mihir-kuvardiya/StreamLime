@@ -221,6 +221,7 @@ const CreateFeedScreen = () => {
                 value={description}
                 onChangeText={val=>setDescription(val)}
                 maxLength={100}
+                multiline={true}
                 placeholderTextColor={colors.grayShade8F}
                 style={createFeedScreenStyle.descriptionTextInput}
             />
