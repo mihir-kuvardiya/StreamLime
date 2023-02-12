@@ -79,6 +79,7 @@ const SearchUser = () => {
             <FlatList
                 data={userData}
                 renderItem={({item,index})=>(<UserRow item={item} key={index}/>)}
+                keyboardShouldPersistTaps="always"
             />
         </>
     )
