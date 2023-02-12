@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Image, SafeAreaView, Text, TouchableOpacity, View ,FlatList, ActivityIndicator, RefreshControl} from "react-native";
+import { Image, SafeAreaView, Text, TouchableOpacity, View ,FlatList, ActivityIndicator, RefreshControl, Pressable} from "react-native";
 import Header from "../../../components/header/header";
 import screenNameEnum from "../../../helper/screenNameEnum";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
@@ -10,6 +10,7 @@ import userProfileScreenStyle from "./userProfileScreenStyle";
 import firestore from '@react-native-firebase/firestore';
 import images from "../../../theme/images";
 import { Emmiter } from "../../../helper/helper";
+import ImageView from "react-native-image-viewing";
 
 const UserProfileScreen = () => {
 
@@ -24,6 +25,7 @@ const UserProfileScreen = () => {
     const [followersCount, setFollowersCount] = useState(0);
     const [followingCount, setFollowingCount] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(()=>{
         getUserDetail();   
@@ -155,6 +157,7 @@ const UserProfileScreen = () => {
     };
 
     return(
+        <>
         <SafeAreaView style={{flex:1}}>
         {loading||postLoading ?
             <View style={userProfileScreenStyle.loadingContainer}>
@@ -164,11 +167,13 @@ const UserProfileScreen = () => {
             <>
             <Header title={profileUser?.userName} isBack={true}/>
             <View style={userProfileScreenStyle.headerContainer}>
+                <Pressable onPress={()=>setIsVisible(true)}>
                 <Image 
                     style={userProfileScreenStyle.profileImage}
                     source={profileUser?.profilePicture ? { uri: profileUser?.profilePicture }: images.dp}
                     resizeMode={"cover"} 
                 />
+                </Pressable>
                 <View style={userProfileScreenStyle.CounterContainer}>
                     <Text style={userProfileScreenStyle.Counter}>{posts.length}</Text>
                     <Text style={userProfileScreenStyle.conterText}>Posts</Text>
@@ -217,6 +222,13 @@ const UserProfileScreen = () => {
         </>
         }
         </SafeAreaView>
+        <ImageView
+            images={[{uri:  profileUser?.profilePicture ?  profileUser?.profilePicture : images.dp},]}
+            imageIndex={0}
+            visible={isVisible}
+            onRequestClose={() => setIsVisible(false)}
+        />
+    </>
     )
 }
 
