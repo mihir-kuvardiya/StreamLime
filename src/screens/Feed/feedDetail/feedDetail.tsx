@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { feedAction, useFeedDetailData } from "../../../redux/reducers/feedSlice/feedSlice";
 import colorPalates from "../../../theme/colorPalates";
 import { useUserData } from "../../../redux/reducers/userSlice/userSlice";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ms } from "react-native-size-matters";
 
 const FeedDetailScreen = () => {
 
@@ -55,16 +57,22 @@ const FeedDetailScreen = () => {
 
     return(
         <>
-        <SafeAreaView style={{flex:1}}>
-            <Header isBack={true} title={'StreamLine'} />
+            <SafeAreaView >
+                <Header isBack={true} title={'StreamLine'} />
+            </SafeAreaView>
+            <KeyboardAwareScrollView style={{flex:1}}>
             {loading ?
-                <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary} style={{flex:1,justifyContent:'center',alignItems:'center'}}/>
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary} style={{flex:1,}}/>
+            </View>
                 :
+                <View style={{marginBottom:ms(40)}}>
                 <FeedCard 
                     item={feedDetail}
                 />
+                </View>
             }
-        </SafeAreaView>
+            </KeyboardAwareScrollView>
         </>
     )
 }
