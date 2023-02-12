@@ -41,6 +41,16 @@ const EditProfileScreen = () => {
 
     const onPressProfileSave = () => {
 
+        if (userName.indexOf(' ') >= 0) {
+            showToast('Username must not contain white spaces');
+            return;
+        }
+    
+        if (userName.trim() === '' || userName.length < 3) {
+            showToast('Username needs to be 3 characters long');
+            return;
+        }
+
         setLoading(true);
         if(uploadUrl){
             let filename= `${userData?.userId}${new Date().getTime()}`;
