@@ -16,7 +16,7 @@ export default NoCommentsView;
 
 const style = ScaledSheet.create({
     container:{
-        flex:1,
+        height:ms(700),
         justifyContent:'center',
         alignItems:'center'
     },

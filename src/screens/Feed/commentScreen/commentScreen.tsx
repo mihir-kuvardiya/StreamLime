@@ -125,6 +125,7 @@ const CommentScreen = () => {
                 <ActivityIndicator size={'large'} color={colorPalates.AppTheme.primary} style={{flex:1,justifyContent:'center',alignItems:'center'}}/>
             :
                 <>
+                <View style={{flex:1}}>
                 <Header isBack={true} title={'comments'}/>
                 <View style={commentScreenStyle.mainContainer}>
                     {commentData.length === 0 || commentData.length === 1 ? 
@@ -145,9 +146,9 @@ const CommentScreen = () => {
                     scrollEventThrottle={16}
                     maxToRenderPerBatch={5}
                     windowSize={50}
-                    contentContainerStyle={{flex:1,paddingBottom: 40}}
+                    contentContainerStyle={{paddingBottom: 80}}
                     ListEmptyComponent={
-                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                        <View style={{flex:1}}>
                         <NoCommentsView/>
                         </View>
                     }
@@ -159,20 +160,22 @@ const CommentScreen = () => {
                         />
                     }
                 />
+                </View>
                 <View style={commentScreenStyle.CommentTextInputView}>
-                    <TextInput
-                        placeholder="comment..."
-                        placeholderTextColor={colorPalates.AppTheme.border}
-                        style={commentScreenStyle.CommentTextInput}
-                        multiline={true}
-                        value={comment}
-                        onChangeText={val=>setComment(val)}
-                    />
-                    <TouchableOpacity style={commentScreenStyle.sendButton} onPress={()=>onPressSend(comment)}>
-                        <IconIonicons name="paper-plane-sharp" size={26} color={colorPalates.AppTheme.primary}/>
-                    </TouchableOpacity>
+                <TextInput
+                    placeholder="comment..."
+                    placeholderTextColor={colorPalates.AppTheme.border}
+                    style={commentScreenStyle.CommentTextInput}
+                    multiline={true}
+                    value={comment}
+                    onChangeText={val=>setComment(val)}
+                />
+                <TouchableOpacity style={commentScreenStyle.sendButton} onPress={()=>onPressSend(comment)}>
+                    <IconIonicons name="paper-plane-sharp" size={26} color={colorPalates.AppTheme.primary}/>
+                </TouchableOpacity>
                 </View>
                 </>
+
             }
         </SafeAreaView>
     )

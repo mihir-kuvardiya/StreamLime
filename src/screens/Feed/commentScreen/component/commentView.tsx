@@ -66,13 +66,12 @@ const CommentView = ({item}:commentViewProps) =>{
             />
             <View style={commentViewStyle.mainTextContainer}>
                 <View style={commentViewStyle.userNameContainer}>
-                    <Text style={commentViewStyle.userNameText}>{item?.userName}</Text>
-                    <Text style={commentViewStyle.timeStamp}>{moment(item?.createdAt).local().startOf('seconds').fromNow() || ''}</Text>
+                    <Text style={commentViewStyle.commentText}>
+                    <Text style={commentViewStyle.userNameText}>{item?.userName}</Text> {item?.commentText}
+                    </Text>
                 </View>
                 <View style={commentViewStyle.commentTextContainer}>
-                    <Text style={commentViewStyle.commentText}>
-                        {item?.commentText}
-                    </Text>
+                    <Text style={commentViewStyle.timeStamp}>{moment(item?.createdAt).local().startOf('seconds').fromNow() || ''}</Text>
                 </View>
             </View>
             <TouchableOpacity onPress={onPressMenu} hitSlop={{bottom:10,left:10,right:10,top:10}}>

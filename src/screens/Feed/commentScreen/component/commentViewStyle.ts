@@ -37,7 +37,6 @@ export default ScaledSheet.create({
     timeStamp:{
         color: colors.grayShade8F,
         fontSize: ms(12),
-        marginLeft: ms(5)
     },
     commentTextContainer:{
         flexDirection:'row',
@@ -48,5 +47,6 @@ export default ScaledSheet.create({
         flexWrap:'wrap',
         color: colorPalates.AppTheme.text,
         fontSize: ms(13),
+        marginLeft: ms(5)
     }
 })
